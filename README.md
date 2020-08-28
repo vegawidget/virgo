@@ -142,3 +142,7 @@ vega(population) %>%
     position = "fill"
   )
 ```
+
+## Examples (hard mode)
+
+https://observablehq.com/collection/@vega/vega-lite-api
