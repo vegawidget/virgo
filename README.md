@@ -1,15 +1,21 @@
 # virgo
 
 
-Goal: to write an interface to the vega-lite JS api in R, have it integrate with crosstalk
+## Big Picture
 
-https://observablehq.com/@uwdata/interaction
+Goal: to write an interface to the vega-lite JS api in R, make the interface idiomatic and not overly verbose. Tightly integrate with crosstalk (on the client) and shiny reactives. 
 
-Approaches:
+
+## Approaches
 
 1. directly interface with vegawidget. In this case, we are adapting the API to translate into a vega spec at some point.
 
 2. write our own widget that wraps the vega-lite JS API directly.
+
+## API design
+
+Examples are taken from the following notebook:
+https://observablehq.com/@uwdata/interaction
 
 ```js
 const selection = vl.selectSingle();
