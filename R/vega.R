@@ -33,17 +33,3 @@ mark_points <- function(v, x, y, color) {
 print.vega <- function(v) {
   print(as_vegaspec(unclass(v)))
 }
-
-data_type <- function(x) {
-  UseMethod("data_type")
-}
-
-data_type.numeric <- function(x) {
-  "quantitative"
-}
-
-data_type.factor <- function(x) {
-  "nominal"
-}
-
-data_type.character <- data_type.factor
