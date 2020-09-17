@@ -1,7 +1,9 @@
 #' @import rlang vctrs vegawidget
 
+cls <- c("vegaspec_unit", "vegaspec_vega_lite", "vegaspec", "list")
+
 vega <- function(data = NULL) {
-  structure(list(data = data), class = "vega")
+  structure(list(data = data), class = cls)
 }
 
 mark_points <- function(v, x, y, color) {
@@ -26,10 +28,5 @@ mark_points <- function(v, x, y, color) {
     data = list(values = v$data),
     mark = "point",
     encoding = encoding
-  ), class = "vega")
-}
-
-#' @export
-print.vega <- function(v) {
-  print(as_vegaspec(unclass(v)))
+  ), class = cls)
 }

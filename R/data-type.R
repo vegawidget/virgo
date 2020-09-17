@@ -7,15 +7,13 @@ data_type.numeric <- function(x) {
 }
 
 data_type.factor <- function(x) {
-  "ordinal"
-}
-
-data_type.character <- function(x) {
   "nominal"
 }
+
+data_type.character <- data_type.factor
 
 data_type.POSIXt <- function(x) {
   "temporal"
 }
 
-data_type.Date <- date_type.POSIXt
+data_type.Date <- data_type.POSIXt
