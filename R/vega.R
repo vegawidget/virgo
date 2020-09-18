@@ -6,12 +6,29 @@ vega <- function(data = NULL) {
   structure(list(data = data), class = cls)
 }
 
-mark_points <- function(v, x, y, color) {
-  # 1. bare variable
-  # 2. ToDo: fun(var)
-  x <- enquo(x)
-  y <- enquo(y)
-  color <- enquo(color)
+enc <- function(x, y, ...) {
+  enquos(x = x, y = y, ..., .ignore_empty = "all")
+}
+
+config <- function(...) {
+  ...
+}
+
+mark_points <- function(v, encoding = NULL) {
+  # ToDo: fun(var)
+  # 0: bare variable
+  # 1. factor() -> eval in R, and make a name `field: factor(cyl)`
+  # 2. mean() -> `aggregate: mean, field: mean(cyl)`, 
+  # 3. mean2() -> eval in R, `field: mean2(cyl)`, 
+  # Algortihm:
+  #  check whether quosuore is  a call?
+  # if not -> return and use whatever you have already
+  # if yes -> evaluate quousure inside a new envirnonment where the functions are 
+  # mapped to the vega lite aggregate transforms mean <- function(x) list("aggregate" = "mean", field = as_name(x))
+  # 3. eval_tidy in the data context, data$`fun(col)` assigned to result
+  x <- encoding$x
+  y <- encoding$y
+  color <- encoding$color
   x_field <- as_name(x)
   y_field <- as_name(y)
   color_field <- as_name(color)
