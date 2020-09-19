@@ -2,8 +2,15 @@
 
 cls <- c("vegaspec_unit", "vegaspec_vega_lite", "vegaspec", "list")
 
-vega <- function(data = NULL) {
-  structure(list(data = data), class = cls)
+vega <- function(data = NULL, encoding = enc()) {
+  spec <- list(
+    `$schema` = vega_schema(), # to be exposed somewhere
+    data = list(values = data)
+  )
+  if (!is_empty(encoding)) {
+    spec <- c(spec, list(encoding = eval_encoding(data, encoding)))
+  }
+  structure(spec, class = cls)
 }
 
 select_single <- function() {
