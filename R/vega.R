@@ -1,6 +1,9 @@
 #' @import rlang vctrs vegawidget
 
-cls <- c("vegaspec_unit", "vegaspec_vega_lite", "vegaspec", "list")
+new_vegaspec <- function(spec) {
+  cls <- c("vegaspec_unit", "vegaspec_vega_lite", "vegaspec", "list")
+  structure(spec, class = cls)
+}
 
 vega <- function(data = NULL, encoding = enc()) {
   spec <- list(
@@ -10,15 +13,15 @@ vega <- function(data = NULL, encoding = enc()) {
   if (!is_empty(encoding)) {
     spec <- c(spec, list(encoding = eval_encoding(data, encoding)))
   }
-  structure(spec, class = cls)
+  new_vegaspec(spec)
 }
 
 select_single <- function() {
-   
+
 }
 
 select_multi <- function() {
-   
+
 }
 
 select_interval <- function(name = "selection", encodings = c("x", "y"),
