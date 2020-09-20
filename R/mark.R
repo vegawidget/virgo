@@ -1,4 +1,5 @@
 # new `transform` arg https://vega.github.io/vega-lite/docs/loess.html#example
+# vega supports a mixture of data and statistical transformations
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   transform = NULL, selection = NULL) {
   layer_data <- data
@@ -111,4 +112,12 @@ mark_hline <- function() {
 
 mark_vline <- function() {
 
+}
+
+mark_streamgraph <- function() {
+  
+}
+
+mark_parcoords <- function() {
+  
 }

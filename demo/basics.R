@@ -26,10 +26,6 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point(encoding = enc(size = cyl)) # shape (ok)
 
-# not working
-# vega() %>%
-#   mark_point(encoding = enc(x = wt, y = mpg, color = cyl), data = mtcars)
-
 mtcars %>%
   vega() %>%
   mark_point(encoding = enc(x = wt))
