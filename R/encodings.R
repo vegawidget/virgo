@@ -1,5 +1,5 @@
-enc <- function(x, y, tooltip, ...) {
-  enquos(x = x, y = y, tooltip = tooltip, ..., .ignore_empty = "all")
+enc <- function(x, y, ...) {
+  enquos(x = x, y = y, ..., .ignore_empty = "all")
 }
 
 eval_encoding <- function(data, encoding) {

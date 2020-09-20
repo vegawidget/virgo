@@ -16,8 +16,12 @@ vega_layer <- function(v, layer = list(), encoding = NULL, transform = NULL,
 
 mark_factory <- function(type = "point") {
   force(type)
-  function(v, encoding = NULL, transform= NULL, selection = NULL, ...) {
-    layer <- list(mark = list(type = type, ...))
+  function(v, encoding = NULL, transform = NULL, selection = NULL, ...) {
+    dots <- dots_list(..., .named = TRUE, .homonyms = "error")
+    if (!("tooltip" %in% names(dots))) { # enable tooltip by default
+      dots$tooltip <- TRUE
+    }
+    layer <- list(mark = list2(type = type, !!!dots))
     vega_layer(v, layer, encoding, transform, selection)
   }
 }

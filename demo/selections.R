@@ -7,14 +7,28 @@ library(dplyr)
 # mtcars %>%
 #   mutate(cyl = factor(cyl)) %>%
 #   vega() %>%
-#   mark_points(encoding = enc(x = wt, y = mpg, color = cyl), selection = selection2)
+#   mark_point(encoding = enc(x = wt, y = mpg, color = cyl), selection = selection2)
 
 selection <- select_interval(name = "a", encoding = "x")
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
-  mark_points(
+  mark_circle(
+    encoding = enc(x = wt, y = mpg, color = cyl),
+    selection = selection)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega() %>%
+  mark_line(
+    encoding = enc(x = wt, y = mpg, color = cyl),
+    selection = selection)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega() %>%
+  mark_boxplot(
     encoding = enc(x = wt, y = mpg, color = cyl),
     selection = selection)
 
@@ -23,7 +37,7 @@ mtcars %>%
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
-  mark_points(
+  mark_point(
     encoding = enc(x = wt, y = mpg, color = ifelse(selection, cyl, "grey")),
     selection = selection)
 

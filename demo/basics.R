@@ -43,7 +43,8 @@ mtcars %>%
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = cyl, y = wt)) %>%
-  mark_boxplot()
+  mark_boxplot(tooltip = FALSE)
+# vegalite: boxplot not working with null tooltip and selection
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
