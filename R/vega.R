@@ -6,10 +6,10 @@ new_vegaspec <- function(spec) {
 }
 
 vega <- function(data = NULL, encoding = enc()) {
-  spec <- list(
-    `$schema` = vega_schema(), # to be exposed somewhere
-    data = list(values = data)
-  )
+  spec <- list(`$schema` = vega_schema()) # to be exposed somewhere
+  if (!is.null(data)) {
+    spec <- c(spec, list(data = list(values = data)))
+  }
   if (!is_empty(encoding)) {
     spec <- c(spec, list(encoding = eval_encoding(data, encoding)))
   }
