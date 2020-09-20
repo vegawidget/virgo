@@ -50,3 +50,12 @@ mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = cyl, y = wt)) %>%
   mark_bar()
+
+huron <- tibble(
+  year = 1875:1972, level = as.vector(LakeHuron),
+  ymin = 500, ymean = 550)
+
+huron %>%
+  vega(enc(x = year)) %>%
+  mark_ribbon(enc(y = ymin, y2 = level)) %>%
+  mark_line(enc(y = ymean))
