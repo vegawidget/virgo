@@ -33,15 +33,21 @@ config <- function() {
                  "#0072B2", "#D55E00", "#CC79A7", "#000000")
   )
 
+  legend <- list(
+    orient = "right",
+    padding = 1
+  )
+
   list(
-    view = list(fill = "#e5e5e5"), # sets inner view to grey
+    view = list(fill = "#e5e5e5"), # sets inner view to grey,
     circle = circle,
     point = point,
     shape = shape,
     rect = rect,
     bar = rect,
     axis = axis,
-    range = range
+    range = range,
+    legend = legend
   )
 }
 
