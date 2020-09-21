@@ -16,16 +16,27 @@ vega <- function(data = NULL, encoding = enc()) {
   new_vegaspec(spec)
 }
 
-select_single <- function() {
+# selection perhaps can be implemented as delayed reactives
+# it will never be evaluated in console mode
+# a random id needs to be assigned when it's created for composition
+
+# bind(Year = input_slider(min, max, step, init))
+# init = c(Cycliners = 4, Year = 1977)
+# init = list(x = c(55, 160), y = c(13, 37))
+select_single <- function(encodings = NULL, fields = NULL, init = NULL, bind,
+  nearest = FALSE, on = "click", clear = "dblclick", empty = "all", resolve) {
 
 }
 
-select_multi <- function() {
+select_multi <- function(encodings = NULL, fields = NULL, init = NULL, bind,
+  toggle, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
+  resolve) {
 
 }
 
-select_interval <- function(name = "selection", encodings = c("x", "y"),
-  fields, on) {
+select_interval <- function(encodings = c("x", "y"), fields = NULL, init = NULL,
+  bind, mark, zoom, translate, on = "click", clear = "dblclick", empty = "all",
+  resolve) {
   structure(
     list(type = "interval", encodings = encodings),
     name = name, class = "vegaspec_selection")

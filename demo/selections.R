@@ -34,6 +34,8 @@ mtcars %>%
 
 # cond <- ifelse(selection, "red", "grey")
 
+selection()$ifelse(TRUE, "red", "grey")
+
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
