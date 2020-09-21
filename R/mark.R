@@ -38,7 +38,7 @@ nlayer <- function(v) {
 
 mark_properties <- function(...) {
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
-  if (!("tooltip" %in% names(dots))) { # enable tooltip by default
+  if (!(has_name(dots, "tooltip"))) { # enable tooltip by default
     dots$tooltip <- TRUE
   }
   dots
@@ -58,19 +58,17 @@ mark_area <- mark_factory(type = "area")
 mark_bar <- mark_factory(type = "bar")
 mark_boxplot <- mark_factory(type = "boxplot")
 mark_circle <- mark_factory(type = "point")
-mark_errorband <- mark_factory(type = "errorband")
+mark_ribbon <- mark_errorband <- mark_factory(type = "errorband")
 mark_geoshape <- mark_factory(type = "geoshape")
 mark_image <- mark_factory(type = "image")
 mark_line <- mark_factory(type = "line")
 mark_point <- mark_factory(type = "circle")
 mark_rect <- mark_factory(type = "rect")
-mark_rule <- mark_factory(type = "rule")
+mark_linerange <- mark_rule <- mark_factory(type = "rule")
 mark_square <- mark_factory(type = "square")
 mark_text <- mark_factory(type = "text")
 mark_tick <- mark_factory(type = "tick")
 mark_trail <- mark_factory(type = "trail")
-mark_ribbon <- mark_factory(type = "errorband")
-mark_linerange <- mark_factory(type = "rule")
 
 mark_errorbar <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ...) {
@@ -88,6 +86,13 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
   v$layer[[last]]$encoding$y <- list(aggregate = "count")
   v
+}
+
+mark_step <- function(v, encoding = NULL, data = NULL, transform = NULL,
+  selection = NULL, ...) {
+  layer <- list(mark = list2(type = "line",
+    !!!mark_properties(interpolate = "step-after", ...)))
+  vega_layer(v, layer, encoding, transform, selection)
 }
 
 mark_density <- function() {
@@ -115,9 +120,13 @@ mark_vline <- function() {
 }
 
 mark_streamgraph <- function() {
-  
+
 }
 
 mark_parcoords <- function() {
-  
+
+}
+
+mark_qq <- function() {
+
 }
