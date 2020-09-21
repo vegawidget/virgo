@@ -5,8 +5,8 @@ new_vegaspec <- function(spec) {
   structure(spec, class = cls)
 }
 
-vega <- function(data = NULL, encoding = enc()) {
-  spec <- list(`$schema` = vega_schema()) # to be exposed somewhere
+vega <- function(data = NULL, encoding = enc(), theme = config()) {
+  spec <- list(`$schema` = vega_schema(), config = theme) # to be exposed somewhere
   if (!is.null(data)) {
     spec <- c(spec, list(data = list(values = data)))
   }
