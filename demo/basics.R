@@ -98,3 +98,7 @@ df %>%
 df %>%
   vega(enc(x = trt, color = group)) %>%
   mark_errorbar(enc(y = lower, y2 = upper))
+
+recent <- economics[economics$date > as.Date("2013-01-01"), ]
+vega(recent, enc(date, unemploy)) %>%
+  mark_step()
