@@ -38,7 +38,7 @@ nlayer <- function(v) {
 
 mark_properties <- function(...) {
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
-  if (!("tooltip" %in% names(dots))) { # enable tooltip by default
+  if (!(has_name(dots, "tooltip"))) { # enable tooltip by default
     dots$tooltip <- TRUE
   }
   dots
@@ -124,5 +124,9 @@ mark_streamgraph <- function() {
 }
 
 mark_parcoords <- function() {
+
+}
+
+mark_qq <- function() {
 
 }
