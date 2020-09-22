@@ -2,7 +2,6 @@ enc <- function(x, y, ...) {
   enquos(x = x, y = y, ..., .ignore_empty = "all")
 }
 
-
 eval_values <- function(data, encoding) {
   channels <- names(encoding)
   # probably could just do this with a mutate() instead
@@ -74,8 +73,8 @@ valid_ops <- function() {
 
 gen_agg_factory <- function() {
   ops <- valid_ops()
-  env <-env()
-  fns <- lapply(ops, function(op) function(x) {
+  env <- env()
+  fns <- map(ops, function(op) function(x) {
     x <- as_name(enexpr(x))
 
     new_agg_op(op, x)
