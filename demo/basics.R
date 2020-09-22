@@ -6,9 +6,17 @@ mtcars %>%
   mark_point()
 
 mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg, color = factor(cyl))) %>%
+  mark_point()
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
   mark_point(encoding = enc(x = wt, y = mpg, color = cyl))
+
+mtcars %>%
+  vega() %>%
+  mark_point(encoding = enc(x = wt, y = mpg, color = factor(cyl)))
 
 vega() %>%
   mark_point(encoding = enc(x = wt, y = mpg), data = mtcars)
@@ -22,9 +30,17 @@ mtcars %>%
   mark_point(encoding = enc(color = cyl))
 
 mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point(encoding = enc(color = factor(cyl)))
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point(encoding = enc(size = cyl)) # shape (ok)
+
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point(encoding = enc(size = factor(cyl))) # shape (ok)
 
 mtcars %>%
   vega() %>%
@@ -49,8 +65,17 @@ mtcars %>%
 # vegalite: boxplot not working with null tooltip and selection
 
 mtcars %>%
+  vega(encoding = enc(x = factor(cyl), y = wt)) %>%
+  mark_boxplot(tooltip = FALSE)
+
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = cyl, y = wt)) %>%
+  mark_bar()
+
+mtcars %>%
+  vega(encoding = enc(x = factor(cyl), y = wt)) %>%
   mark_bar()
 
 huron <- tibble(

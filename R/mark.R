@@ -3,12 +3,14 @@
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   transform = NULL, selection = NULL) {
   layer_data <- data
+  # does data need updating
+  v$data$values <- eval_values(v$data$values, encoding)
   data <- data %||% v$data$values
   if (!is.null(encoding)) {
     layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
   }
   if (!is.null(layer_data)) {
-    layer <- c(list(data = list(values = data)), layer)
+    layer <- c(list(data = list(values = eval_values(data, encoding))), layer)
   }
   if (!is.null(selection)) {
     sel <- list2(!!(selection %@% "name") := unclass(selection))
