@@ -17,3 +17,4 @@ data_type.POSIXt <- function(x) {
 }
 
 data_type.Date <- data_type.POSIXt
+

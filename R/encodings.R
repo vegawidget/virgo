@@ -10,7 +10,9 @@ eval_values <- function(data, encoding) {
     enc <- encoding[[i]]
     if (quo_is_symbol(enc))
       next
-    update_col <- eval_tidy(enc, data = data)
+    update_col <- eval_tidy(enc, data = new_vega_mask(data))
+    if (inherits(update_col, "vega_op"))
+      next
     update_col_field <- as_label(enc)
     data <- vec_cbind(data, !!update_col_field := update_col)
   }
@@ -23,9 +25,9 @@ eval_encoding <- function(data, encoding) {
   lst <- vec_set_names(bare_lst, channels)
   for (i in channels) {
     enc <- encoding[[i]]
+    res <- eval_tidy(enc, data = new_vega_mask(data))
     field <- as_field(enc)
-    type <- data_type(eval_tidy(enc, data = data))
-    lst[[i]] <- list(field = field, type = type)
+    lst[[i]] <- encoding_spec(res, field = field)
   }
   lst
 }
@@ -33,6 +35,16 @@ eval_encoding <- function(data, encoding) {
 as_field <- function(quo) {
   if (quo_is_symbol(quo)) return(as_name(quo))
   as_label(quo)
+}
+
+encoding_spec <- function(x, ...) { UseMethod("encoding_spec") }
+
+encoding_spec.default <- function(x, ...) {
+  list(..., type = data_type(x))
+}
+
+encoding_spec.vega_op <- function(x, ...) {
+  unclass(x)
 }
 
 # ToDo: fun(var)
@@ -47,21 +59,33 @@ as_field <- function(quo) {
 # if yes -> evaluate quousure inside a new envirnonment where the functions are
 # mapped to the vega lite aggregate transforms mean <- function(x) list("aggregate" = "mean", field = as_name(x))
 # 3. eval_tidy in the data context, data$`fun(col)` assigned to result
-agg_factory <- function(op) {
-  function(x) {
-    list("aggregate" = op, field = x)
-  }
+
+new_agg_op <- function(op, x) {
+  stopifnot(op %in% valid_ops())
+  cls <- c("aggregate", "vega_op")
+
+  structure(list(aggregate = op, field = x), class = cls)
 }
 
-
-encode_ops <- function() {
+valid_ops <- function() {
   # aggregate transforms go here
-  ops <- c("count", "distinct", "sum", "mean")
-  bare_fns <- vec_init(list(), n = length(ops))
-  masked_fns <- vec_set_names(bare_fns, ops)
-  for (op in ops) {
-    masked_fns[[op]] <- agg_factory(op)
-  }
+  c("count", "distinct", "sum", "mean")
+}
 
-  masked_fns
+gen_agg_factory <- function() {
+  ops <- valid_ops()
+  env <-env()
+  fns <- lapply(ops, function(op) function(x) {
+    x <- as_name(enexpr(x))
+
+    new_agg_op(op, x)
+  })
+  names(fns) <- ops
+  fns
+}
+
+new_vega_mask <- function(data, factory = gen_agg_factory()) {
+  top <- new_environment(factory)
+  bottom <- as_environment(data, parent = top)
+  new_data_mask(bottom, top = top)
 }
