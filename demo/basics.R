@@ -90,6 +90,10 @@ vega() %>%
   mark_ribbon(enc(x = year, y = ymin, y2 = level), data = huron) %>%
   mark_line(enc(x = year, y = ymean), data = huron)
 
+vega(enc(x = year), data = huron) %>%
+  mark_ribbon(enc(y = ymin, y2 = level)) %>%
+  mark_line(enc(y = ymean))
+
 # FIXME: perhaps need a new S3 class to `print()`
 vega(enc(x = year)) %>%
   mark_ribbon(enc(y = ymin, y2 = level), data = huron) %>%
@@ -99,9 +103,10 @@ huron %>%
   vega() %>%
   mark_histogram(enc(x = level))
 
+# FIXME: vegalite should work with this
 huron %>%
   vega(enc(x = level)) %>%
-  mark_histogram() # vegalite should work with this
+  mark_histogram()
 
 huron %>%
   vega() %>%

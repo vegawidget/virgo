@@ -9,7 +9,7 @@ library(dplyr)
 #   vega() %>%
 #   mark_point(encoding = enc(x = wt, y = mpg, color = cyl), selection = selection2)
 
-selection <- select_interval(name = "a", encoding = "x")
+selection <- select_interval(encoding = "x")
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
@@ -37,11 +37,33 @@ mtcars %>%
 selection()$ifelse(TRUE, "red", "grey")
 
 mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = wt, y = mpg, color = selection()$ifelse(TRUE, factor(cyl), "grey"),
+    selection = selection, data = mtcars %>% filter(wt == selection))
+
+mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
+    selection = selection) %>%
+  where(selection, encoding = "opacity", 0.1, 1)
+  # update_encodings()
+
+
+mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = wt, y = mpg, color = ifelse(selection, factor(cyl), "grey")),
+    selection = selection, data = mtcars %>% filter(wt == selection))
+
+ 
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
   mark_point(
-    encoding = enc(x = wt, y = mpg, color = ifelse(selection, cyl, "grey")),
-    selection = selection)
+    encoding = enc(x = wt, y = mpg, color = ifelse(selection(), cyl, "grey")),
+    selection = selection())
 
 encs <- enc(x = wt, y = mpg, color = ifelse(selection, cyl, "grey"))
 quo_is_call(encs$color)

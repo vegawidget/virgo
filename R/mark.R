@@ -46,6 +46,7 @@ mark_properties <- function(...) {
   dots
 }
 
+# use vega options name but in snake_case
 mark_factory <- function(type = "point") {
   force(type)
   function(v, encoding = NULL, data = NULL, transform = NULL,
