@@ -6,7 +6,12 @@ population <- jsonlite::read_json(
 ) %>%
   bind_rows()
 
-# mark bar doesn't appear to work not sure why
+# FIXME: mark bar doesn't appear to work not sure why
+population %>%
+  filter(year == 2000) %>%
+  vega() %>%
+  mark_bar(enc(x = sum(people)))
+
 population %>%
   filter(year == 2000) %>%
   vega() %>%
@@ -15,7 +20,7 @@ population %>%
 population %>%
   filter(year == 2000) %>%
   vega() %>%
-  mark_bar(enc(x = sum(people), y = faage))
+  mark_bar(enc(x = sum(people), y = age))
 
 population %>%
   filter(year == 2000) %>%
