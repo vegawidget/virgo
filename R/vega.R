@@ -6,7 +6,12 @@ new_vegaspec <- function(spec) {
 }
 
 vega <- function(data = NULL, encoding = enc(), theme = config()) {
-  spec <- list(`$schema` = vega_schema(), config = theme) # to be exposed somewhere
+  spec <- list(
+    `$schema` = vega_schema(),
+    width = 400,
+    height = 300,
+    config = theme
+  ) # to be exposed somewhere
   if (!is.null(data)) {
     data <- eval_values(data, encoding)
     spec <- c(spec, list(data = list(values = data)))

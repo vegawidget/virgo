@@ -10,6 +10,10 @@ data_type.factor <- function(x) {
   "nominal"
 }
 
+data_type.ordered <- function(x) {
+  "ordinal"
+}
+
 data_type.character <- data_type.factor
 
 data_type.POSIXt <- function(x) {
@@ -18,3 +22,6 @@ data_type.POSIXt <- function(x) {
 
 data_type.Date <- data_type.POSIXt
 
+data_type.NULL <- function(x) {
+  NULL
+}

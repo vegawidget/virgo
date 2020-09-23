@@ -72,6 +72,16 @@ mark_text <- mark_factory(type = "text")
 mark_tick <- mark_factory(type = "tick")
 mark_trail <- mark_factory(type = "trail")
 
+# mark_bar <- function(v, encoding = NULL, data = NULL, transform = NULL,
+#                            selection = NULL, ...) {
+#   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
+#   v <- vega_layer(v, layer, encoding, transform, selection)
+#   last <- nlayer(v)
+#   y <- v$layer[[last]]$encoding$y
+#   v$layer[[last]]$encoding$y$scale$zero <- TRUE
+#   v
+# }
+
 mark_errorbar <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ...) {
   layer <- list(mark = list2(type = "errorbar",

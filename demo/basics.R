@@ -68,7 +68,6 @@ mtcars %>%
   vega(encoding = enc(x = factor(cyl), y = wt)) %>%
   mark_boxplot(tooltip = FALSE)
 
-
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = cyl, y = wt)) %>%
@@ -91,7 +90,7 @@ vega() %>%
   mark_ribbon(enc(x = year, y = ymin, y2 = level), data = huron) %>%
   mark_line(enc(x = year, y = ymean), data = huron)
 
-# perhaps need a new S3 class to `print()`
+# FIXME: perhaps need a new S3 class to `print()`
 vega(enc(x = year)) %>%
   mark_ribbon(enc(y = ymin, y2 = level), data = huron) %>%
   mark_line(enc(y = ymean), data = huron)

@@ -5,7 +5,7 @@
 config <- function() {
   # mark props
   markColor <- "#000"
-  circle <- list(filled = TRUE, color = markColor)
+  circle <- list(filled = TRUE, color = markColor, opacity = 1)
   point <- circle
   shape = list(color = markColor)
   rect <- list(fill = markColor)
@@ -23,6 +23,10 @@ config <- function() {
     labelPadding = 4,
     tickColor = "#7F7F7F",
     tickSize = 5.67
+  )
+
+  scale <- list(
+    continuousPadding = 4
   )
 
   # default palette
@@ -46,6 +50,7 @@ config <- function() {
     rect = rect,
     bar = rect,
     axis = axis,
+    scale = scale,
     range = range,
     legend = legend
   )

@@ -39,7 +39,7 @@ as_field <- function(quo) {
 encoding_spec <- function(x, ...) { UseMethod("encoding_spec") }
 
 encoding_spec.default <- function(x, ...) {
-  list(..., type = data_type(x))
+  list(..., type = data_type(x), scale = list(zero = FALSE))
 }
 
 encoding_spec.vega_op <- function(x, ...) {
