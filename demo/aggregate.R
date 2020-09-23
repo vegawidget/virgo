@@ -15,7 +15,7 @@ population %>%
 population %>%
   filter(year == 2000) %>%
   vega() %>%
-  mark_bar(enc(x = sum(people), y = faage))
+  mark_bar(enc(x = sum(people), y = age))
 
 population %>%
   filter(year == 2000) %>%
