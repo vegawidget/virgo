@@ -29,18 +29,19 @@ vega <- function(data = NULL, encoding = enc(), theme = config()) {
 # bind(Year = input_slider(min, max, step, init))
 # init = c(Cycliners = 4, Year = 1977)
 # init = list(x = c(55, 160), y = c(13, 37))
-select_single <- function(encodings = NULL, fields = NULL, init = NULL, bind,
+# `fields` not needed as it goes with `bind`
+select_single <- function(encodings = NULL, init = NULL, bind,
   nearest = FALSE, on = "click", clear = "dblclick", empty = "all", resolve) {
 
 }
 
-select_multi <- function(encodings = NULL, fields = NULL, init = NULL, bind,
+select_multi <- function(encodings = NULL, init = NULL, bind,
   toggle, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
   resolve) {
 
 }
 
-select_interval <- function(encodings = c("x", "y"), fields = NULL, init = NULL,
+select_interval <- function(encodings = c("x", "y"), init = NULL,
   bind, mark, zoom, translate, on = "click", clear = "dblclick", empty = "all",
   resolve) {
   structure(
