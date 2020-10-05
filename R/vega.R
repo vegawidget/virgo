@@ -8,8 +8,6 @@ new_vegaspec <- function(spec) {
 vega <- function(data = NULL, encoding = enc(), theme = config()) {
   spec <- list(
     `$schema` = vega_schema(),
-    width = 400,
-    height = 300,
     config = theme
   ) # to be exposed somewhere
   if (!is.null(data)) {
@@ -19,5 +17,12 @@ vega <- function(data = NULL, encoding = enc(), theme = config()) {
   if (!is_empty(encoding)) {
     spec <- c(spec, list(encoding = eval_encoding(data, encoding)))
   }
+  new_vegaspec(spec)
+}
+
+hconcat <- function(...) {
+  lst <- list(...)
+  unclassed <- map(lst, unclass)
+  spec <- list(`$schema` = vega_schema(), hconcat = list2(!!!unclassed))
   new_vegaspec(spec)
 }
