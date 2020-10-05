@@ -13,7 +13,14 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     layer <- c(list(data = list(values = eval_values(data, encoding))), layer)
   }
   if (!is.null(selection)) {
-    sel <- list2(!!(selection %@% "name") := unclass(selection))
+    if (is_virgo_condition(selection)) {
+      condition <- eval_condition(data, selection)
+      layer$encoding <- c(layer$encoding, condition)
+      selection <- selection$selection
+    }
+    if (is_virgo_selection(selection)) {
+      sel <- list2(!!(selection %@% "name") := unclass(selection))
+    }
     layer <- c(layer, list(selection = sel))
   }
   spec <- build_layer(v, add_layer(v$layer, layer))

@@ -31,6 +31,31 @@ eval_encoding <- function(data, encoding) {
   lst
 }
 
+eval_condition <- function(data, selection) {
+  encoding <- selection$encoding
+  cond_true <- selection$true
+  cond_false <- selection$false
+  selection <- selection$selection
+  if (quo_is_symbol(cond_true)) {
+    def_true <- list(
+      field = as_field(cond_true),
+      type = data_type(eval_tidy(cond_true, data = new_vega_mask(data))))
+  } else {
+    def_true <- list(value = eval_tidy(cond_true))
+  }
+  if (quo_is_symbol(cond_false)) {
+    def_false <- list(
+      field = as_field(cond_false),
+      type = data_type(eval_tidy(cond_false, data = new_vega_mask(data))))
+  } else {
+    def_false <- list(value = eval_tidy(cond_false))
+  }
+  list2(!!encoding := list2(
+    condition = list2(selection = selection %@% "name", !!!def_true),
+    !!!def_false
+  ))
+}
+
 as_field <- function(quo) {
   if (quo_is_symbol(quo)) return(as_name(quo))
   as_label(quo)
