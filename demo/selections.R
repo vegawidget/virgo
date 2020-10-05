@@ -22,5 +22,5 @@ p2 <- mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = disp, y = hp), size = 130,
-    selection = color_if(selection, cyl, "grey"))
+    selection = color_if(selection, cyl, "#99d8c9"))
 hconcat(p1, p2)
