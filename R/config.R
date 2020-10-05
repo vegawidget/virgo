@@ -1,11 +1,11 @@
-#' Use a ggplot2 like theme for virgo plots
-#' Set a default config that is more similar to what ggplot2 users are familiar
-#' with.
-#' TODO: figure out how to set minor ticks via config
-config <- function() {
+# Use a ggplot2 like theme for virgo plots
+# Set a default config that is more similar to what ggplot2 users are familiar
+# with.
+# TODO: figure out how to set minor ticks via config
+config_ggplot <- function() {
   # mark props
   markColor <- "#000"
-  circle <- list(filled = TRUE, color = markColor, opacity = 1)
+  circle <- list(color = markColor, opacity = 1)
   point <- circle
   shape = list(color = markColor)
   rect <- list(fill = markColor)

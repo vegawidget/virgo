@@ -3,6 +3,7 @@
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   transform = NULL, selection = NULL) {
   layer_data <- data
+  encoding <- c(v$encoding, encoding)
   # does data need updating
   v$data$values <- eval_values(v$data$values, encoding)
   data <- data %||% v$data$values
@@ -25,7 +26,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     layer <- c(layer, list(selection = sel))
   }
   spec <- build_layer(v, add_layer(v$layer, layer))
-  new_vegaspec(spec)
+  new_virgo(spec)
 }
 
 build_layer <- function(v, layer) {

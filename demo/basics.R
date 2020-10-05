@@ -94,8 +94,8 @@ vega(enc(x = year), data = huron) %>%
   mark_ribbon(enc(y = ymin, y2 = level)) %>%
   mark_line(enc(y = ymean))
 
-# FIXME: perhaps need a new S3 class to `print()`
-vega(enc(x = year)) %>%
+# FIXED
+vega(encoding = enc(x = year)) %>%
   mark_ribbon(enc(y = ymin, y2 = level), data = huron) %>%
   mark_line(enc(y = ymean), data = huron)
 
@@ -103,7 +103,7 @@ huron %>%
   vega() %>%
   mark_histogram(enc(x = level))
 
-# FIXME: vegalite should work with this
+# FIXED
 huron %>%
   vega(enc(x = level)) %>%
   mark_histogram()
@@ -128,6 +128,7 @@ df %>%
   vega(enc(x = trt, color = group)) %>%
   mark_errorbar(enc(y = lower, y2 = upper))
 
+library(ggplot2)
 recent <- economics[economics$date > as.Date("2013-01-01"), ]
 vega(recent, enc(date, unemploy)) %>%
   mark_step()

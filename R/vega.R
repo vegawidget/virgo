@@ -1,30 +1,34 @@
 #' @import rlang vctrs vegawidget
 
-new_vegaspec <- function(spec) {
-  cls <- c("vegaspec_unit", "vegaspec_vega_lite", "vegaspec", "list")
-  structure(spec, class = cls)
+new_virgo <- function(spec) {
+  structure(spec, class = "virgo")
 }
 
 vega <- function(data = NULL, encoding = enc()) {
-  spec <- list(
-    `$schema` = vega_schema(),
-    config = config()
-  ) # to be exposed somewhere
-  if (!is.null(data)) {
-    data <- eval_values(data, encoding)
-    spec <- c(spec, list(data = list(values = data)))
-  }
-  if (!is_empty(encoding)) {
-    spec <- c(spec, list(encoding = eval_encoding(data, encoding)))
-  }
-  new_vegaspec(spec)
+  spec <- list(data = list(values = data), encoding = encoding)
+  new_virgo(spec)
 }
 
 hconcat <- function(...) {
-  lst <- list(...)
-  spec <- list(
-    `$schema` = vega_schema(),
-    config = config(),
-    hconcat = list2(!!!lst))
-  new_vegaspec(spec)
+  lst <- map(list(...), unclass)
+  spec <- list(hconcat = list2(!!!lst))
+  new_virgo(spec)
+}
+
+#' @export
+as_vegaspec.virgo <- function(spec, ...) {
+  spec_header <- list(`$schema` = vega_schema(), config = config_ggplot())
+  spec <- unclass(spec)
+  if (is_empty(spec$data)) {
+    spec$data <- NULL
+  }
+  # remove top-level encoding, since it already applies to each layer
+  spec$encoding <- NULL
+  as_vegaspec(c(spec_header, spec))
+}
+
+#' @export
+print.virgo <- function(x, ...) {
+  print(as_vegaspec(x), ...)
+  invisible(x)
 }
