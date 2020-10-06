@@ -33,19 +33,17 @@ eval_condition <- function(data, selection) {
   cond_true <- selection$true
   cond_false <- selection$false
   selection <- selection$selection
+  eval_true <- eval_tidy(cond_true, data = data)
+  eval_false <- eval_tidy(cond_false, data = data)
   if (quo_is_symbol(cond_true) || quo_is_call(cond_true)) {
-    def_true <- list(
-      field = as_field(cond_true),
-      type = data_type(eval_tidy(cond_true, data = data)))
+    def_true <- encoding_spec(eval_true, field = cond_true)
   } else {
-    def_true <- list(value = eval_tidy(cond_true))
+    def_true <- list(value = eval_true)
   }
   if (quo_is_symbol(cond_false) || quo_is_call(cond_false)) {
-    def_false <- list(
-      field = as_field(cond_false),
-      type = data_type(eval_tidy(cond_false, data = data)))
+    def_false <- encoding_spec(eval_false, field = cond_false)
   } else {
-    def_false <- list(value = eval_tidy(cond_false))
+    def_false <- list(value = eval_false)
   }
   list2(!!encoding := list2(
     condition = list2(selection = selection_name(selection), !!!def_true),
@@ -72,5 +70,5 @@ encoding_spec.default <- function(x, field) {
 }
 
 encoding_spec.virgo_op <- function(x, field) {
-  list2(field = as_field(field), !!!unclass(x))
+  list2(field = as_field(field), !!!unclass(x), scale = list(zero = FALSE))
 }

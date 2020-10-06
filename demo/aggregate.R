@@ -6,11 +6,17 @@ population <- jsonlite::read_json(
 ) %>%
   bind_rows()
 
-# FIXED
 population %>%
   filter(year == 2000) %>%
   vega() %>%
   mark_bar(enc(x = vg_sum(people)))
+
+
+# FIXED
+population %>%
+  filter(year == 2000) %>%
+  vega() %>%
+  mark_bar(enc(y = vg_sum(people)))
 
 population %>%
   filter(year == 2000) %>%
