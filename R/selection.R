@@ -25,6 +25,10 @@ select_interval <- function(encodings = c("x", "y"), init = NULL,
     name = rand_id(), class = "virgo_selection")
 }
 
+selection_name <- function(x) {
+  selection %@% "name"
+}
+
 rand_id <- function() {
   rand <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
   paste0(rand, collapse = "")

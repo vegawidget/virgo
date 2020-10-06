@@ -4,15 +4,13 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   transform = NULL, selection = NULL) {
   layer_data <- data
   encoding <- c(v$encoding, encoding)
-  # does data need updating
-  v$data$values <- eval_values(v$data$values, encoding)
   data <- data %||% v$data$values
   layer <- c(list(width = 300, height = 300), layer)
   if (!is.null(encoding)) {
     layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
   }
   if (!is.null(layer_data)) {
-    layer <- c(list(data = list(values = eval_values(data, encoding))), layer)
+    layer <- c(list(data = list(values = data)), layer)
   }
   if (!is.null(selection)) {
     if (is_virgo_condition(selection)) {
@@ -21,7 +19,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
       selection <- selection$selection
     }
     if (is_virgo_selection(selection)) {
-      sel <- list2(!!(selection %@% "name") := unclass(selection))
+      sel <- list2(!!selection_name(selection) := unclass(selection))
     }
     layer <- c(layer, list(selection = sel))
   }

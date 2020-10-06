@@ -2,6 +2,10 @@
 # Set a default config that is more similar to what ggplot2 users are familiar
 # with.
 # TODO: figure out how to set minor ticks via config
+config_default <- function() {
+  
+}
+
 config_ggplot <- function() {
   # mark props
   markColor <- "#000"

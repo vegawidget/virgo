@@ -19,7 +19,7 @@ hconcat <- function(...) {
 as_vegaspec.virgo <- function(spec, ...) {
   spec_header <- list(`$schema` = vega_schema(), config = config_ggplot())
   spec <- unclass(spec)
-  if (is_empty(spec$data)) {
+  if (is.null(spec$data$values)) {
     spec$data <- NULL
   }
   # remove top-level encoding, since it already applies to each layer
