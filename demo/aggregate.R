@@ -15,7 +15,7 @@ population %>%
 population %>%
   filter(year == 2000) %>%
   vega() %>%
-  mark_point(enc(x = vg_sum(people)))
+  mark_point(enc(x = vg_sum(as.numeric(people))))
 
 population %>%
   filter(year == 2000) %>%
@@ -26,9 +26,3 @@ population %>%
   filter(year == 2000) %>%
   vega() %>%
   mark_bar(enc(x = age, y = vg_sum(people), color = factor(sex)))
-
-population %>%
-  filter(year == 2000) %>%
-  mutate(sex = factor(sex)) %>%
-  vega() %>%
-  mark_bar(enc(x = age, y = vg_sum(people), color = sex))

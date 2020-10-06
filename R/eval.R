@@ -54,11 +54,14 @@ eval_condition <- function(data, selection) {
 }
 
 as_field <- function(quo) {
-  if (quo_is_symbol(quo)) {
+  if (is_symbol(quo)) {
+    as_string(quo)
+  } else if (!is_quosure(quo) && is_call(quo)) {
+    as_field(call_args(quo)[[1]])
+  } else if (quo_is_symbol(quo)) {
     as_name(quo)
   } else if (quo_is_call(quo)) {
-    # assume the first arg is the variable name, e.g. mean(cyl)
-    as_name(call_args(quo_get_expr(quo))[[1]])
+    as_field(call_args(quo_get_expr(quo))[[1]])
   }
 }
 
