@@ -81,6 +81,7 @@ huron <- tibble(
   year = 1875:1972, level = as.vector(LakeHuron),
   ymin = 500, ymean = 550)
 
+# FIXME: no y2 scale domain
 huron %>%
   vega(enc(x = year)) %>%
   mark_ribbon(enc(y = ymin, y2 = level)) %>%

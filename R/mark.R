@@ -86,7 +86,7 @@ mark_trail <- mark_factory(type = "trail")
 mark_bar <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ...) {
   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, transform, selection)
+  v <- vega_layer(v, layer, encoding, data, transform, selection)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   v$layer[[last]]$encoding$x$scale$zero <- TRUE
@@ -99,13 +99,13 @@ mark_errorbar <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ...) {
   layer <- list(mark = list2(type = "errorbar",
     !!!mark_properties(ticks = TRUE, ...)))
-  vega_layer(v, layer, encoding, transform, selection)
+  vega_layer(v, layer, encoding, data, transform, selection)
 }
 
 mark_histogram <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ..., bin = TRUE) { # bin = list() opts
   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, transform, selection)
+  v <- vega_layer(v, layer, encoding, data, transform, selection)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
@@ -117,7 +117,7 @@ mark_step <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ...) {
   layer <- list(mark = list2(type = "line",
     !!!mark_properties(interpolate = "step-after", ...)))
-  vega_layer(v, layer, encoding, transform, selection)
+  vega_layer(v, layer, encoding, data, transform, selection)
 }
 
 mark_density <- function() {

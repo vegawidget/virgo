@@ -14,19 +14,19 @@ selection <- select_interval()
 p1 <- mtcars %>%
   vega() %>%
   mark_point(
-    encoding = enc(x = wt, y = mpg), size = 130,
+    encoding = enc(x = wt, y = mpg),
     selection = color_if(selection, factor(cyl), "grey"))
 p2 <- mtcars %>%
   vega() %>%
   mark_point(
-    encoding = enc(x = disp, y = hp), size = 130,
+    encoding = enc(x = disp, y = hp),
     selection = color_if(selection, factor(cyl), "#99d8c9"))
 hconcat(p1, p2)
 
 p3 <- mtcars %>%
   vega() %>%
   mark_point(
-    encoding = enc(x = disp, y = hp), size = 130,
+    encoding = enc(x = disp, y = hp),
     transform = selection)
 hconcat(p1, p3)
 

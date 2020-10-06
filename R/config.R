@@ -3,16 +3,15 @@
 # with.
 # TODO: figure out how to set minor ticks via config
 config_default <- function() {
-  
+
 }
 
 config_ggplot <- function() {
   # mark props
-  markColor <- "#000"
-  circle <- list(color = markColor, opacity = 1)
-  point <- circle
-  shape = list(color = markColor)
-  rect <- list(fill = markColor)
+  mark_color <- "#000"
+  point <- circle <- list(color = mark_color, opacity = 1, size = 60)
+  shape <- list(color = mark_color)
+  rect <- list(fill = mark_color)
   # box-plot uses bar so default will be black instead of usual white
   bar <- rect
 
@@ -27,10 +26,6 @@ config_ggplot <- function() {
     labelPadding = 4,
     tickColor = "#7F7F7F",
     tickSize = 5.67
-  )
-
-  scale <- list(
-    continuousPadding = 4
   )
 
   # default palette
@@ -54,7 +49,6 @@ config_ggplot <- function() {
     rect = rect,
     bar = rect,
     axis = axis,
-    scale = scale,
     range = range,
     legend = legend
   )
