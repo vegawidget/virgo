@@ -22,3 +22,14 @@ p2 <- mtcars %>%
     encoding = enc(x = disp, y = hp), size = 130,
     selection = color_if(selection, factor(cyl), "#99d8c9"))
 hconcat(p1, p2)
+
+p3 <- mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = disp, y = hp), size = 130,
+    transform = selection)
+hconcat(p1, p3)
+
+p1 %>%
+  mark_rule(encoding = enc(y = vg_mean(mpg)), size = 3, color = "red",
+    transform = selection)

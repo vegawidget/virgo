@@ -12,6 +12,10 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   if (!is.null(layer_data)) {
     layer <- c(list(data = list(values = data)), layer)
   }
+  if (!is.null(transform)) {
+    layer <- c(layer, list(transform = list(list(
+      filter = list(selection = selection_name(selection))))))
+  }
   if (!is.null(selection)) {
     if (is_virgo_condition(selection)) {
       condition <- eval_condition(data, selection)
