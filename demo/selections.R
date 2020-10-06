@@ -42,7 +42,6 @@ selection_composition(a | !b)
 selection_composition(!(a & b))
 selection_composition(!(a & b) & select_interval())
 
-
 mtcars %>%
   vega() %>%
   mark_point(

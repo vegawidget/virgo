@@ -19,13 +19,13 @@ select_multi <- function(encodings = NULL, init = NULL, bind,
 }
 
 select_interval <- function(encodings = c("x", "y"), init = NULL,
-  bind, mark, on = "click", clear = "dblclick", translate = on, empty = "all",
-  zoom = TRUE, resolve) {
-  new_virgo_selection(
-    list2(!!rand_id() := list(
-      type = "interval", encodings = encodings, on = on, clear = clear,
-      translate = translate, empty = empty, zoom = zoom))
-  )
+  bind, mark, on = "click", clear = "dblclick", translate = FALSE,
+  empty = "all", zoom = TRUE, resolve) {
+  res <- list(type = "interval", encodings = encodings, zoom = zoom)
+  if (on != "click") {
+    res <- c(res, on = on, clear = clear, translate = on)
+  }
+  new_virgo_selection(list2(!!rand_id() := res))
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
