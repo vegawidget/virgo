@@ -33,3 +33,24 @@ hconcat(p1, p3)
 p1 %>%
   mark_rule(encoding = enc(y = vg_mean(mpg)), size = 3, color = "red",
     transform = selection)
+
+a <- select_interval(on = "[mousedown[!event.shiftKey], mouseup] > mousemove")
+b <- select_interval(on = "[mousedown[event.shiftKey], mouseup] > mousemove")
+selection_composition(a & b)
+selection_composition(a | b)
+selection_composition(a | !b)
+selection_composition(!(a & b))
+selection_composition(!(a & b) & select_interval())
+
+
+mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = wt, y = mpg),
+    selection = color_if(a | b, factor(cyl), "grey"))
+
+mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = wt, y = mpg),
+    selection = color_if(!(a | b), factor(cyl), "grey"))

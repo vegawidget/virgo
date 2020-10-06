@@ -11,11 +11,17 @@ is_virgo_op <- function(x) {
 }
 
 vg_sum <- function(x) {
+  stopifnot(!is_missing(x))
   new_virgo_op(list(aggregate = "sum", type = "quantitative"))
 }
 
 vg_mean <- function(x) {
+  stopifnot(!is_missing(x))
   new_virgo_op(list(aggregate = "mean", type = "quantitative"))
+}
+
+vg_count <- function(x) { # "count" can take empty values
+  new_virgo_op(list(aggregate = "count", type = "quantitative"))
 }
 
 eval_fun <- function(data, encoding) {
@@ -46,7 +52,9 @@ eval_condition <- function(data, selection) {
     def_false <- list(value = eval_false)
   }
   list2(!!encoding := list2(
-    condition = list2(selection = selection_name(selection), !!!def_true),
+    condition = list2(
+      selection = selection_composition(selection),
+      !!!def_true),
     !!!def_false
   ))
 }

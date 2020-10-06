@@ -24,6 +24,7 @@ as_vegaspec.virgo <- function(spec, ...) {
   }
   # remove top-level encoding, since it already applies to each layer
   spec$encoding <- NULL
+  # TODO: unify default scales when no of layers > 1
   as_vegaspec(c(spec_header, spec))
 }
 

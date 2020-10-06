@@ -14,7 +14,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   }
   if (!is.null(transform)) {
     layer <- c(layer, list(transform = list(list(
-      filter = list(selection = selection_name(selection))))))
+      filter = list(selection = selection_composition(transform))))))
   }
   if (!is.null(selection)) {
     if (is_virgo_condition(selection)) {
@@ -23,7 +23,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
       selection <- selection$selection
     }
     if (is_virgo_selection(selection)) {
-      sel <- list2(!!selection_name(selection) := unclass(selection))
+      sel <- unclass(selection)
     }
     layer <- c(layer, list(selection = sel))
   }
