@@ -8,7 +8,6 @@
 select_single <- function(encodings = NULL, init = NULL, fields = NULL,
   bind = NULL, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
   resolve = "global") {
-  init <- as.list(init)
   fields <- as.list(fields)
   new_virgo_selection(
     list2(!!rand_id() := list(type = "single", encodings = encodings,
@@ -19,7 +18,6 @@ select_single <- function(encodings = NULL, init = NULL, fields = NULL,
 select_multi <- function(encodings = NULL, init = NULL, fields = NULL,
   bind = NULL, toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
   empty = "all", resolve = "global") {
-  init <- as.list(init)
   fields <- as.list(fields)
   new_virgo_selection(
     list2(!!rand_id() := list(type = "multi", encodings = encodings,
@@ -33,7 +31,6 @@ select_interval <- function(encodings = c("x", "y"), init = NULL, fields = NULL,
   on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
   resolve = "global") {
-  init <- as.list(init)
   fields <- as.list(fields)
   mark <- as.list(mark)
   new_virgo_selection(
