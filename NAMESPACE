@@ -2,6 +2,7 @@
 
 S3method(Ops,virgo_selection)
 S3method(as_vegaspec,virgo)
+S3method(c,virgo_condition)
 S3method(print,virgo)
 import(rlang)
 import(vctrs)

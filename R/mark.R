@@ -20,7 +20,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     if (is_virgo_condition(selection)) {
       condition <- eval_condition(data, selection)
       layer$encoding <- c(layer$encoding, condition)
-      selection <- selection$selection
+      selection <- selection[[1]]$selection
     }
     if (is_virgo_selection(selection)) {
       sel <- unclass(selection)

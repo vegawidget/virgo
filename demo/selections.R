@@ -15,7 +15,9 @@ mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = wt, y = mpg),
-    selection = size_if(selection, 180, 60))
+    selection = c(
+      size_if(selection, 180, 60),
+      color_if(selection, factor(cyl), "grey")))
 
 p1 <- mtcars %>%
   vega() %>%

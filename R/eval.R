@@ -35,28 +35,35 @@ eval_encoding <- function(data, encoding) {
 }
 
 eval_condition <- function(data, selection) {
-  encoding <- selection$encoding
-  cond_true <- selection$true
-  cond_false <- selection$false
-  selection <- selection$selection
-  eval_true <- eval_tidy(cond_true, data = data)
-  eval_false <- eval_tidy(cond_false, data = data)
-  if (quo_is_symbol(cond_true) || quo_is_call(cond_true)) {
-    def_true <- encoding_spec(eval_true, field = cond_true)
-  } else {
-    def_true <- list(value = eval_true)
+  selection_cp <- selection
+  n_sel <- length(selection_cp)
+  res <- vec_init(list(), n = n_sel)
+  for (i in seq_len(n_sel)) {
+    selection <- selection_cp[[i]]
+    encoding <- selection$encoding
+    cond_true <- selection$true
+    cond_false <- selection$false
+    selection <- selection$selection
+    eval_true <- eval_tidy(cond_true, data = data)
+    eval_false <- eval_tidy(cond_false, data = data)
+    if (quo_is_symbol(cond_true) || quo_is_call(cond_true)) {
+      def_true <- encoding_spec(eval_true, field = cond_true)
+    } else {
+      def_true <- list(value = eval_true)
+    }
+    if (quo_is_symbol(cond_false) || quo_is_call(cond_false)) {
+      def_false <- encoding_spec(eval_false, field = cond_false)
+    } else {
+      def_false <- list(value = eval_false)
+    }
+    res[[i]] <- list2(!!encoding := list2(
+      condition = list2(
+        selection = selection_composition(selection),
+        !!!def_true),
+      !!!def_false
+    ))
   }
-  if (quo_is_symbol(cond_false) || quo_is_call(cond_false)) {
-    def_false <- encoding_spec(eval_false, field = cond_false)
-  } else {
-    def_false <- list(value = eval_false)
-  }
-  list2(!!encoding := list2(
-    condition = list2(
-      selection = selection_composition(selection),
-      !!!def_true),
-    !!!def_false
-  ))
+  vec_c(!!!res)
 }
 
 as_field <- function(quo) {

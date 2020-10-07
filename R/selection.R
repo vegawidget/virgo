@@ -61,8 +61,8 @@ virgo_condition_factory <- function(encoding = "color") {
   force(encoding)
   function(selection, true, false) {
     stopifnot(is_virgo_selection(selection))
-    new_virgo_condition(list(selection = selection,
-      true = enquo(true), false =  enquo(false), encoding = encoding))
+    new_virgo_condition(list(list(selection = selection,
+      true = enquo(true), false =  enquo(false), encoding = encoding)))
   }
 }
 
@@ -72,6 +72,12 @@ new_virgo_condition <- function(x) {
 
 color_if <- virgo_condition_factory("color")
 size_if <- virgo_condition_factory("size")
+
+#' @export
+c.virgo_condition <- function(...) {
+  lst <- map(list2(...), unclass)
+  new_virgo_condition(vec_c(!!!lst))
+}
 
 is_virgo_selection <- function(x) {
   inherits(x, "virgo_selection")
