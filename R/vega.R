@@ -4,8 +4,10 @@ new_virgo <- function(spec) {
   structure(spec, class = "virgo")
 }
 
-vega <- function(data = NULL, encoding = enc()) {
-  spec <- list(data = list(values = data), encoding = encoding)
+vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
+  spec <- list(
+    data = list(values = data), encoding = encoding,
+    width = width, height = height)
   new_virgo(spec)
 }
 

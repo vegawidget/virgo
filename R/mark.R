@@ -5,7 +5,6 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   layer_data <- data
   encoding <- c(v$encoding, encoding)
   data <- data %||% v$data$values
-  layer <- c(list(width = 300, height = 300), layer)
   if (!is.null(encoding)) {
     layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
   }
