@@ -5,29 +5,46 @@
 # bind(Year = input_slider(min, max, step, init))
 # init = c(Cycliners = 4, Year = 1977)
 # init = list(x = c(55, 160), y = c(13, 37))
-# `fields` not needed as it goes with `bind`
-# NOTE: `fields` is actually needed for categorical highlighting
-select_single <- function(encodings = NULL, init = NULL, bind,
-  nearest = FALSE, on = "click", clear = "dblclick", empty = "all", resolve) {
-
+select_single <- function(encodings = NULL, init = NULL, fields = NULL,
+  bind = NULL, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
+  resolve = "global") {
+  init <- as.list(init)
+  fields <- as.list(fields)
+  new_virgo_selection(
+    list2(!!rand_id() := list(type = "single", encodings = encodings,
+      init = init, fields = fields, bind = bind, nearest = nearest,
+      on = on, clear = clear, empty = empty, resolve = resolve)))
 }
 
-select_multi <- function(encodings = NULL, init = NULL, bind,
-  toggle, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
-  resolve) {
-
+select_multi <- function(encodings = NULL, init = NULL, fields = NULL,
+  bind = NULL, toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
+  empty = "all", resolve = "global") {
+  init <- as.list(init)
+  fields <- as.list(fields)
+  new_virgo_selection(
+    list2(!!rand_id() := list(type = "multi", encodings = encodings,
+      init = init, fields = fields, bind = bind, toggle = toggle,
+      nearest = nearest, on = on, clear = clear, empty = empty,
+      resolve = resolve)))
 }
 
-select_interval <- function(encodings = c("x", "y"), init = NULL,
+select_interval <- function(encodings = c("x", "y"), init = NULL, fields = NULL,
   bind = NULL, mark = NULL,
   on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
   resolve = "global") {
+  init <- as.list(init)
+  fields <- as.list(fields)
+  mark <- as.list(mark)
   new_virgo_selection(
     list2(!!rand_id() := list(type = "interval", encodings = encodings,
-      init = init, bind = bind, mark = mark, on = on,
+      init = init, fields = fields, bind = bind, mark = mark, on = on,
       clear = clear, translate = translate, empty = empty, zoom = zoom,
       resolve = resolve)))
+}
+
+select_legend <- function(fields) {
+  select_multi(fields = fields, bind = "legend")
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
@@ -77,8 +94,10 @@ size_if <- virgo_condition_factory("size")
 
 #' @export
 c.virgo_condition <- function(...) {
-  lst <- map(list2(...), unclass)
-  new_virgo_condition(vec_c(!!!lst))
+  lst <- vec_c(!!!map(list2(...), unclass))
+  sel_name <- unique(map(lst, function(x) selection_composition(x$selection)))
+  stopifnot(has_length(sel_name, 1))
+  new_virgo_condition(lst)
 }
 
 is_virgo_selection <- function(x) {

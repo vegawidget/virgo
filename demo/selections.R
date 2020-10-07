@@ -46,12 +46,14 @@ evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
 a <- select_interval(on = evt)
 b <- select_interval(
   on = "[mousedown[event.shiftKey], mouseup] > mousemove",
-  mark = list("fill" =  "#fdbb84", "fillOpacity" = 0.5, "stroke" = "#e34a33"))
+  mark = c("fill" =  "#fdbb84", "fillOpacity" = 0.5, "stroke" = "#e34a33"))
 selection_composition(a & b)
 selection_composition(a | b)
 selection_composition(a | !b)
 selection_composition(!(a & b))
 selection_composition(!(a & b) & select_interval())
+c(color_if(a | b, "red", "grey"), size_if(a | b, 2, 3))
+c(color_if(a | b, "red", "grey"), size_if(a & b, 2, 3))
 
 p4 <- mtcars %>%
   vega() %>%
@@ -72,3 +74,10 @@ p5 <- mtcars %>%
     encoding = enc(x = disp, y = hp),
     selection = color_if(a | b, factor(cyl), "#99d8c9"))
 hconcat(p4, p5)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega() %>%
+  mark_circle(
+    encoding = enc(x = wt, y = mpg, color = cyl),
+    selection = size_if(select_legend("cyl"), 100, 20))
