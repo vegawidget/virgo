@@ -20,10 +20,12 @@ select_multi <- function(encodings = NULL, init = NULL, bind,
 
 select_interval <- function(encodings = c("x", "y"), init = NULL,
   bind, mark, on = "[mousedown, window:mouseup] > window:mousemove!",
-  clear = "dblclick", translate = on, empty = "all", zoom = TRUE, resolve) {
+  clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
+  resolve = "global") {
   new_virgo_selection(
     list2(!!rand_id() := list(type = "interval", encodings = encodings, on = on,
-      clear = clear, translate = translate, empty = empty, zoom = zoom)))
+      clear = clear, translate = translate, empty = empty, zoom = zoom,
+      resolve = resolve)))
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
@@ -55,11 +57,21 @@ rand_id <- function() {
   paste0(rand, collapse = "")
 }
 
-color_if <- function(selection, true, false) {
-  stopifnot(is_virgo_selection(selection))
-  structure(list(selection = selection, encoding = "color",
-    true = enquo(true), false = enquo(false)), class = "virgo_condition")
+virgo_condition_factory <- function(encoding = "color") {
+  force(encoding)
+  function(selection, true, false) {
+    stopifnot(is_virgo_selection(selection))
+    new_virgo_condition(list(selection = selection,
+      true = enquo(true), false =  enquo(false), encoding = encoding))
+  }
 }
+
+new_virgo_condition <- function(x) {
+  structure(x, class = "virgo_condition")
+}
+
+color_if <- virgo_condition_factory("color")
+size_if <- virgo_condition_factory("size")
 
 is_virgo_selection <- function(x) {
   inherits(x, "virgo_selection")

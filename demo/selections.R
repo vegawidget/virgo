@@ -11,6 +11,12 @@ mtcars %>%
 
 selection <- select_interval()
 
+mtcars %>%
+  vega() %>%
+  mark_point(
+    encoding = enc(x = wt, y = mpg),
+    selection = size_if(selection, 180, 60))
+
 p1 <- mtcars %>%
   vega() %>%
   mark_point(
