@@ -77,6 +77,14 @@ mtcars %>%
   mark_circle(enc(x = wt, y = mpg), size = 160)
 
 mtcars %>%
+  vega() %>%
+  mark_square(enc(x = wt, y = mpg))
+
+mtcars %>%
+  vega() %>%
+  mark_tick(enc(x = wt, y = factor(cyl)))
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = cyl, y = wt)) %>%
   mark_boxplot(tooltip = FALSE)
@@ -112,6 +120,9 @@ vega() %>%
 vega(enc(x = year), data = huron) %>%
   mark_ribbon(enc(y = ymin, y2 = level)) %>%
   mark_line(enc(y = ymean))
+
+vega() %>%
+  mark_area(enc(x = year, y = ymin, y2 = level), data = huron)
 
 # FIXED
 vega(encoding = enc(x = year)) %>%

@@ -9,11 +9,10 @@ config_default <- function() {
 config_ggplot <- function() {
   # mark props
   mark_color <- "#000"
-  point <- circle <- list(color = mark_color, opacity = 1, size = 60)
-  shape <- list(color = mark_color)
-  rect <- list(fill = "#595959")
+  point <- circle <- square <- list(color = mark_color, opacity = 1, size = 60)
+  line <- tick <- trail <- shape <- list(color = mark_color)
+  bar <- area <- rect <- list(fill = "#595959")
   # box-plot uses bar so default will be black instead of usual white
-  bar <- rect
 
   # axis props
   axis <- list(
@@ -47,9 +46,14 @@ config_ggplot <- function() {
     headerRow = list(labelOrient = "right", titleOrient = "right"),
     circle = circle,
     point = point,
+    line = line,
+    trail = trail,
+    tick = tick,
     shape = shape,
+    square = square,
     rect = rect,
-    bar = rect,
+    area = area,
+    bar = bar,
     axis = axis,
     range = range,
     legend = legend
