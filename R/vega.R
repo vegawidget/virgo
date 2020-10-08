@@ -36,8 +36,12 @@ as_vegaspec.virgo <- function(spec, ...) {
     yrng <- range(yvec)
   }
   for (i in seq_along(layer)) {
-    spec$layer[[i]]$encoding$x$scale$domain <- xrng
-    spec$layer[[i]]$encoding$y$scale$domain <- yrng
+    if (!is.null(spec$layer[[i]]$encoding$x$scale$domain)) {
+      spec$layer[[i]]$encoding$x$scale$domain <- xrng
+    }
+    if (!is.null(spec$layer[[i]]$encoding$y$scale$domain)) {
+      spec$layer[[i]]$encoding$y$scale$domain <- yrng
+    }
   }
   # facet is used
   if (has_name(spec, "facet")) {

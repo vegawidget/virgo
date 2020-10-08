@@ -89,6 +89,7 @@ new_virgo_condition <- function(x) {
 color_if <- virgo_condition_factory("color")
 size_if <- virgo_condition_factory("size")
 opacity_if <- virgo_condition_factory("opacity")
+shape_if <- virgo_condition_factory("shape")
 
 #' @export
 c.virgo_condition <- function(...) {
