@@ -5,43 +5,46 @@
 # bind(Year = input_slider(min, max, step, init))
 # init = c(Cycliners = 4, Year = 1977)
 # init = list(x = c(55, 160), y = c(13, 37))
-select_single <- function(encodings = NULL, init = NULL, fields = NULL,
-  bind = NULL, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
+select_single <- function(encodings = NULL, init = NULL, bind = NULL, 
+  nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
   resolve = "global") {
-  fields <- as.list(simple_select(!!enexpr(fields)))
-  new_virgo_selection(
-    list2(!!rand_id() := list(type = "single", encodings = encodings,
-      init = init, fields = fields, bind = bind, nearest = nearest,
-      on = on, clear = clear, empty = empty, resolve = resolve)))
+  fields <- names(bind)
+  new_virgo_selection(list2(!!rand_id() := list(
+    type = "single", encodings = encodings,
+    init = init, fields = fields, bind = bind, nearest = nearest,
+    on = on, clear = clear, empty = empty, resolve = resolve)))
 }
 
-select_multi <- function(encodings = NULL, init = NULL, fields = NULL,
-  bind = NULL, toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
+select_multi <- function(encodings = NULL, init = NULL, bind = NULL, 
+  toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
   empty = "all", resolve = "global") {
-  fields <- as.list(simple_select(!!enexpr(fields)))
-  new_virgo_selection(
-    list2(!!rand_id() := list(type = "multi", encodings = encodings,
-      init = init, fields = fields, bind = bind, toggle = toggle,
-      nearest = nearest, on = on, clear = clear, empty = empty,
-      resolve = resolve)))
+  fields <- names(bind)
+  new_virgo_selection(list2(!!rand_id() := list(
+    type = "multi", encodings = encodings,
+    init = init, fields = fields, bind = bind, toggle = toggle,
+    nearest = nearest, on = on, clear = clear, empty = empty,
+    resolve = resolve)))
 }
 
-select_interval <- function(encodings = c("x", "y"), init = NULL, fields = NULL,
-  bind = NULL, mark = NULL,
-  on = "[mousedown, window:mouseup] > window:mousemove!",
+select_interval <- function(encodings = c("x", "y"), init = NULL, bind = NULL,
+  mark = NULL, on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
   resolve = "global") {
-  fields <- as.list(simple_select(!!enexpr(fields)))
+  fields <- names(bind)
   mark <- as.list(mark)
-  new_virgo_selection(
-    list2(!!rand_id() := list(type = "interval", encodings = encodings,
-      init = init, fields = fields, bind = bind, mark = mark, on = on,
-      clear = clear, translate = translate, empty = empty, zoom = zoom,
-      resolve = resolve)))
+  new_virgo_selection(list2(!!rand_id() := list(
+    type = "interval", encodings = encodings,
+    init = init, fields = fields, bind = bind, mark = mark, on = on,
+    clear = clear, translate = translate, empty = empty, zoom = zoom,
+    resolve = resolve)))
 }
 
-select_legend <- function(fields) {
-  select_multi(fields = !!enexpr(fields), bind = "legend")
+select_legend <- function(field) {
+  # vega only supports legend bindings for one field or channel
+  field <- as.list(simple_select(!!enexpr(field)))
+  stopifnot(has_length(field, 1))
+  new_virgo_selection(list2(!!rand_id() := list(
+    type = "multi", fields = field, bind = "legend")))
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
@@ -88,6 +91,7 @@ new_virgo_condition <- function(x) {
 
 color_if <- virgo_condition_factory("color")
 size_if <- virgo_condition_factory("size")
+opacity_if <- virgo_condition_factory("opacity")
 
 #' @export
 c.virgo_condition <- function(...) {
