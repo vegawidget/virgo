@@ -2,6 +2,18 @@ library(dplyr)
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  facet_views(row = cyl)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  facet_views(row = cyl, column = gear)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg, color = cyl)) %>%
   mark_point()
 

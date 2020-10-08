@@ -11,12 +11,6 @@ vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
   new_virgo(spec)
 }
 
-hconcat <- function(...) {
-  lst <- map(list(...), unclass)
-  spec <- list(hconcat = list2(!!!lst))
-  new_virgo(spec)
-}
-
 #' @export
 as_vegaspec.virgo <- function(spec, ...) {
   spec_header <- list(`$schema` = vega_schema(), config = config_ggplot())
@@ -27,6 +21,10 @@ as_vegaspec.virgo <- function(spec, ...) {
   # remove top-level encoding, since it already applies to each layer
   spec$encoding <- NULL
   # TODO: unify default scales when no of layers > 1
+  if (has_name(spec, "facet")) {
+    spec$spec$layer <- spec$layer
+    spec$layer <- NULL
+  }
   as_vegaspec(c(spec_header, spec))
 }
 

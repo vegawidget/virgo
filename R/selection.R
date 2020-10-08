@@ -8,7 +8,7 @@
 select_single <- function(encodings = NULL, init = NULL, fields = NULL,
   bind = NULL, nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
   resolve = "global") {
-  fields <- as.list(fields)
+  fields <- as.list(simple_select(!!enexpr(fields)))
   new_virgo_selection(
     list2(!!rand_id() := list(type = "single", encodings = encodings,
       init = init, fields = fields, bind = bind, nearest = nearest,
@@ -18,7 +18,7 @@ select_single <- function(encodings = NULL, init = NULL, fields = NULL,
 select_multi <- function(encodings = NULL, init = NULL, fields = NULL,
   bind = NULL, toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
   empty = "all", resolve = "global") {
-  fields <- as.list(fields)
+  fields <- as.list(simple_select(!!enexpr(fields)))
   new_virgo_selection(
     list2(!!rand_id() := list(type = "multi", encodings = encodings,
       init = init, fields = fields, bind = bind, toggle = toggle,
@@ -31,7 +31,7 @@ select_interval <- function(encodings = c("x", "y"), init = NULL, fields = NULL,
   on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
   resolve = "global") {
-  fields <- as.list(fields)
+  fields <- as.list(simple_select(!!enexpr(fields)))
   mark <- as.list(mark)
   new_virgo_selection(
     list2(!!rand_id() := list(type = "interval", encodings = encodings,
@@ -41,7 +41,7 @@ select_interval <- function(encodings = c("x", "y"), init = NULL, fields = NULL,
 }
 
 select_legend <- function(fields) {
-  select_multi(fields = fields, bind = "legend")
+  select_multi(fields = !!enexpr(fields), bind = "legend")
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
