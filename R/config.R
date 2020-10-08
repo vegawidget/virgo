@@ -43,6 +43,8 @@ config_ggplot <- function() {
 
   list(
     view = list(fill = "#e5e5e5"), # sets inner view to grey,
+    facet = list(spacing = 5),
+    headerRow = list(labelOrient = "right", titleOrient = "right"),
     circle = circle,
     point = point,
     shape = shape,

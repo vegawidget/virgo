@@ -20,7 +20,26 @@ as_vegaspec.virgo <- function(spec, ...) {
   }
   # remove top-level encoding, since it already applies to each layer
   spec$encoding <- NULL
-  # TODO: unify default scales when no of layers > 1
+  # unify default scale domains
+  layer <- spec$layer
+  xs <- map(layer, function(x) 
+    c(x$encoding$x$scale$domain, x$encoding$x2$scale$domain))
+  ys <- map(layer, function(x) 
+    c(x$encoding$y$scale$domain, x$encoding$y2$scale$domain))
+  xvec <- vec_c(!!!xs)
+  yvec <- vec_c(!!!ys)
+  xrng <- yrng <- NULL
+  if (!is.null(xvec)) {
+    xrng <- range(xvec)
+  }
+  if (!is.null(yvec)) {
+    yrng <- range(yvec)
+  }
+  for (i in seq_along(layer)) {
+    spec$layer[[i]]$encoding$x$scale$domain <- xrng
+    spec$layer[[i]]$encoding$y$scale$domain <- yrng
+  }
+  # facet is used
   if (has_name(spec, "facet")) {
     spec$spec$layer <- spec$layer
     spec$layer <- NULL

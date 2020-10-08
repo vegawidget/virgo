@@ -11,6 +11,8 @@ simple_select <- function(x) {
   }
 }
 
+# No facet_wrap() since vega `layer` doesn't handle `facet` encoding
+
 facet_views <- function(v, row = NULL, column = NULL) {
   v$facet <- list()
   row <- enexpr(row)

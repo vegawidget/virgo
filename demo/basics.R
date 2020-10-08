@@ -10,6 +10,12 @@ mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
+  facet_views(column = cyl)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
   facet_views(row = cyl, column = gear)
 
 mtcars %>%
@@ -93,7 +99,7 @@ huron <- tibble(
   year = 1875:1972, level = as.vector(LakeHuron),
   ymin = 500, ymean = 550)
 
-# FIXME: no y2 scale domain
+# FIXED
 huron %>%
   vega(enc(x = year)) %>%
   mark_ribbon(enc(y = ymin, y2 = level)) %>%
