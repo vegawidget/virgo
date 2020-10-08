@@ -36,10 +36,14 @@ as_vegaspec.virgo <- function(spec, ...) {
     yrng <- range(yvec)
   }
   for (i in seq_along(layer)) {
-    if (!is.null(spec$layer[[i]]$encoding$x$scale$domain)) {
+    mark_type <- layer[[i]]$mark$type
+    if (mark_type == "bar") {
+      xrng <- NULL
+    }
+    if (!is.null(layer[[i]]$encoding$x$scale$domain)) {
       spec$layer[[i]]$encoding$x$scale$domain <- xrng
     }
-    if (!is.null(spec$layer[[i]]$encoding$y$scale$domain)) {
+    if (!is.null(layer[[i]]$encoding$y$scale$domain)) {
       spec$layer[[i]]$encoding$y$scale$domain <- yrng
     }
   }
