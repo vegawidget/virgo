@@ -11,7 +11,7 @@ config_ggplot <- function() {
   mark_color <- "#000"
   point <- circle <- list(color = mark_color, opacity = 1, size = 60)
   shape <- list(color = mark_color)
-  rect <- list(fill = mark_color)
+  rect <- list(fill = "#595959")
   # box-plot uses bar so default will be black instead of usual white
   bar <- rect
 

@@ -83,14 +83,26 @@ mark_tick <- mark_factory(type = "tick")
 mark_trail <- mark_factory(type = "trail")
 
 mark_bar <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ...) {
+  selection = NULL, ..., position = "stack") {
   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
   v <- vega_layer(v, layer, encoding, data, transform, selection)
   last <- nlayer(v)
-  x <- v$layer[[last]]$encoding$x
-  v$layer[[last]]$encoding$x$scale$zero <- TRUE
-  y <- v$layer[[last]]$encoding$y
-  v$layer[[last]]$encoding$y$scale$zero <- TRUE
+  v$layer[[last]]$encoding$x$scale <- NULL
+  v$layer[[last]]$encoding$y$scale <- NULL
+  if (position == "layer") {
+    stack <- FALSE
+  } else if (position == "stack") {
+    stack <- TRUE
+  } else if (position == "fill") {
+    stack <- "normalize"
+  } else if (position == "dodge") {
+    v$facet$column <- v$layer[[last]]$encoding$column
+    v$layer[[last]]$encoding$column <- NULL
+    stack <- FALSE
+  } else {
+    abort("Oops!")
+  }
+  v$layer[[last]]$encoding$y$stack <- stack
   v
 }
 
@@ -103,7 +115,8 @@ mark_errorbar <- function(v, encoding = NULL, data = NULL, transform = NULL,
 
 mark_histogram <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ..., bin = TRUE) { # bin = list() opts
-  layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
+  layer <- list(mark = list2(type = "bar", binSpacing = 0, 
+    !!!mark_properties(...)))
   v <- vega_layer(v, layer, encoding, data, transform, selection)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
