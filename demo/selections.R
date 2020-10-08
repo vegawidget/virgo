@@ -81,3 +81,10 @@ mtcars %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = cyl),
     selection = size_if(select_legend(cyl), 100, 20))
+
+mtcars %>%
+  mutate(cyl = factor(cyl), gear = factor(gear)) %>%
+  vega() %>%
+  mark_circle(
+    encoding = enc(x = wt, y = mpg, color = cyl, shape = gear),
+    selection = size_if(select_legend(gear), 100, 20))
