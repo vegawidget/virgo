@@ -67,10 +67,10 @@ mark_factory <- function(type = "point") {
 }
 
 mark_arc <- mark_factory(type = "arc")
-mark_area <- mark_factory(type = "area")
+mark_ribbon <- mark_area <- mark_factory(type = "area")
 mark_boxplot <- mark_factory(type = "boxplot")
 mark_circle <- mark_factory(type = "point")
-mark_ribbon <- mark_errorband <- mark_factory(type = "errorband")
+mark_errorband <- mark_factory(type = "errorband")
 mark_geoshape <- mark_factory(type = "geoshape")
 mark_image <- mark_factory(type = "image")
 mark_line <- mark_factory(type = "line")

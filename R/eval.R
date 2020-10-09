@@ -2,28 +2,6 @@ enc <- function(x, y, ...) {
   enquos(x = x, y = y, ..., .ignore_empty = "all")
 }
 
-new_virgo_op <- function(x) {
-  structure(x, class = c("virgo_aggregate", "virgo_op"))
-}
-
-is_virgo_op <- function(x) {
-  inherits(x, "virgo_op")
-}
-
-vg_sum <- function(x) {
-  stopifnot(!is_missing(x))
-  new_virgo_op(list(aggregate = "sum", type = "quantitative"))
-}
-
-vg_mean <- function(x) {
-  stopifnot(!is_missing(x))
-  new_virgo_op(list(aggregate = "mean", type = "quantitative"))
-}
-
-vg_count <- function(x) { # "count" can take empty values
-  new_virgo_op(list(aggregate = "count", type = "quantitative"))
-}
-
 eval_fun <- function(data, encoding) {
   spec <- eval_tidy(encoding, data = data)
   encoding_spec(spec, field = encoding)
@@ -84,22 +62,36 @@ encoding_spec <- function(x, field) {
 
 encoding_spec.default <- function(x, field) {
   type <- data_type(x)
-  res <- list2(field = as_field(field), !!!type)
-  if (type$type == "quantitative") {
-    rng <- range(x, na.rm = TRUE)
-    width <- diff(rng)
-    min_x <- min(x, na.rm = TRUE) - 0.05 * width
-    max_x <- max(x, na.rm = TRUE) + 0.05 * width
-    domain <- c(min_x, max_x)
-    res <- list2(!!!res, scale = list(domain = domain))
-  }
-  if (type$type == "nominal") {
-    ncat <- length(vec_unique(x))
-    res <- list2(!!!res, scale = list(range = scales::hue_pal()(ncat)))
-  }
-  res
+  list2(field = as_field(field), !!!type)
 }
 
-encoding_spec.virgo_op <- function(x, field) {
-  list2(field = as_field(field), !!!unclass(x), scale = list(zero = FALSE))
+encoding_spec.numeric <- function(x, field) {
+  type <- data_type(x)
+  res <- list2(field = as_field(field), !!!type)
+  rng <- range(x, na.rm = TRUE)
+  width <- diff(rng)
+  min_x <- min(x, na.rm = TRUE) - 0.05 * width
+  max_x <- max(x, na.rm = TRUE) + 0.05 * width
+  domain <- c(min_x, max_x)
+  list2(!!!res, scale = list(domain = domain))
+}
+
+encoding_spec.factor <- function(x, field) {
+  type <- data_type(x)
+  res <- list2(field = as_field(field), !!!type)
+  ncat <- length(vec_unique(x))
+  list2(!!!res, scale = list(range = scales::hue_pal()(ncat)))
+}
+
+encoding_spec.character <- encoding_spec.factor
+
+encoding_spec.virgo_aggregate <- function(x, field) {
+  list2(
+    field = as_field(field),
+    !!!unclass(x), type = "quantitative",
+    scale = list(zero = FALSE))
+}
+
+encoding_spec.virgo_timeunit <- function(x, field) {
+  list2(field = as_field(field), !!!unclass(x), type = "temporal")
 }
