@@ -89,10 +89,14 @@ new_virgo_condition <- function(x) {
   structure(x, class = "virgo_condition")
 }
 
-color_if <- virgo_condition_factory("color")
+fill_if <- virgo_condition_factory("fill")
 size_if <- virgo_condition_factory("size")
-opacity_if <- virgo_condition_factory("opacity")
+color_if <- virgo_condition_factory("color")
 shape_if <- virgo_condition_factory("shape")
+stroke_if <- virgo_condition_factory("stroke")
+opacity_if <- virgo_condition_factory("opacity")
+fill_opacity_if <- virgo_condition_factory("fillOpacity")
+stroke_opacity_if <- virgo_condition_factory("strokeOpacity")
 
 #' @export
 c.virgo_condition <- function(...) {
