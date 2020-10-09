@@ -3,21 +3,21 @@ data_type <- function(x) {
 }
 
 data_type.numeric <- function(x) {
-  "quantitative"
+  list(type = "quantitative")
 }
 
 data_type.factor <- function(x) {
-  "nominal"
+  list(type = "nominal", sort = levels(x))
 }
 
 data_type.ordered <- function(x) {
-  "ordinal"
+  list(type = "ordinal", sort = levels(x))
 }
 
 data_type.character <- data_type.factor
 
 data_type.POSIXt <- function(x) {
-  "temporal"
+  list(type = "temporal")
 }
 
 data_type.Date <- data_type.POSIXt

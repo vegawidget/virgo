@@ -84,17 +84,16 @@ encoding_spec <- function(x, field) {
 
 encoding_spec.default <- function(x, field) {
   type <- data_type(x)
-  res <- list(field = as_field(field), type = type)
-  if (type == "quantitative") {
+  res <- list2(field = as_field(field), !!!type)
+  if (type$type == "quantitative") {
     rng <- range(x, na.rm = TRUE)
     width <- diff(rng)
     min_x <- min(x, na.rm = TRUE) - 0.05 * width
     max_x <- max(x, na.rm = TRUE) + 0.05 * width
     domain <- c(min_x, max_x)
-    res <- list2(!!!res, scale = list(zero = FALSE, domain = domain))
+    res <- list2(!!!res, scale = list(domain = domain))
   }
   res
-  # list(field = as_field(field), type = data_type(x), scale = list(zero = FALSE))
 }
 
 encoding_spec.virgo_op <- function(x, field) {

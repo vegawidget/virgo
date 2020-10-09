@@ -27,6 +27,34 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, color = factor(cyl))) %>%
   mark_point()
 
+refx <- mtcars %>%
+  mutate(cyl = factor(cyl, levels = c(8, 6, 4))) %>%
+  vega(encoding = enc(x = wt, y = mpg, color = cyl)) %>%
+  mark_point()
+
+refy <- mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg,
+    color = factor(cyl, levels = c(8, 6, 4)))) %>%
+  mark_point()
+waldo::compare(
+  unclass(as_vegaspec(refx)),
+  unclass(as_vegaspec(refy)))
+
+# bug in sort
+library("vegawidget")
+list(
+    `$schema` = vega_schema(), # specifies Vega-Lite
+    description = "An mtcars example.",
+    data = list(values = mtcars),
+    mark = "point",
+    encoding = list(
+      x = list(field = "wt", type = "quantitative"),
+      y = list(field = "mpg", type = "quantitative"),
+      color = list(field = "cyl", type = "nominal", sort = c("8", "6", "4"))
+    )
+  ) %>%
+  as_vegaspec()
+
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
@@ -96,11 +124,11 @@ mtcars %>%
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = cyl, y = wt)) %>%
+  vega(encoding = enc(x = cyl, y = vg_count(cyl))) %>%
   mark_bar()
 
 mtcars %>%
-  vega(encoding = enc(x = factor(cyl), y = wt)) %>%
+  vega(encoding = enc(x = factor(cyl), y = vg_count(cyl))) %>%
   mark_bar()
 
 huron <- tibble(
