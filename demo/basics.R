@@ -23,6 +23,7 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, color = cyl)) %>%
   mark_point()
 
+# FIXME: not recommended factor() in enc()
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, color = factor(cyl))) %>%
   mark_point()

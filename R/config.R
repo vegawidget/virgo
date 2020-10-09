@@ -27,14 +27,6 @@ config_ggplot <- function() {
     tickSize = 5.67
   )
 
-  # default palette
-  range <- list(
-    # ggplot2 uses default hue_pal in scales package,
-    # instead just use okabe-ito palette in base graphics
-    category = c("#E69F00", "#56B4E9", "#009E73", "#F0E442",
-                 "#0072B2", "#D55E00", "#CC79A7", "#000000")
-  )
-
   legend <- list(
     orient = "right",
     padding = 1
@@ -55,7 +47,6 @@ config_ggplot <- function() {
     area = area,
     bar = bar,
     axis = axis,
-    range = range,
     legend = legend
   )
 }

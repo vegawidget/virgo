@@ -93,6 +93,10 @@ encoding_spec.default <- function(x, field) {
     domain <- c(min_x, max_x)
     res <- list2(!!!res, scale = list(domain = domain))
   }
+  if (type$type == "nominal") {
+    ncat <- length(vec_unique(x))
+    res <- list2(!!!res, scale = list(range = scales::hue_pal()(ncat)))
+  }
   res
 }
 
