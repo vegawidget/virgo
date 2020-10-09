@@ -31,6 +31,8 @@ p2 <- mtcars %>%
     selection = color_if(selection, factor(cyl), "#99d8c9"))
 hconcat(p1, p2)
 
+# vg_filter(selection)
+# vg_calculate
 p3 <- mtcars %>%
   vega() %>%
   mark_point(

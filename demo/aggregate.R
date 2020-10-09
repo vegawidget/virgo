@@ -45,8 +45,15 @@ population %>%
 
 population %>%
   filter(year == 2000) %>%
-  vega(enc(x = factor(sex), y = vg_sum(people), color = factor(sex))) %>%
-  mark_bar(enc(column = ordered(age)), position = "dodge")
+  vega(enc(x = factor(age), y = vg_sum(people), color = factor(sex))) %>%
+  mark_bar(enc(column = ordered(sex)), position = "dodge")
+
+population %>%
+  filter(year == 2000) %>%
+  group_by(age, sex) %>%
+  mutate(people = sum(people)) %>%
+  ggplot(aes(x = factor(age), y = people, fill = factor(sex))) +
+  geom_col(position = "dodge")
 
 population %>%
   filter(year == 2000) %>%

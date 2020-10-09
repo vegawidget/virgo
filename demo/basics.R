@@ -190,3 +190,6 @@ library(ggplot2)
 recent <- economics[economics$date > as.Date("2013-01-01"), ]
 vega(recent, enc(date, unemploy)) %>%
   mark_step()
+
+# scale_x(domain, type = "band", range)
+# scale_color(domain, type = "category", range)

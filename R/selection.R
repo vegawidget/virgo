@@ -2,10 +2,11 @@
 # it will never be evaluated in console mode
 # a random id needs to be assigned when it's created for composition
 
-# bind(Year = input_slider(min, max, step, init))
+# slider <- input_slider(1:10, min, max, step, init)
+# bind = c(Year = slider)
 # init = c(Cycliners = 4, Year = 1977)
 # init = list(x = c(55, 160), y = c(13, 37))
-select_single <- function(encodings = NULL, init = NULL, bind = NULL, 
+select_single <- function(encodings = NULL, init = NULL, bind = NULL,
   nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
   resolve = "global") {
   new_virgo_selection(list2(!!rand_id() := list(
@@ -14,25 +15,23 @@ select_single <- function(encodings = NULL, init = NULL, bind = NULL,
     on = on, clear = clear, empty = empty, resolve = resolve)))
 }
 
-select_multi <- function(encodings = NULL, init = NULL, bind = NULL, 
+select_multi <- function(encodings = NULL, init = NULL,
   toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
   empty = "all", resolve = "global") {
   new_virgo_selection(list2(!!rand_id() := list(
-    type = "multi", encodings = encodings,
-    init = init, fields = names(bind), bind = bind, toggle = toggle,
+    type = "multi", encodings = encodings, init = init, toggle = toggle,
     nearest = nearest, on = on, clear = clear, empty = empty,
     resolve = resolve)))
 }
 
-select_interval <- function(encodings = c("x", "y"), init = NULL, bind = NULL,
+select_interval <- function(encodings = c("x", "y"), init = NULL,
   mark = NULL, on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
   resolve = "global") {
   mark <- as.list(mark)
   new_virgo_selection(list2(!!rand_id() := list(
-    type = "interval", encodings = encodings,
-    init = init, fields = names(bind), bind = bind, mark = mark, on = on,
-    clear = clear, translate = translate, empty = empty, zoom = zoom,
+    type = "interval", encodings = encodings, init = init,  mark = mark,
+    on = on, clear = clear, translate = translate, empty = empty, zoom = zoom,
     resolve = resolve)))
 }
 
@@ -42,6 +41,10 @@ select_legend <- function(field) {
   stopifnot(has_length(field, 1))
   new_virgo_selection(list2(!!rand_id() := list(
     type = "multi", fields = field, bind = "legend")))
+}
+
+select_domain <- function() {
+
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
