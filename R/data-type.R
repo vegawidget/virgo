@@ -6,6 +6,10 @@ data_type.numeric <- function(x) {
   list(type = "quantitative")
 }
 
+data_type.character <- function(x) {
+  list(type = "nominal")
+}
+
 data_type.factor <- function(x) {
   list(type = "nominal", sort = levels(x))
 }
@@ -13,8 +17,6 @@ data_type.factor <- function(x) {
 data_type.ordered <- function(x) {
   list(type = "ordinal", sort = levels(x))
 }
-
-data_type.character <- data_type.factor
 
 data_type.POSIXt <- function(x) {
   list(type = "temporal")
