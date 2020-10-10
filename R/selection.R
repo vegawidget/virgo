@@ -44,7 +44,8 @@ select_legend <- function(field, on = "click", clear = "dblclick") {
 }
 
 select_domain <- function() {
-
+  new_virgo_selection(list2(!!rand_id() := list(
+    type = "interval", bind = "scales")))
 }
 
 new_virgo_selection <- function(x, composition = NULL) {
@@ -73,7 +74,7 @@ selection_composition <- function(x) {
 
 rand_id <- function() {
   rand <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
-  paste0(rand, collapse = "")
+  paste0("id", rand, collapse = "")
 }
 
 virgo_condition_factory <- function(encoding = "color") {

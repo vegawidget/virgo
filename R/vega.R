@@ -32,10 +32,10 @@ as_vegaspec.virgo <- function(spec, ...) {
   xvec <- vec_c(!!!xs)
   yvec <- vec_c(!!!ys)
   xrng <- yrng <- NULL
-  if (!is.null(xvec)) {
+  if (!is.null(xvec) && !has_name(xvec, "selection")) {
     xrng <- range(xvec)
   }
-  if (!is.null(yvec)) {
+  if (!is.null(yvec) && !has_name(yvec, "selection")) {
     yrng <- range(yvec)
   }
   for (i in seq_along(layer)) {

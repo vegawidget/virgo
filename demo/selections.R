@@ -21,10 +21,8 @@ mtcars %>%
       color_if(selection, cyl, "grey")))
 
 p1 <- mtcars %>%
-  vega() %>%
-  mark_point(
-    encoding = enc(x = wt, y = mpg),
-    selection = color_if(selection, cyl, "grey"))
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point(selection = color_if(selection, cyl, "grey"))
 p2 <- mtcars %>%
   vega() %>%
   mark_point(
@@ -90,3 +88,21 @@ mtcars %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = cyl, shape = gear),
     selection = opacity_if(select_legend(gear), 1, .2))
+
+mtcars %>%
+  vega() %>%
+  mark_circle(
+    encoding = enc(x = wt, y = mpg, color = cyl),
+    selection = select_domain())
+
+sp500 <- readr::read_csv("https://vega.github.io/vega-editor/app/data/sp500.csv") %>%
+  mutate(date = lubridate::mdy(date))
+brush <- select_interval(encodings = "x")
+v1 <- sp500 %>%
+  vega(enc(x = date, y = price), height = 200) %>%
+  mark_area() %>%
+  scale_x(name = NULL, domain = brush)
+v2 <- sp500 %>%
+  vega(enc(x = date, y = price), height = 100) %>%
+  mark_area(selection = brush)
+vconcat(v1, v2)

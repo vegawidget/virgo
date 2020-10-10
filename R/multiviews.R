@@ -14,13 +14,13 @@ facet_views <- function(v, row = NULL, column = NULL) {
 }
 
 hconcat <- function(...) {
-  lst <- map(list2(...), unclass)
+  lst <- map(list2(...), function(x) { x$encoding <- NULL; unclass(x) })
   spec <- list(hconcat = list2(!!!lst))
   new_virgo(spec)
 }
 
 vconcat <- function(...) {
-  lst <- map(list2(...), unclass)
+  lst <- map(list2(...), function(x) { x$encoding <- NULL; unclass(x) })
   spec <- list(vconcat = list2(!!!lst))
   new_virgo(spec)
 }

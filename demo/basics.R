@@ -4,6 +4,24 @@ mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
+  scale_x(domain = c(2, 4))
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point(clip = TRUE) %>%
+  scale_x(domain = c(2, 4))
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  scale_x(type = "log")
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
   facet_views(row = cyl)
 
 mtcars %>%
