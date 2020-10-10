@@ -13,7 +13,10 @@ vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
 
 #' @export
 as_vegaspec.virgo <- function(spec, ...) {
-  spec_header <- list(`$schema` = vega_schema(), config = config_ggplot())
+  spec_header <- list(`$schema` = vega_schema())
+  if (!has_name(spec, "config")) {
+    spec <- config_ggplot(spec)
+  }
   spec <- unclass(spec)
   if (is.null(spec$data$values)) {
     spec$data <- NULL

@@ -25,6 +25,12 @@ mtcars %>%
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
+  mark_point() %>%
+  config_vega()
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg, fill = cyl)) %>%
   mark_point(fill_opacity = .3)
 

@@ -1,12 +1,8 @@
-# Use a ggplot2 like theme for virgo plots
-# Set a default config that is more similar to what ggplot2 users are familiar
-# with.
-# TODO: figure out how to set minor ticks via config
-config_default <- function() {
-
+config_vega <- function(v) {
+  new_virgo(c(unclass(v), list(config = list())))
 }
 
-config_ggplot <- function() {
+config_ggplot <- function(v) {
   # mark props
   mark_color <- "#000"
   point <- circle <- square <- list(color = mark_color, opacity = 1, size = 60)
@@ -32,7 +28,7 @@ config_ggplot <- function() {
     padding = 1
   )
 
-  list(
+  new_virgo(c(unclass(v), list(config = list(
     view = list(fill = "#e5e5e5"), # sets inner view to grey,
     facet = list(spacing = 5),
     headerRow = list(labelOrient = "right", titleOrient = "right"),
@@ -48,7 +44,7 @@ config_ggplot <- function() {
     bar = bar,
     axis = axis,
     legend = legend
-  )
+  ))))
 }
 
 
