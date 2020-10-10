@@ -35,7 +35,7 @@ select_interval <- function(encodings = c("x", "y"), init = NULL,
     resolve = resolve)))
 }
 
-select_legend <- function(field) {
+select_legend <- function(field, on = "click", clear = "dblclick") {
   # vega only supports legend bindings for one field or channel
   field <- as.list(simple_select(!!enexpr(field)))
   stopifnot(has_length(field, 1))
@@ -91,8 +91,9 @@ new_virgo_condition <- function(x) {
 
 fill_if <- virgo_condition_factory("fill")
 size_if <- virgo_condition_factory("size")
-color_if <- virgo_condition_factory("color")
 shape_if <- virgo_condition_factory("shape")
+color_if <- virgo_condition_factory("color")
+colour_if <- virgo_condition_factory("color")
 stroke_if <- virgo_condition_factory("stroke")
 opacity_if <- virgo_condition_factory("opacity")
 fill_opacity_if <- virgo_condition_factory("fillOpacity")

@@ -20,10 +20,22 @@ mtcars %>%
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg, color = cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
   mark_point()
 
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg, fill = cyl)) %>%
+  mark_point(fill_opacity = .3)
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg, group = cyl)) %>%
+  mark_line()
+
 # FIXME: not recommended factor() in enc()
+# levels(<factor>) returns characters
+# inconsistent with original cyl<numeric>
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, color = factor(cyl))) %>%
   mark_point()
@@ -33,21 +45,10 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, color = cyl)) %>%
   mark_point()
 
-# FIXME: levels(<factor>) returns characters
-# inconsistent with original cyl<numeric>
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg,
-    color = factor(cyl, levels = c(8, 6, 4)))) %>%
-  mark_point()
-
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
   mark_point(encoding = enc(x = wt, y = mpg, color = cyl))
-
-mtcars %>%
-  vega() %>%
-  mark_point(encoding = enc(x = wt, y = mpg, color = factor(cyl)))
 
 vega() %>%
   mark_point(encoding = enc(x = wt, y = mpg), data = mtcars)
@@ -61,17 +62,9 @@ mtcars %>%
   mark_point(encoding = enc(color = cyl))
 
 mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(encoding = enc(color = factor(cyl)))
-
-mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point(encoding = enc(size = cyl)) # shape (ok)
-
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(encoding = enc(size = factor(cyl))) # shape (ok)
 
 mtcars %>%
   vega() %>%
@@ -94,8 +87,9 @@ mtcars %>%
   mark_square(enc(x = wt, y = mpg))
 
 mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
   vega() %>%
-  mark_tick(enc(x = wt, y = factor(cyl)))
+  mark_tick(enc(x = wt, y = cyl))
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
@@ -104,27 +98,24 @@ mtcars %>%
 # vegalite: boxplot not working with null tooltip and selection
 
 mtcars %>%
-  vega(encoding = enc(x = factor(cyl), y = wt)) %>%
-  mark_boxplot(tooltip = FALSE)
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = cyl, y = vg_count(cyl))) %>%
+  mark_bar()
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = cyl, y = vg_count(cyl))) %>%
   mark_bar()
 
-mtcars %>%
-  vega(encoding = enc(x = factor(cyl), y = vg_count(cyl))) %>%
-  mark_bar()
-
 huron <- tibble(
   year = 1875:1972, level = as.vector(LakeHuron),
   ymin = 500, ymean = 550)
 
-# FIXED
+# NOTE: vegalite cann't take constant values in x/y encodings
 huron %>%
   vega(enc(x = year)) %>%
   mark_ribbon(enc(y = ymin, y2 = level)) %>%
-  mark_line(enc(y = ymean))
+  mark_line(enc(y = 550), colour = "red")
 
 vega() %>%
   mark_ribbon(enc(x = year, y = ymin, y2 = level), data = huron) %>%
@@ -135,7 +126,7 @@ vega(enc(x = year), data = huron) %>%
   mark_line(enc(y = ymean))
 
 vega() %>%
-  mark_area(enc(x = year, y = ymin, y2 = level), data = huron)
+  mark_ribbon(enc(x = year, y = ymin, y2 = level), data = huron)
 
 # FIXED
 vega(encoding = enc(x = year)) %>%

@@ -1,16 +1,3 @@
-simple_select <- function(x) {
-  x <- enexpr(x)
-  if (is_call(x)) {
-    stopifnot(call_name(x) == "c")
-    args <- call_args(x)
-    map_chr(args, as_string)
-  } else if (is.null(x)) {
-    NULL
-  } else {
-    as_string(x)
-  }
-}
-
 # No facet_wrap() since vega `layer` doesn't handle `facet` encoding
 
 facet_views <- function(v, row = NULL, column = NULL) {
