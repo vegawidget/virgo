@@ -1,3 +1,5 @@
+# zap() gives defaults
+# NULL removes/disables
 scale_x <- function(v, name = zap(), domain = zap(), type = "linear") {
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$x$scale$type <- type
