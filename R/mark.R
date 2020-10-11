@@ -29,7 +29,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
 
   # data needs updating
   fields <- vec_set_names(fields, map_chr(fields, as_field))
-  data <- dplyr::mutate(data, !!!fields)
+  data <- eval_mask(data, fields)
   layer <- c(list(data = list(values = data)), layer)
 
   spec <- build_layer(v, add_layer(v$layer, layer))

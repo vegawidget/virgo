@@ -117,3 +117,23 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
     timeUnit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc",
     type = "temporal")
 }
+
+virgo_op_env <- function() {
+  ops <- virgo_op()
+  fns <- map(ops, function(op) function(x) unclass(x))
+  new_environment(vec_set_names(fns, ops))
+}
+
+new_virgo_mask <- function(data, env = virgo_op_env()) {
+  bottom <- as_environment(data, parent = env)
+  new_data_mask(bottom, top = env)
+}
+
+eval_mask <- function(data, quo) {
+  names <- names(quo)
+  data_mask <- new_virgo_mask(data)
+  for (i in names) {
+    data[[i]] <- eval_tidy(quo[[i]], data = data_mask)
+  }
+  data
+}

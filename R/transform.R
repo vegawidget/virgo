@@ -1,10 +1,15 @@
 new_virgo_op <- function(x, ..., class) {
-  # NOTE: nonstandard class(x) for asJSON()
-  structure(x, ..., class = c(class, "virgo_op", class(x)))
+  structure(x, ..., class = c(class, "virgo_op"))
 }
 
 is_virgo_op <- function(x) {
   inherits(x, "virgo_op")
+}
+
+virgo_op <- function() {
+  c("vg_sum", "vg_mean", "vg_count",
+    "vg_year", "vg_quarter", "vg_month", "vg_date", "vg_week", "vg_day",
+    "vg_dayofyear", "vg_hours", "vg_minutes", "vg_seconds", "vg_milliseconds")
 }
 
 vg_sum <- function(x) {
