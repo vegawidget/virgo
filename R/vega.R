@@ -52,6 +52,7 @@ as_vegaspec.virgo <- function(spec, ...) {
   }
   # facet is used
   if (has_name(spec, "facet")) {
+    spec$layer <- map(layer, function(x) { x$data <- NULL; x })
     spec$spec$layer <- spec$layer
     spec$layer <- NULL
   }

@@ -2,20 +2,21 @@
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   transform = NULL, selection = NULL) {
   layer_data <- data
-  encoding <- c(v$encoding, encoding)
+  fields <- encoding <- merge_encoding(c(v$encoding, encoding))
   data <- data %||% v$data$values
   if (!is.null(encoding)) {
     layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
   }
-  if (!is.null(layer_data)) {
-    layer <- c(list(data = list(values = data)), layer)
-  }
+
   if (!is.null(transform)) {
     layer <- c(layer, list(transform = list(list(
       filter = list(selection = selection_composition(transform))))))
   }
   if (!is.null(selection)) {
     if (is_virgo_condition(selection)) {
+      trues <- map(selection, function(x) x$true)
+      falses <- map(selection, function(x) x$false)
+      fields <- c(fields, trues, falses)
       condition <- eval_condition(data, selection)
       layer$encoding <- c(layer$encoding, condition)
       selection <- selection[[1]]$selection
@@ -25,8 +26,21 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     }
     layer <- c(layer, list(selection = sel))
   }
+
+  # data needs updating
+  fields <- vec_set_names(fields, map_chr(fields, as_field))
+  data <- dplyr::mutate(data, !!!fields)
+  layer <- c(list(data = list(values = data)), layer)
+
   spec <- build_layer(v, add_layer(v$layer, layer))
   new_virgo(spec)
+}
+
+merge_encoding <- function(x) {
+  x <- rev(x)
+  names_x <- names(x)
+  x <- rev(x[vec_match(unique(names_x), names_x)])
+  x[!map_lgl(x, quo_is_null)]
 }
 
 build_layer <- function(v, layer) {
@@ -154,14 +168,6 @@ mark_bin2d <- function() {
 }
 
 mark_tile <- function() {
-
-}
-
-mark_hline <- function() {
-
-}
-
-mark_vline <- function() {
 
 }
 

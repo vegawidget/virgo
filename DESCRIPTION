@@ -18,4 +18,5 @@ Imports:
     vegawidget,
     vctrs,
     rlang,
-    scales
+    scales,
+    dplyr

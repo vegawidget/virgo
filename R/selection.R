@@ -73,8 +73,8 @@ selection_composition <- function(x) {
 }
 
 rand_id <- function() {
-  rand <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
-  paste0("id", rand, collapse = "")
+  rand <- c("id", as.hexmode(sample(256, 4, replace = TRUE) - 1))
+  paste0(rand, collapse = "")
 }
 
 virgo_condition_factory <- function(encoding = "color") {

@@ -66,8 +66,11 @@ as_field <- function(quo) {
     as_name(quo)
   } else if (quo_is_call(quo)) {
     as_field(call_args(quo_get_expr(quo))[[1]])
+  } else if (quo_is_null(quo)) {
+    NULL
   } else {
-    abort("No constant values allowed for `enc()`.")
+    ""
+    # abort("No constant values allowed for `enc()`.")
   }
 }
 
@@ -105,11 +108,12 @@ encoding_spec.character <- encoding_spec.factor
 
 encoding_spec.virgo_aggregate <- function(x, field, ...) {
   list2(
-    field = as_field(field),
-    !!!unclass(x), type = "quantitative",
-    scale = list(zero = FALSE))
+    field = as_field(field), aggregate = x %@% "aggregate",
+    type = "quantitative", scale = list(zero = FALSE))
 }
 
 encoding_spec.virgo_timeunit <- function(x, field, ...) {
-  list2(field = as_field(field), !!!unclass(x), type = "temporal")
+  list2(field = as_field(field), 
+    timeUnit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc",
+    type = "temporal")
 }

@@ -1,5 +1,6 @@
-new_virgo_op <- function(x, class) {
-  structure(x, class = c(class, "virgo_op"))
+new_virgo_op <- function(x, ..., class) {
+  # NOTE: nonstandard class(x) for asJSON()
+  structure(x, ..., class = c(class, "virgo_op", class(x)))
 }
 
 is_virgo_op <- function(x) {
@@ -8,23 +9,23 @@ is_virgo_op <- function(x) {
 
 vg_sum <- function(x) {
   stopifnot(!is_missing(x))
-  new_virgo_op(list(aggregate = "sum"), class = "virgo_aggregate")
+  new_virgo_op(x, aggregate = "sum", class = "virgo_aggregate")
 }
 
 vg_mean <- function(x) {
   stopifnot(!is_missing(x))
-  new_virgo_op(list(aggregate = "mean"), class = "virgo_aggregate")
+  new_virgo_op(x, aggregate = "mean", class = "virgo_aggregate")
 }
 
 vg_count <- function(x) { # "count" can take empty values
-  new_virgo_op(list(aggregate = "count"), class = "virgo_aggregate")
+  new_virgo_op(x, aggregate = "count", class = "virgo_aggregate")
 }
 
 virgo_timeunit_factory <- function(unit) {
   force(unit)
   function(x, step = 1, utc = FALSE) {
     stopifnot(!is_missing(x))
-    new_virgo_op(list(timeUnit = unit, step = step, utc = utc), 
+    new_virgo_op(x, timeUnit = unit, step = step, utc = utc, 
       class = "virgo_timeunit")
   }
 }

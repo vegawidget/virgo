@@ -2,15 +2,11 @@ library(dplyr)
 
 selection <- select_interval()
 
-mtcars <- mtcars %>% mutate(cyl = factor(cyl))
-
 mtcars %>%
   vega() %>%
   mark_circle(
-    encoding = enc(x = wt, y = mpg, color = cyl),
+    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
     selection = selection)
-
-selection <- select_interval()
 
 mtcars %>%
   vega() %>%
@@ -18,16 +14,16 @@ mtcars %>%
     encoding = enc(x = wt, y = mpg),
     selection = c(
       size_if(selection, 180, 60),
-      color_if(selection, cyl, "grey")))
+      color_if(selection, factor(cyl), "grey")))
 
 p1 <- mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(selection = color_if(selection, cyl, "grey"))
+  mark_point(selection = color_if(selection, factor(cyl), "grey"))
 p2 <- mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = disp, y = hp),
-    selection = color_if(selection, cyl, "#99d8c9"))
+    selection = color_if(selection, factor(cyl), "#99d8c9"))
 hconcat(p1, p2)
 
 # vg_filter(selection)
@@ -40,7 +36,7 @@ p3 <- mtcars %>%
 hconcat(p1, p3)
 
 p1 %>%
-  mark_rule(encoding = enc(y = vg_mean(mpg)), size = 3, color = "red",
+  mark_rule(encoding = enc(x = NULL, y = vg_mean(mpg)), size = 3, color = "red",
     transform = selection)
 
 evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
@@ -60,39 +56,39 @@ p4 <- mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = wt, y = mpg),
-    selection = color_if(a | b, cyl, "grey"))
+    selection = color_if(a | b, factor(cyl), "grey"))
 p4
 
 mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = wt, y = mpg),
-    selection = color_if(!(a | b), cyl, "grey"))
+    selection = color_if(!(a | b), factor(cyl), "grey"))
 
 p5 <- mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = disp, y = hp),
-    selection = color_if(a | b, cyl, "#99d8c9"))
+    selection = color_if(a | b, factor(cyl), "#99d8c9"))
 hconcat(p4, p5)
 
 mtcars %>%
   vega() %>%
   mark_circle(
-    encoding = enc(x = wt, y = mpg, color = cyl),
+    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
     selection = size_if(select_legend(cyl), 100, 20))
 
 mtcars %>%
   mutate(gear = factor(gear)) %>%
   vega() %>%
   mark_circle(
-    encoding = enc(x = wt, y = mpg, color = cyl, shape = gear),
+    encoding = enc(x = wt, y = mpg, color = factor(cyl), shape = gear),
     selection = opacity_if(select_legend(gear), 1, .2))
 
 mtcars %>%
   vega() %>%
   mark_circle(
-    encoding = enc(x = wt, y = mpg, color = cyl),
+    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
     selection = select_domain())
 
 sp500 <- readr::read_csv("https://vega.github.io/vega-editor/app/data/sp500.csv") %>%
