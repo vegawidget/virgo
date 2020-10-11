@@ -1,4 +1,3 @@
-# vega supports a mixture of data and statistical transformations
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   transform = NULL, selection = NULL) {
   layer_data <- data

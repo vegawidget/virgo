@@ -43,7 +43,7 @@ evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
 a <- select_interval(on = evt)
 b <- select_interval(
   on = "[mousedown[event.shiftKey], mouseup] > mousemove",
-  mark = c("fill" =  "#fdbb84", "fillOpacity" = 0.5, "stroke" = "#e34a33"))
+  mark = c("fill" =  "#fdbb84", "fill_opacity" = 0.5, "stroke" = "#e34a33"))
 selection_composition(a & b)
 selection_composition(a | b)
 selection_composition(a | !b)

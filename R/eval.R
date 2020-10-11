@@ -70,7 +70,6 @@ as_field <- function(quo) {
     NULL
   } else {
     ""
-    # abort("No constant values allowed for `enc()`.")
   }
 }
 

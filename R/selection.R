@@ -28,6 +28,9 @@ select_interval <- function(encodings = c("x", "y"), init = NULL,
   mark = NULL, on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
   resolve = "global") {
+  if (!is.null(mark)) {
+    mark <- vec_set_names(mark, standardise_names(names(mark)))
+  }
   mark <- as.list(mark)
   new_virgo_selection(list2(!!rand_id() := list(
     type = "interval", encodings = encodings, init = init,  mark = mark,
