@@ -15,14 +15,14 @@ simple_select <- function(x) {
   }
 }
 
-eval_fun <- function(data, encoding, encoding_name) {
+eval_enc <- function(data, encoding, encoding_name) {
   spec <- eval_tidy(encoding, data = data)
   encoding_spec(spec, field = encoding, encoding_name = encoding_name)
 }
 
 eval_encoding <- function(data, encoding) {
   encoding <- vec_set_names(encoding, standardise_names(names(encoding)))
-  map2(encoding, names(encoding), function(x, y) eval_fun(data, x, y))
+  map2(encoding, names(encoding), function(x, y) eval_enc(data, x, y))
 }
 
 eval_condition <- function(data, selection) {
@@ -129,7 +129,7 @@ new_virgo_mask <- function(data, env = virgo_op_env()) {
   new_data_mask(bottom, top = env)
 }
 
-eval_mask <- function(data, quo) {
+eval_virgo_mask <- function(data, quo) {
   names <- names(quo)
   data_mask <- new_virgo_mask(data)
   for (i in names) {
