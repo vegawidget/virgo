@@ -25,16 +25,16 @@ akl_ncdc <- map2_dfr(startdate, enddate, function(x, y) {
     startdate = x, enddate = y)
   ncdcout$data
 })
-akl_weather <- akl_ncdc %>%
+aklweather <- akl_ncdc %>%
   select(date, datatype, value) %>%
   mutate(date = as_date(ymd_hms(date))) %>%
   pivot_wider(names_from = datatype, values_from = value) %>%
   rename_with(tolower) %>%
-  mutate(across(starts_with("t"), ~ . / 10))
+  mutate(across(!date, ~ . / 10))
 
-usethis::use_data(akl_weather, overwrite = TRUE)
+usethis::use_data(aklweather, overwrite = TRUE)
 
-akl_weather <- akl_weather %>%
+akl_weather <- aklweather %>%
   mutate(rain = as.integer(prcp > 0))
 
 timeline <- select_interval("x")
