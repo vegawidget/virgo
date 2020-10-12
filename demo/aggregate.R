@@ -36,17 +36,17 @@ population %>%
   filter(year == 2000) %>%
   vega() %>%
   mark_bar(enc(x = ordered(age), y = vg_sum(people), color = factor(sex)),
-    opacity = .7, position = "layer")
+    opacity = .7, position = "identity")
 
 population %>%
   filter(year == 2000) %>%
   vega(enc(x = ordered(age), y = vg_sum(people), color = factor(sex))) %>%
   mark_bar(position = "fill")
 
-population %>%
-  filter(year == 2000) %>%
-  vega(enc(x = factor(age), y = vg_sum(people), color = factor(sex))) %>%
-  mark_bar(enc(column = ordered(sex)), position = "dodge")
+# population %>%
+#   filter(year == 2000) %>%
+#   vega(enc(x = factor(age), y = vg_sum(people), color = factor(sex))) %>%
+#   mark_bar(enc(column = ordered(sex)), position = "dodge")
 
 population %>%
   filter(year == 2000) %>%

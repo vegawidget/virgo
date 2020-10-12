@@ -95,11 +95,28 @@ mark_text <- mark_factory(type = "text")
 mark_tick <- mark_factory(type = "tick")
 mark_trail <- mark_factory(type = "trail")
 
+position_to_stack <- function(position = "stack") {
+  if (position == "identity") {
+    FALSE
+  } else if (position == "stack") {
+    TRUE
+  } else if (position == "fill") {
+    "normalize"
+  # } else if (position == "dodge") {
+  #   v$facet$column <- v$layer[[last]]$encoding$column
+  #   v$layer[[last]]$encoding$column <- NULL
+  #   stack <- FALSE
+  } else {
+    abort("Oops!")
+  }
+}
+
 mark_area <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ...) {
+  selection = NULL, ..., position = "stack") {
   layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
   v <- vega_layer(v, layer, encoding, data, transform, selection)
   last <- nlayer(v)
+  v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
   v
 }
@@ -111,20 +128,7 @@ mark_bar <- function(v, encoding = NULL, data = NULL, transform = NULL,
   last <- nlayer(v)
   v$layer[[last]]$encoding$x$scale <- NULL
   v$layer[[last]]$encoding$y$scale <- NULL
-  if (position == "layer") {
-    stack <- FALSE
-  } else if (position == "stack") {
-    stack <- TRUE
-  } else if (position == "fill") {
-    stack <- "normalize"
-  } else if (position == "dodge") {
-    v$facet$column <- v$layer[[last]]$encoding$column
-    v$layer[[last]]$encoding$column <- NULL
-    stack <- FALSE
-  } else {
-    abort("Oops!")
-  }
-  v$layer[[last]]$encoding$y$stack <- stack
+  v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v
 }
 
@@ -136,14 +140,14 @@ mark_errorbar <- function(v, encoding = NULL, data = NULL, transform = NULL,
 }
 
 mark_histogram <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ..., bin = TRUE) { # bin = list() opts
-  layer <- list(mark = list2(type = "bar", binSpacing = 0, 
-    !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  selection = NULL, ..., position = "stack", bin = TRUE) { # bin = list() opts
+  v <- mark_bar(v, encoding, data, transform, selection, ...,
+    position = position)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
+  y <- v$layer[[last]]$encoding$y
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
-  v$layer[[last]]$encoding$y <- list(aggregate = "count")
+  v$layer[[last]]$encoding$y <- c(y, aggregate = "count")
   v
 }
 
@@ -154,8 +158,21 @@ mark_step <- function(v, encoding = NULL, data = NULL, transform = NULL,
   vega_layer(v, layer, encoding, data, transform, selection)
 }
 
-mark_density <- function() {
-
+mark_density <- function(v, encoding = NULL, data = NULL, transform = NULL,
+  selection = NULL, ..., position = "identity", density = list()) {
+  v <- mark_area(v, encoding, data, transform, selection, ...,
+    position = position)
+  last <- nlayer(v)
+  enc <- v$layer[[last]]$encoding
+  density_field <- enc$x$field
+  groupby <- as.list(unique(c(enc$color$field, enc$fill$field, enc$detail$field,
+    enc$stroke$field)))
+  v$layer[[last]]$transform <- list(list2(density = density_field,
+    groupby = groupby, !!!density))
+  v$layer[[last]]$encoding$x$field <- "value"
+  v$layer[[last]]$encoding$x$scale$domain <- NULL
+  v$layer[[last]]$encoding$y <- c(enc$y, field = "density", type = "quantitative")
+  v
 }
 
 mark_smooth <- function() {

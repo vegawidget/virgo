@@ -139,6 +139,15 @@ mtcars %>%
   vega(encoding = enc(x = cyl, y = vg_count(cyl))) %>%
   mark_bar()
 
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, colour = cyl)) %>%
+  mark_density()
+
+mtcars %>%
+  vega(encoding = enc(x = wt)) %>%
+  mark_density()
+
 huron <- tibble(
   year = 1875:1972, level = as.vector(LakeHuron),
   ymin = 500, ymean = 550)
