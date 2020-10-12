@@ -39,11 +39,11 @@ p1 %>%
   mark_rule(encoding = enc(x = NULL, y = vg_mean(mpg)), size = 3, color = "red",
     transform = selection)
 
-# highlighting a fraction of bars doesn't work in vega
-# mtcars %>%
-#   vega() %>%
-#   mark_histogram(encoding = enc(x = disp),
-#     selection = colour_if(selection, factor(cyl), "grey"))
+brush <- select_interval("x")
+mtcars %>%
+  vega(enc(x = disp)) %>%
+  mark_histogram(selection = brush) %>%
+  mark_histogram(transform = brush, colour = "red")
 
 evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
 a <- select_interval(on = evt)

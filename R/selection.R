@@ -76,7 +76,7 @@ selection_composition <- function(x) {
 }
 
 rand_id <- function() {
-  rand <- c("id", as.hexmode(sample(256, 4, replace = TRUE) - 1))
+  rand <- c("id", as.character(as.hexmode(sample(256, 4, replace = TRUE) - 1)))
   paste0(rand, collapse = "")
 }
 
