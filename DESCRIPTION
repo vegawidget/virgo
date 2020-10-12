@@ -19,3 +19,5 @@ Imports:
     vctrs,
     rlang,
     scales
+Depends: 
+    R (>= 2.10)

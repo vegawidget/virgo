@@ -12,7 +12,8 @@ weather %>%
   mark_ribbon(
     enc(y = vg_mean(temp_max), y2 = vg_mean(temp_min)),
     opacity = .3) %>%
-  mark_line(enc(y = vg_mean(precipitation)), interpolate = "monotone")
+  mark_line(enc(y = vg_mean(precipitation)), interpolate = "monotone") %>%
+  resolve_views(scale = list(y = "independent"))
 
 stocks <- readr::read_csv("https://vega.github.io/vega-editor/app/data/stocks.csv")
 

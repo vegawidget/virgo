@@ -10,6 +10,8 @@ data_type.character <- function(x) {
   list(type = "nominal")
 }
 
+data_type.logical <- data_type.character
+
 data_type.factor <- function(x) {
   list(type = "nominal", sort = levels(x))
 }

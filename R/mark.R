@@ -162,8 +162,17 @@ mark_smooth <- function() {
 
 }
 
-mark_bin2d <- function() {
-
+mark_bin2d <- function(v, encoding = NULL, data = NULL, transform = NULL,
+  selection = NULL, ..., bin = TRUE) { # bin = list() opts
+  # TODO: `bin` needs to take `x` and `y` bin setup
+  layer <- list(mark = list2(type = "rect", !!!mark_properties(...)))
+  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  last <- nlayer(v)
+  x <- v$layer[[last]]$encoding$x
+  y <- v$layer[[last]]$encoding$y
+  v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
+  v$layer[[last]]$encoding$y <- c(x, list(bin = bin))
+  v
 }
 
 mark_tile <- function() {

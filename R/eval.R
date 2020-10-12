@@ -61,11 +61,21 @@ as_field <- function(quo) {
   if (is_symbol(quo)) {
     as_string(quo)
   } else if (!is_quosure(quo) && is_call(quo)) {
-    as_field(call_args(quo)[[1]])
+    args <- call_args(quo)
+    if (is_empty(args)) {
+      ""
+    } else {
+      as_field(args[[1]])
+    }
   } else if (quo_is_symbol(quo)) {
     as_name(quo)
   } else if (quo_is_call(quo)) {
-    as_field(call_args(quo_get_expr(quo))[[1]])
+    args <- call_args(quo_get_expr(quo))
+    if (is_empty(args)) {
+      ""
+    } else {
+      as_field(args[[1]])
+    }
   } else if (quo_is_null(quo)) {
     NULL
   } else {
@@ -119,7 +129,9 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
 
 virgo_op_env <- function() {
   ops <- virgo_op()
-  fns <- map(ops, function(op) function(x) unclass(x))
+  fns <- map(ops, function(op) function(x) {
+    if (is_virgo_op(x)) { unclass(x) } else { x }
+  })
   new_environment(vec_set_names(fns, ops))
 }
 

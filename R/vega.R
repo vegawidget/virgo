@@ -12,6 +12,11 @@ vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
 }
 
 #' @export
+as.list.virgo <- function(x, ...) {
+  unclass(as_vegaspec(x, ...))
+}
+
+#' @export
 as_vegaspec.virgo <- function(spec, ...) {
   spec_header <- list(`$schema` = vega_schema())
   if (!has_name(spec, "config")) {
