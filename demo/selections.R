@@ -39,11 +39,11 @@ p1 %>%
   mark_rule(encoding = enc(x = NULL, y = vg_mean(mpg)), size = 3, color = "red",
     transform = selection)
 
-brush <- select_interval("x")
-mtcars %>%
+p_bar <- mtcars %>%
   vega(enc(x = disp)) %>%
-  mark_histogram(selection = brush) %>%
-  mark_histogram(transform = brush, colour = "red")
+  mark_histogram(selection = selection) %>%
+  mark_histogram(transform = selection, colour = "red")
+hconcat(p1, p_bar)
 
 evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
 a <- select_interval(on = evt)
