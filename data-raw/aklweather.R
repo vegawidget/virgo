@@ -43,11 +43,12 @@ p_time <- akl_weather %>%
   mark_line(size = 0.5, selection = timeline)
 p_avg <- akl_weather %>%
   vega(enc(x = vg_month(date)), width = 600, height = 350) %>%
+  # filter(timeline) %>%
   mark_ribbon(
     enc(y = vg_mean(tmin), y2 = vg_mean(tmax)),
     interpolate = "monotone",
     colour = "#fc9272", opacity = 0.3,
-    transform = timeline) %>%
+    transform = timeline) %>% # vega_layer_data() %>% filter(timeline)
   mark_line(enc(y = vg_mean(prcp)), colour = "#3182bd",
     transform = timeline) %>%
   mark_point(enc(y = vg_mean(prcp)), colour = "#3182bd",

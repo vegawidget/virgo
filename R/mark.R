@@ -96,6 +96,7 @@ mark_tick <- mark_factory(type = "tick")
 mark_trail <- mark_factory(type = "trail")
 
 position_to_stack <- function(position = "stack") {
+  position <- arg_match(position, c("identity", "stack", "fill"))
   if (position == "identity") {
     FALSE
   } else if (position == "stack") {
@@ -106,8 +107,6 @@ position_to_stack <- function(position = "stack") {
   #   v$facet$column <- v$layer[[last]]$encoding$column
   #   v$layer[[last]]$encoding$column <- NULL
   #   stack <- FALSE
-  } else {
-    abort("Oops!")
   }
 }
 
@@ -175,10 +174,6 @@ mark_density <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v
 }
 
-mark_smooth <- function() {
-
-}
-
 mark_bin2d <- function(v, encoding = NULL, data = NULL, transform = NULL,
   selection = NULL, ..., bin = TRUE) { # bin = list() opts
   # TODO: `bin` needs to take `x` and `y` bin setup
@@ -192,18 +187,25 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v
 }
 
-mark_tile <- function() {
-
+mark_streamgraph <- function(v, encoding = NULL, data = NULL, transform = NULL,
+  selection = NULL, ...) {
+  layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
+  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  last <- nlayer(v)
+  v$layer[[last]]$encoding$y$stack <- "center"
+  # remove y axis as y values not important
+  v$layer[[last]]$encoding$y <- c(v$layer[[last]]$encoding$y, list(axis = NULL))
+  v
 }
 
-mark_streamgraph <- function() {
-
-}
-
-mark_parcoords <- function() {
+mark_smooth <- function() {
 
 }
 
 mark_qq <- function() {
+
+}
+
+mark_parcoords <- function() {
 
 }

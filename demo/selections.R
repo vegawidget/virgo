@@ -10,6 +10,12 @@ mtcars %>%
 
 mtcars %>%
   vega() %>%
+  mark_circle(
+    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
+    selection = select_interval(init = list(x = c(2, 4), y = c(15, 25))))
+
+mtcars %>%
+  vega() %>%
   mark_point(
     encoding = enc(x = wt, y = mpg),
     selection = c(

@@ -209,3 +209,12 @@ vega(recent, enc(date, unemploy)) %>%
 
 # scale_x(domain, type = "band", range)
 # scale_color(domain, type = "category", range)
+
+industries <- jsonlite::read_json(
+  "https://vega.github.io/vega-editor/app/data/unemployment-across-industries.json"
+) %>%
+  bind_rows()
+industries %>%
+  vega() %>%
+  mark_streamgraph(
+    enc(x = vg_yearmonth(date), y = vg_sum(count), colour = series))
