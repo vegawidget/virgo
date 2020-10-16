@@ -51,6 +51,12 @@ p_bar <- mtcars %>%
   mark_histogram(transform = selection, colour = "red")
 hconcat(p1, p_bar)
 
+p_box <- mtcars %>%
+  vega(enc(x = factor(cyl), y = mpg)) %>%
+  mark_boxplot(selection = selection) %>%
+  mark_boxplot(transform = selection, colour = "red")
+hconcat(p1, p_box)
+
 evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
 a <- select_interval(on = evt)
 b <- select_interval(
