@@ -156,7 +156,7 @@ eval_virgo_mask <- function(data, quo, encoding_name) {
   names <- names(quo)
   data_mask <- new_virgo_mask(data)
   for (i in seq_along(names)) {
-    if (encoding_name[i] != "tooltip") {
+    if (is_true(encoding_name[i] != "tooltip")) {
       data[[names[i]]] <- eval_tidy(quo[[i]], data = data_mask)
     }
   }
