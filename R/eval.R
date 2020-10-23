@@ -92,9 +92,10 @@ encoding_spec.default <- function(x, field, ...) {
   list2(field = as_field(field), !!!type)
 }
 
-encoding_spec.numeric <- function(x, field, ...) {
+encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(field = as_field(field), !!!type)
+  if (any(vec_in(c("color", "fill"), encoding_name))) { return(res) }
   rng <- range(x, na.rm = TRUE)
   width <- diff(rng)
   min_x <- min(x, na.rm = TRUE) - 0.05 * width

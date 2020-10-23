@@ -112,6 +112,23 @@ mtcars %>%
   mark_point(encoding = enc(y = wt))
 
 mtcars %>%
+  vega(enc(x = wt, y = mpg, colour = factor(cyl))) %>%
+  mark_point() %>%
+  scale_colour(name = "Cylinders",
+    range = c("purple", "#ff0000", "teal"))
+
+mtcars %>%
+  vega(enc(x = wt, y = mpg, colour = factor(cyl))) %>%
+  mark_point() %>%
+  scale_colour(scheme = "category20b")
+
+# FIXME: domain_mid not working
+mtcars %>%
+  vega(enc(x = wt, y = mpg, colour = hp)) %>%
+  mark_point() %>%
+  scale_colour(range = "diverging", domain_mid = 300)
+
+mtcars %>%
   vega() %>%
   mark_point(enc(x = wt, y = mpg), size = 160)
 
