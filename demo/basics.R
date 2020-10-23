@@ -161,7 +161,7 @@ mtcars %>%
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = cyl, y = vg_count(cyl))) %>%
+  vega(encoding = enc(x = cyl, y = vg_count())) %>%
   mark_bar()
 
 mtcars %>%

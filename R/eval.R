@@ -136,7 +136,13 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
 virgo_op_env <- function() {
   ops <- virgo_op()
   fns <- map(ops, function(op) function(x, ...) {
-    if (is_virgo_op(x)) { unclass(x) } else { x }
+    if (is_missing(x)) { # vg_count() with missing arg
+      NULL
+    } else if (is_virgo_op(x)) { 
+      unclass(x)
+    } else { 
+      x
+    }
   })
   new_environment(vec_set_names(fns, ops))
 }
