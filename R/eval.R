@@ -128,14 +128,14 @@ encoding_spec.virgo_aggregate <- function(x, field, ...) {
 }
 
 encoding_spec.virgo_timeunit <- function(x, field, ...) {
-  list2(field = as_field(field), 
+  list2(field = as_field(field),
     timeUnit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc",
     type = "temporal")
 }
 
 virgo_op_env <- function() {
   ops <- virgo_op()
-  fns <- map(ops, function(op) function(x) {
+  fns <- map(ops, function(op) function(x, ...) {
     if (is_virgo_op(x)) { unclass(x) } else { x }
   })
   new_environment(vec_set_names(fns, ops))
