@@ -16,8 +16,13 @@ simple_select <- function(x) {
 }
 
 eval_enc <- function(data, encoding, encoding_name) {
-  spec <- eval_tidy(encoding, data = data)
-  encoding_spec(spec, field = encoding, encoding_name = encoding_name)
+  if (encoding_name == "tooltip") { # column names only, no functions
+    cols <- names(eval_select(encoding, data))
+    map(cols, function(x) encoding_spec(data[[x]], sym(x), "tooltip"))
+  } else {
+    spec <- eval_tidy(encoding, data = data)
+    encoding_spec(spec, field = encoding, encoding_name = encoding_name)
+  }
 }
 
 eval_encoding <- function(data, encoding) {
@@ -78,7 +83,7 @@ as_field <- function(quo) {
     }
   } else if (quo_is_null(quo)) {
     NULL
-  } else {
+  } else { # constant value
     ""
   }
 }
@@ -95,7 +100,7 @@ encoding_spec.default <- function(x, field, ...) {
 encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(field = as_field(field), !!!type)
-  if (any(vec_in(c("color", "fill"), encoding_name))) { return(res) }
+  if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
   rng <- range(x, na.rm = TRUE)
   width <- diff(rng)
   min_x <- min(x, na.rm = TRUE) - 0.05 * width
@@ -141,11 +146,13 @@ new_virgo_mask <- function(data, env = virgo_op_env()) {
   new_data_mask(bottom, top = env)
 }
 
-eval_virgo_mask <- function(data, quo) {
+eval_virgo_mask <- function(data, quo, encoding_name) {
   names <- names(quo)
   data_mask <- new_virgo_mask(data)
-  for (i in names) {
-    data[[i]] <- eval_tidy(quo[[i]], data = data_mask)
+  for (i in seq_along(names)) {
+    if (encoding_name[i] != "tooltip") {
+      data[[names[i]]] <- eval_tidy(quo[[i]], data = data_mask)
+    }
   }
   data
 }

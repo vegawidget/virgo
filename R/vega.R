@@ -1,4 +1,4 @@
-#' @import rlang vctrs vegawidget
+#' @import rlang tidyselect vctrs vegawidget
 
 new_virgo <- function(spec) {
   structure(spec, class = "virgo")

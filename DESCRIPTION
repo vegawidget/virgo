@@ -10,14 +10,15 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to
     pick a license
+Depends: 
+    R (>= 2.10)
+Imports: 
+    rlang,
+    scales,
+    tidyselect,
+    vctrs,
+    vegawidget
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Imports: 
-    vegawidget,
-    vctrs,
-    rlang,
-    scales
-Depends: 
-    R (>= 2.10)

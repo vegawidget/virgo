@@ -69,6 +69,14 @@ mtcars %>%
   mark_line()
 
 mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg, tooltip = wt)) %>%
+  mark_point()
+
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg, tooltip = c(wt, cyl))) %>%
+  mark_point()
+
+mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, color = factor(cyl))) %>%
   mark_point()
 
