@@ -6,11 +6,77 @@
 # bind = c(Year = slider)
 # init = c(Cycliners = 4, Year = 1977)
 # init = list(x = c(55, 160), y = c(13, 37))
+
+new_virgo_input <- function(x, init = NULL) {
+  structure(x, init = init, class = c("virgo_input", "list"))
+}
+# inputs that are bound to an HTML element are special case of
+# single selection
+input_slider <- function(min, max, step, init = NULL) {
+  new_virgo_input(
+    list(input = "range", min = min, max = max, step = step),
+    init = init
+  )
+}
+input_radio <- function(choices, labels = NULL, init = NULL) {
+  new_virgo_input(
+    list(input = "radio", options = choices, labels = labels),
+    init = init
+  )
+}
+input_select <- function(choices, labels = NULL, init = NULL) {
+  new_virgo_input(
+    list(input = "select", options = choices, labels = labels),
+    init = init
+  )
+}
+
+input_factory  <- function(input) {
+  force(input)
+  function(init = NULL, ...) {
+    new_virgo_input(list(input = input, ...), init = init)
+  }
+}
+
+input_date <- input_factory("date")
+input_datetime <- input_factory("datetime")
+input_month <- input_factory("month")
+input_week <- input_factory("week")
+input_color <- input_colour <- input_factory("color")
+input_textbox <- input_factory("text")
+input_checkbox <- input_factory("checkbox")
+
+select_bind <- function(..., id = NULL) {
+  elements <- map(enquos(..., .named = TRUE), eval_tidy)
+  stopifnot(all(map_lgl(elements, is_virgo_input)))
+  fields <- names(elements)
+  if (length(fields) == 1) {
+    fields <- list(fields)
+  }
+  inits <- map(elements, function(.) attr(., "init"))
+  # init does not work unless all elements are specified
+  if (any(map_lgl(inits, is.null))) {
+    inits <- NULL
+  }
+  binds <- map(elements, unclass)
+  if (is.null(id)) {
+    id <- rand_id()
+  }
+  new_virgo_selection(
+    list2(
+      !!id := list(type = "single",
+                   fields = fields,
+                   bind = binds,
+                   init = inits)
+    )
+  )
+}
+
 select_single <- function(encodings = NULL, init = NULL, bind = NULL,
   nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
   resolve = "global") {
   new_virgo_selection(list2(!!rand_id() := list(
-    type = "single", encodings = encodings, init = init, 
+    type = "single", encodings = encodings, init = init,
     fields = names(fields), bind = bind, nearest = nearest,
     on = on, clear = clear, empty = empty, resolve = resolve)))
 }
@@ -118,3 +184,9 @@ is_virgo_selection <- function(x) {
 is_virgo_condition <- function(x) {
   inherits(x, "virgo_condition")
 }
+
+is_virgo_input <- function(x) {
+  inherits(x, "virgo_input")
+}
+
+

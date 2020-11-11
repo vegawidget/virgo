@@ -121,3 +121,68 @@ v2 <- sp500 %>%
   vega(enc(x = date, y = price), height = 100) %>%
   mark_area(selection = brush)
 vconcat(v1, v2)
+
+# input element binding
+
+select_cyl <-
+  select_bind(cyl = input_radio(choices = unique(factor(mtcars$cyl))),
+              id = "Cylinders")
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega() %>%
+  mark_circle(
+    enc(x = hp, y = mpg),
+    selection = color_if(select_cyl, cyl, "black")
+  )
+
+
+select_cyl <-
+  select_bind(cyl = input_select(choices = unique(factor(mtcars$cyl))),
+              id = "Cylinders")
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega() %>%
+  mark_circle(
+    enc(x = hp, y = mpg),
+    selection = color_if(select_cyl, cyl, "black")
+  )
+
+slider <- select_bind(
+  carb = input_slider(min = 1, max = 8, step = 1)
+)
+
+
+mtcars %>%
+  vega() %>%
+  mark_circle(
+    enc(x = hp, y = mpg),
+    selection = color_if(slider, factor(cyl), "grey")
+  )
+
+slider <- select_bind(
+  carb = input_slider(min = 1, max = 8, step = 1, init = 8)
+)
+mtcars %>%
+  vega() %>%
+  mark_circle(
+    enc(x = hp, y = mpg),
+    selection = color_if(slider, factor(cyl), "grey")
+  )
+
+double_slider <- select_bind(
+  cyl = input_select(choices = unique(factor(mtcars$cyl))),
+  carb = input_slider(min = 1, max = 8, step = 1, init = 8)
+)
+
+# does not quite work how i thought it would...
+p <- mtcars %>%
+  vega() %>%
+  mark_circle(
+    enc(x = hp, y = mpg),
+    selection = c(
+      color_if(double_slider, factor(cyl), "grey"),
+      size_if(double_slider, 100, 50)
+    )
+  )
