@@ -91,9 +91,10 @@ p5 <- mtcars %>%
 hconcat(p4, p5)
 
 mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
   vega() %>%
   mark_circle(
-    encoding = enc(x = wt, y = mpg, color = factor(cyl),
+    encoding = enc(x = wt, y = mpg, color = cyl,
       tooltip = c(hp, cyl)),
     selection = size_if(select_legend(cyl), 100, 20))
 

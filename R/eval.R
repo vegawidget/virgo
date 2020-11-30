@@ -63,28 +63,14 @@ eval_condition <- function(data, selection) {
 }
 
 as_field <- function(quo) {
-  if (is_symbol(quo)) {
-    as_string(quo)
-  } else if (!is_quosure(quo) && is_call(quo)) {
-    args <- call_args(quo)
-    if (is_empty(args)) {
-      ""
+  if (is_quosure(quo)) {
+    if (quo_is_null(quo)) {
+      NULL
     } else {
-      as_field(args[[1]])
+      as_label(quo)
     }
-  } else if (quo_is_symbol(quo)) {
-    as_name(quo)
-  } else if (quo_is_call(quo)) {
-    args <- call_args(quo_get_expr(quo))
-    if (is_empty(args)) {
-      ""
-    } else {
-      as_field(args[[1]])
-    }
-  } else if (quo_is_null(quo)) {
-    NULL
-  } else { # constant value
-    ""
+  } else {
+    as_label(quo)
   }
 }
 
@@ -156,7 +142,8 @@ eval_virgo_mask <- function(data, quo, encoding_name) {
   names <- names(quo)
   data_mask <- new_virgo_mask(data)
   for (i in seq_along(names)) {
-    if (is_true(encoding_name[i] != "tooltip")) {
+    is_tooltip <- vec_in(encoding_name[i], "tooltip")
+    if (!is_tooltip) {
       data[[names[i]]] <- eval_tidy(quo[[i]], data = data_mask)
     }
   }
