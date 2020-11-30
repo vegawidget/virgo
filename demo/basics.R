@@ -1,6 +1,11 @@
 library(dplyr)
 
 mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  entitle(title = "mtcars", subtitle = "mtcars sub")
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%

@@ -71,3 +71,11 @@ print.virgo <- function(x, ...) {
   print(as_vegaspec(x), ...)
   invisible(x)
 }
+
+# NOTE: leave all styling properties to `config()`
+entitle <- function(v, title = NULL, subtitle = NULL, description = NULL) {
+  v$title <- list(text = title)
+  v$title <- c(v$title, subtitle = subtitle)
+  v$description <- description
+  v
+}
