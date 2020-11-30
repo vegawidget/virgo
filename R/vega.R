@@ -59,6 +59,8 @@ as_vegaspec.virgo <- function(spec, ...) {
   if (has_name(spec, "facet")) {
     spec$layer <- map(layer, function(x) { x$data <- NULL; x })
     spec$spec$layer <- spec$layer
+    spec$spec$width <- spec$width
+    spec$spec$height <- spec$height
     spec$layer <- NULL
   }
   as_vegaspec(c(spec_header, spec))
