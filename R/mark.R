@@ -6,6 +6,9 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   if (!is.null(encoding)) {
     layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
   }
+  if (has_name(v, "transform")) {
+    layer <- c(layer, list(transform = v$transform))
+  }
 
   if (!is.null(transform)) {
     layer <- c(layer, list(transform = list(list(

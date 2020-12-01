@@ -26,8 +26,8 @@ as_vegaspec.virgo <- function(spec, ...) {
   if (is.null(spec$data$values)) {
     spec$data <- NULL
   }
-  # remove top-level encoding, since it already applies to each layer
-  spec$encoding <- NULL
+  # remove top-level encoding & transform, since it already applies to each layer
+  spec$encoding <- spec$transform <- NULL
   # unify default scale domains
   layer <- spec$layer
   xs <- map(layer, function(x) 
@@ -74,8 +74,7 @@ print.virgo <- function(x, ...) {
 
 # NOTE: leave all styling properties to `config()`
 entitle <- function(v, title = NULL, subtitle = NULL, description = NULL) {
-  v$title <- list(text = title)
-  v$title <- c(v$title, subtitle = subtitle)
+  v$title <- list(text = title, subtitle = subtitle)
   v$description <- description
   v
 }
