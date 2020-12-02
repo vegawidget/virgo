@@ -77,7 +77,7 @@ select_single <- function(encodings = NULL, init = NULL, bind = NULL,
   resolve = "global") {
   new_virgo_selection(list2(!!rand_id() := list(
     type = "single", encodings = encodings, init = init,
-    fields = names(fields), bind = bind, nearest = nearest,
+    bind = bind, nearest = nearest,
     on = on, clear = clear, empty = empty, resolve = resolve)))
 }
 

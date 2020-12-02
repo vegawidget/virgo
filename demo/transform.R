@@ -20,3 +20,11 @@ p2 <- mtcars %>%
   filter(selection) %>%
   mark_point()
 hconcat(p1, p2)
+
+movies <- jsonlite::read_json(
+  "https://vega.github.io/vega-editor/app/data/movies.json"
+  , simplifyVector = TRUE)
+
+movies %>%
+  vega() %>%
+  mark_bar(enc(x = vg_argmax(US_Gross, Production_Budget), y = Major_Genre))

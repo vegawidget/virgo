@@ -187,3 +187,19 @@ p <- mtcars %>%
       size_if(double_slider, 100, 50)
     )
   )
+
+stocks <- readr::read_csv(
+  "https://vega.github.io/vega-editor/app/data/stocks.csv"
+) %>%
+  mutate(date = lubridate::mdy(date))
+
+hover <- select_single(on = "mouseover", empty = "all", init = list(symbol = "AAPL"))
+stocks %>%
+  filter(symbol != "IBM") %>%
+  vega(enc(x = date, y = price)) %>%
+  mark_line(selection =
+    c(colour_if(hover, symbol, "grey"),
+      opacity_if(hover, 1, 0.2))) %>%
+  mark_text(
+    encoding = enc(x = vg_max(date), y = vg_argmax(date, price), text = symbol),
+    dx = 4, align = "left")

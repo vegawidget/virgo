@@ -66,6 +66,17 @@ as_field <- function(quo) {
   if (is_quosure(quo)) {
     if (quo_is_null(quo)) {
       NULL
+    } else if (quo_is_call(quo)) {
+      fn <- call_name(quo)
+      if (vec_in(fn, "vg_count")) {
+        ""
+      } else if (vec_in(fn, c("vg_argmax", "vg_argmin"))) {
+        as_label(call_args(quo)[[2]])
+      } else if (vec_in(fn, virgo_op())) {
+        as_label(call_args(quo)[[1]])
+      } else {
+        as_label(quo)
+      }
     } else {
       as_label(quo)
     }
@@ -108,9 +119,18 @@ encoding_spec.factor <- function(x, field, encoding_name, ...) {
 encoding_spec.character <- encoding_spec.factor
 
 encoding_spec.virgo_aggregate <- function(x, field, ...) {
-  list2(
-    field = as_field(field), aggregate = x %@% "aggregate",
-    type = "quantitative", scale = list(zero = FALSE))
+  aggregate <- x %@% "aggregate"
+  type <- x %@% "type"
+  if (vec_in(aggregate, c("argmin", "argmax"))) {
+    arg_field <- as_string(call_args(field)[[1]])
+    list2(
+      field = as_field(field), aggregate = list2(!!aggregate := arg_field),
+      type = type, scale = list(zero = FALSE))
+  } else {
+    list2(
+      field = as_field(field), aggregate = aggregate,
+      type = type, scale = list(zero = FALSE))
+  }
 }
 
 encoding_spec.virgo_timeunit <- function(x, field, ...) {
@@ -122,10 +142,11 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
 virgo_op_env <- function() {
   ops <- virgo_op()
   fns <- map(ops, function(op) function(x, ...) {
+    y <- dots_list(...)
     if (is_missing(x)) { # vg_count() with missing arg
       NULL
-    } else if (is_virgo_op(x)) { 
-      unclass(x)
+    } else if (!is_empty(y)) { # vg_argmin/max()
+      y[[1]]
     } else { 
       x
     }
