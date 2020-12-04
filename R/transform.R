@@ -37,12 +37,12 @@ vg_count <- function(x) {
 }
 
 vg_argmin <- function(x, y) {
-  new_virgo_op(x, y = y, type = data_type(y)[["type"]], aggregate = "argmin",
+  new_virgo_op(x, y = y, type = data_type(x)[["type"]], aggregate = "argmin",
     class = "virgo_aggregate")
 }
 
 vg_argmax <- function(x, y) {
-  new_virgo_op(x, y = y, type = data_type(y)[["type"]], aggregate = "argmax",
+  new_virgo_op(x, y = y, type = data_type(x)[["type"]], aggregate = "argmax",
     class = "virgo_aggregate")
 }
 

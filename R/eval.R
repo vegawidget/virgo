@@ -70,8 +70,6 @@ as_field <- function(quo) {
       fn <- call_name(quo)
       if (vec_in(fn, "vg_count")) {
         ""
-      } else if (vec_in(fn, c("vg_argmax", "vg_argmin"))) {
-        as_label(call_args(quo)[[2]])
       } else if (vec_in(fn, virgo_op())) {
         as_label(call_args(quo)[[1]])
       } else {
@@ -122,7 +120,7 @@ encoding_spec.virgo_aggregate <- function(x, field, ...) {
   aggregate <- x %@% "aggregate"
   type <- x %@% "type"
   if (vec_in(aggregate, c("argmin", "argmax"))) {
-    arg_field <- as_string(call_args(field)[[1]])
+    arg_field <- as_string(call_args(field)[[2]])
     list2(
       field = as_field(field), aggregate = list2(!!aggregate := arg_field),
       type = type, scale = list(zero = FALSE))
@@ -142,11 +140,8 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
 virgo_op_env <- function() {
   ops <- virgo_op()
   fns <- map(ops, function(op) function(x, ...) {
-    y <- dots_list(...)
     if (is_missing(x)) { # vg_count() with missing arg
       NULL
-    } else if (!is_empty(y)) { # vg_argmin/max()
-      y[[1]]
     } else { 
       x
     }

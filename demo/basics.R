@@ -1,16 +1,6 @@
 library(dplyr)
 
 mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  entitle(title = "mtcars", subtitle = "mtcars sub")
-
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  entitle(title = "mtcars", subtitle = "mtcars sub") %>%
-  mark_point()
-
-mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
@@ -39,15 +29,29 @@ vega(mtcars) %>%
   mark_point(encoding = enc(x = log(wt), y = mpg))
 
 mtcars %>%
-  mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
-  mark_point()
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  facet_views(row = cyl)
+
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point(data = mtcars) %>%
+  facet_views(row = cyl)
+
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  facet_views(column = cyl)
+
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
+  facet_views(row = cyl, column = gear)
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg, fill = cyl, fillOpacity = gear)) %>%
-  mark_point() %>%
-  config_vega()
+  vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
+  mark_point()
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%

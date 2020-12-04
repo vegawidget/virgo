@@ -27,4 +27,4 @@ movies <- jsonlite::read_json(
 
 movies %>%
   vega() %>%
-  mark_bar(enc(x = vg_argmax(US_Gross, Production_Budget), y = Major_Genre))
+  mark_bar(enc(x = vg_argmax(Production_Budget, US_Gross), y = Major_Genre))

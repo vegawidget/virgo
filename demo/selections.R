@@ -201,5 +201,5 @@ stocks %>%
     c(colour_if(hover, symbol, "grey"),
       opacity_if(hover, 1, 0.2))) %>%
   mark_text(
-    encoding = enc(x = vg_max(date), y = vg_argmax(date, price), text = symbol),
+    encoding = enc(x = vg_max(date), y = vg_argmax(price, date), text = symbol),
     dx = 4, align = "left")
