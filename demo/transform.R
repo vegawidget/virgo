@@ -28,3 +28,10 @@ movies <- jsonlite::read_json(
 movies %>%
   vega() %>%
   mark_bar(enc(x = vg_argmax(Production_Budget, US_Gross), y = Major_Genre))
+
+mtcars %>%
+  vega() %>%
+  summarise(mean_acc = vg_mean(mpg)) %>%
+  mark_point(enc(x = factor(cyl), y = mean_acc)) %>%
+  config_vega() %>%
+  as.list()
