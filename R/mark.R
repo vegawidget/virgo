@@ -2,9 +2,14 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   selection = NULL) {
   fields <- encoding <- merge_encoding(c(v$encoding, encoding))
   if (is_virgo_selection(data)) {
-    # selection <- data
-    layer <- c(layer, list(transform = list(list(
-      filter = list(selection = selection_composition(data))))))
+    if (inherits(data, "AsIs")) {
+      layer <- c(layer, list(selection = unclass(data)))
+    } else {
+      layer <- c(layer, 
+        list(selection = unclass(data)),
+        list(transform = list(list(filter = 
+          list(selection = selection_composition(data))))))
+    }
     data <- NULL
   }
   data <- data %||% v$data$values

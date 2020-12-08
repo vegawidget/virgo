@@ -48,13 +48,13 @@ p1 %>%
 
 p_bar <- mtcars %>%
   vega(enc(x = disp)) %>%
-  mark_histogram(selection = selection) %>%
+  mark_histogram() %>%
   mark_histogram(data = selection, colour = "red")
 hconcat(p1, p_bar)
 
 p_box <- mtcars %>%
   vega(enc(x = factor(cyl), y = mpg)) %>%
-  mark_boxplot(selection = selection) %>%
+  mark_boxplot() %>%
   mark_boxplot(data = selection, colour = "red")
 hconcat(p1, p_box)
 
@@ -110,7 +110,7 @@ mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    selection = select_domain())
+    data = select_domain())
 
 sp500 <- readr::read_csv("https://vega.github.io/vega-editor/app/data/sp500.csv") %>%
   mutate(date = lubridate::mdy(date))
@@ -121,7 +121,7 @@ v1 <- sp500 %>%
   scale_x(name = NULL, domain = brush)
 v2 <- sp500 %>%
   vega(enc(x = date, y = price), height = 100) %>%
-  mark_area(selection = brush)
+  mark_area(data = I(brush))
 vconcat(v1, v2)
 
 # input element binding
