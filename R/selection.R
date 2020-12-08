@@ -168,4 +168,13 @@ is_virgo_input <- function(x) {
   inherits(x, "virgo_input")
 }
 
-
+selection_union <- function(x) {
+  # remove duplicated seletions and move all selections to the top layer
+  names_sel <- vec_c(!!!map(x, function(x) names(x$selection)))
+  if (is.null(names_sel)) { return(x) }
+  unique_idx <- vec_match(vec_unique(names_sel), names_sel)
+  unnamed_sel <- vec_c(!!!map(x, function(x) x$selection))[unique_idx]
+  x[[1]]$selection <- vec_set_names(unnamed_sel, names_sel[unique_idx])
+  x <- c(x[1], map(x[-1], function(x) {x$selection <- NULL; x}))
+  x
+}

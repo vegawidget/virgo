@@ -55,6 +55,7 @@ as_vegaspec.virgo <- function(spec, ...) {
       spec$layer[[i]]$encoding$y$scale$domain <- yrng
     }
   }
+  spec$layer <- selection_union(spec$layer)
   # facet is used
   if (has_name(spec, "facet")) {
     spec$layer <- map(layer, function(x) { x$data <- NULL; x })

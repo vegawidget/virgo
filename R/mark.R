@@ -1,5 +1,4 @@
-vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
-  selection = NULL) {
+vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL) {
   fields <- encoding <- merge_encoding(c(v$encoding, encoding))
   if (is_virgo_selection(data)) {
     if (inherits(data, "AsIs")) {
@@ -16,20 +15,21 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
 
   if (!is.null(encoding)) {
     which_selection <- map_lgl(encoding, function(x) 
-      if (quo_is_call(x)) call_name(x) == "select_if" else FALSE)
+      quo_is_call(x) && call_name(x) == "select_if")
     encoding_sel <- encoding[which_selection]
     layer <- c(layer, list(
       encoding = eval_encoding(data, encoding[!which_selection])))
 
-    selection <- map(encoding_sel, eval_tidy, data = data)
-    if (has_length(selection)) {
+    if (has_length(encoding_sel)) {
+      selection <- map(encoding_sel, eval_tidy, data = data)
       trues <- map(selection, function(x) x$true)
       falses <- map(selection, function(x) x$false)
       fields <- c(fields, trues, falses)
       condition <- eval_condition(data, selection, names(encoding_sel))
       layer$encoding <- c(layer$encoding, condition)
-      selection <- selection[[1]]$selection
-      layer <- c(list(selection = unclass(selection)), layer)
+      selection <- vec_c(!!!map(selection, function(x) unclass(x$selection)),
+        .name_spec = "{inner}")
+      layer <- c(list(selection = selection), layer)
     }
   }
 
@@ -79,9 +79,9 @@ mark_properties <- function(...) {
 # use vega options name but in snake_case
 mark_factory <- function(type = "point") {
   force(type)
-  function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
+  function(v, encoding = NULL, data = NULL, ...) {
     layer <- list(mark = list2(type = type, !!!mark_properties(...)))
-    vega_layer(v, layer, encoding, data, selection)
+    vega_layer(v, layer, encoding, data)
   }
 }
 
@@ -116,20 +116,20 @@ position_to_stack <- function(position = "stack") {
   }
 }
 
-mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+mark_area <- function(v, encoding = NULL, data = NULL, ...,
   position = "stack") {
   layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
   v
 }
 
-mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+mark_bar <- function(v, encoding = NULL, data = NULL, ...,
   position = "stack") {
   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data)
   last <- nlayer(v)
   v$layer[[last]]$encoding$x$scale <- NULL
   v$layer[[last]]$encoding$y$scale <- NULL
@@ -137,17 +137,15 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
-mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
-  ...) {
+mark_errorbar <- function(v, encoding = NULL, data = NULL, ...) {
   layer <- list(mark = list2(type = "errorbar",
     !!!mark_properties(ticks = TRUE, ...)))
-  vega_layer(v, layer, encoding, data, selection)
+  vega_layer(v, layer, encoding, data)
 }
 
-mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
-  ..., position = "stack", bin = TRUE) { # bin = list() opts
-  v <- mark_bar(v, encoding, data, selection, ...,
-    position = position)
+mark_histogram <- function(v, encoding = NULL, data = NULL, ...,
+  position = "stack", bin = TRUE) { # bin = list() opts
+  v <- mark_bar(v, encoding, data, ..., position = position)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
@@ -156,16 +154,15 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
   v
 }
 
-mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
+mark_step <- function(v, encoding = NULL, data = NULL, ...) {
   layer <- list(mark = list2(type = "line",
     !!!mark_properties(interpolate = "step-after", ...)))
-  vega_layer(v, layer, encoding, data, selection)
+  vega_layer(v, layer, encoding, data)
 }
 
-mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+mark_density <- function(v, encoding = NULL, data = NULL, ...,
   position = "identity", density = list()) {
-  v <- mark_area(v, encoding, data, selection, ...,
-    position = position)
+  v <- mark_area(v, encoding, data, ..., position = position)
   last <- nlayer(v)
   enc <- v$layer[[last]]$encoding
   density_field <- enc$x$field
@@ -179,11 +176,10 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
-mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  bin = TRUE) { # bin = list() opts
+mark_bin2d <- function(v, encoding = NULL, data = NULL, ..., bin = TRUE) { # bin = list() opts
   # TODO: `bin` needs to take `x` and `y` bin setup
   layer <- list(mark = list2(type = "rect", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
@@ -192,10 +188,9 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
-mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
-  ...) {
+mark_streamgraph <- function(v, encoding = NULL, data = NULL, ...) {
   layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- "center"
   # remove y axis as y values not important

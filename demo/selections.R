@@ -36,12 +36,12 @@ mtcars %>%
 
 p1 <- mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(enc(color = select_if(selection, factor(cyl), "grey")))
+  mark_point(enc(colour = select_if(selection, factor(cyl), "grey")))
 p2 <- mtcars %>%
   vega() %>%
   mark_point(enc(
     x = disp, y = hp,
-    color = select_if(selection, factor(cyl), "#99d8c9")))
+    colour = select_if(selection, factor(cyl), "#99d8c9")))
 hconcat(p1, p2)
 
 p3 <- mtcars %>%
@@ -54,8 +54,7 @@ hconcat(p1, p3)
 p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = selection) -> test
-identical(test$layer[[1]]$selection, test$layer[[2]]$selection)
+    size = 3, data = selection)
 # vg_window()
 
 p_bar <- mtcars %>%
@@ -95,6 +94,13 @@ mtcars %>%
   mark_point(enc(
     x = wt, y = mpg,
     color = select_if(!(a | b), factor(cyl), "grey")))
+
+mtcars %>%
+  vega() %>%
+  mark_point(enc(
+    x = wt, y = mpg,
+    color = select_if(a, factor(cyl), "grey"),
+    size = select_if(b, 180, 60)))
 
 p5 <- mtcars %>%
   vega() %>%
@@ -159,9 +165,9 @@ mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
   mark_circle(
-    enc(x = hp, y = mpg),
-    selection = color_if(select_cyl, cyl, "black")
-  )
+    enc(x = hp, y = mpg,
+    color = select_if(select_cyl, cyl, "black")
+  ))
 
 slider <- select_bind(
   carb = input_slider(min = 1, max = 8, step = 1)
