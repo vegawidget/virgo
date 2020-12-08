@@ -33,13 +33,11 @@ p2 <- mtcars %>%
 # update
 hconcat(p1, p2)
 
-# vg_filter(selection)
-# vg_calculate
 p3 <- mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = disp, y = hp),
-    transform = selection)
+    data = selection)
 hconcat(p1, p3)
 
 p1 %>%
@@ -51,13 +49,13 @@ p1 %>%
 p_bar <- mtcars %>%
   vega(enc(x = disp)) %>%
   mark_histogram(selection = selection) %>%
-  mark_histogram(transform = selection, colour = "red")
+  mark_histogram(data = selection, colour = "red")
 hconcat(p1, p_bar)
 
 p_box <- mtcars %>%
   vega(enc(x = factor(cyl), y = mpg)) %>%
   mark_boxplot(selection = selection) %>%
-  mark_boxplot(transform = selection, colour = "red")
+  mark_boxplot(data = selection, colour = "red")
 hconcat(p1, p_box)
 
 evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"

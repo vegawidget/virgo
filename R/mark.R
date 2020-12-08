@@ -1,18 +1,15 @@
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
-  transform = NULL, selection = NULL) {
-  layer_data <- data
+  selection = NULL) {
   fields <- encoding <- merge_encoding(c(v$encoding, encoding))
+  if (is_virgo_selection(data)) {
+    # selection <- data
+    layer <- c(layer, list(transform = list(list(
+      filter = list(selection = selection_composition(data))))))
+    data <- NULL
+  }
   data <- data %||% v$data$values
   if (!is.null(encoding)) {
     layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
-  }
-  if (has_name(v, "transform")) {
-    layer <- c(layer, list(transform = v$transform))
-  }
-
-  if (!is.null(transform)) {
-    layer <- c(layer, list(transform = list(list(
-      filter = list(selection = selection_composition(transform))))))
   }
   if (!is.null(selection)) {
     if (is_virgo_condition(selection)) {
@@ -41,7 +38,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
 merge_encoding <- function(x) {
   x <- rev(x)
   names_x <- names(x)
-  x <- rev(x[vec_match(unique(names_x), names_x)])
+  x <- rev(x[vec_match(vec_unique(names_x), names_x)])
   x[!map_lgl(x, quo_is_null)]
 }
 
@@ -75,10 +72,9 @@ mark_properties <- function(...) {
 # use vega options name but in snake_case
 mark_factory <- function(type = "point") {
   force(type)
-  function(v, encoding = NULL, data = NULL, transform = NULL,
-    selection = NULL, ...) {
+  function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
     layer <- list(mark = list2(type = type, !!!mark_properties(...)))
-    vega_layer(v, layer, encoding, data, transform, selection)
+    vega_layer(v, layer, encoding, data, selection)
   }
 }
 
@@ -113,20 +109,20 @@ position_to_stack <- function(position = "stack") {
   }
 }
 
-mark_area <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ..., position = "stack") {
+mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  position = "stack") {
   layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
   v
 }
 
-mark_bar <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ..., position = "stack") {
+mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  position = "stack") {
   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   v$layer[[last]]$encoding$x$scale <- NULL
   v$layer[[last]]$encoding$y$scale <- NULL
@@ -134,16 +130,16 @@ mark_bar <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v
 }
 
-mark_errorbar <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ...) {
+mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
+  ...) {
   layer <- list(mark = list2(type = "errorbar",
     !!!mark_properties(ticks = TRUE, ...)))
-  vega_layer(v, layer, encoding, data, transform, selection)
+  vega_layer(v, layer, encoding, data, selection)
 }
 
-mark_histogram <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ..., position = "stack", bin = TRUE) { # bin = list() opts
-  v <- mark_bar(v, encoding, data, transform, selection, ...,
+mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
+  ..., position = "stack", bin = TRUE) { # bin = list() opts
+  v <- mark_bar(v, encoding, data, selection, ...,
     position = position)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
@@ -153,16 +149,15 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v
 }
 
-mark_step <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ...) {
+mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
   layer <- list(mark = list2(type = "line",
     !!!mark_properties(interpolate = "step-after", ...)))
-  vega_layer(v, layer, encoding, data, transform, selection)
+  vega_layer(v, layer, encoding, data, selection)
 }
 
-mark_density <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ..., position = "identity", density = list()) {
-  v <- mark_area(v, encoding, data, transform, selection, ...,
+mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  position = "identity", density = list()) {
+  v <- mark_area(v, encoding, data, selection, ...,
     position = position)
   last <- nlayer(v)
   enc <- v$layer[[last]]$encoding
@@ -177,11 +172,11 @@ mark_density <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v
 }
 
-mark_bin2d <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ..., bin = TRUE) { # bin = list() opts
+mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  bin = TRUE) { # bin = list() opts
   # TODO: `bin` needs to take `x` and `y` bin setup
   layer <- list(mark = list2(type = "rect", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
@@ -190,10 +185,10 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, transform = NULL,
   v
 }
 
-mark_streamgraph <- function(v, encoding = NULL, data = NULL, transform = NULL,
-  selection = NULL, ...) {
+mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
+  ...) {
   layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
-  v <- vega_layer(v, layer, encoding, data, transform, selection)
+  v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- "center"
   # remove y axis as y values not important
