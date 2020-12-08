@@ -21,7 +21,8 @@ eval_enc <- function(data, encoding, encoding_name) {
     map(cols, function(x) encoding_spec(data[[x]], sym(x), "tooltip"))
   } else {
     spec <- eval_tidy(encoding, data = data)
-    encoding_spec(spec, field = encoding, encoding_name = encoding_name)
+    encoding_spec(spec, field = encoding, encoding_name = encoding_name,
+      data = data)
   }
 }
 
@@ -30,13 +31,13 @@ eval_encoding <- function(data, encoding) {
   map2(encoding, names(encoding), function(x, y) eval_enc(data, x, y))
 }
 
-eval_condition <- function(data, selection) {
+eval_condition <- function(data, selection, encoding) {
+  encoding <- standardise_names(encoding)
   selection_cp <- selection
   n_sel <- length(selection_cp)
   res <- vec_init(list(), n = n_sel)
   for (i in seq_len(n_sel)) {
     selection <- selection_cp[[i]]
-    encoding <- selection$encoding
     cond_true <- selection$true
     cond_false <- selection$false
     selection <- selection$selection
@@ -52,7 +53,7 @@ eval_condition <- function(data, selection) {
     } else {
       def_false <- list(value = eval_false)
     }
-    res[[i]] <- list2(!!encoding := list2(
+    res[[i]] <- list2(!!encoding[i] := list2(
       condition = list2(
         selection = selection_composition(selection),
         !!!def_true),
@@ -138,9 +139,9 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
 }
 
 virgo_op_env <- function() {
-  ops <- virgo_op()
+  ops <- c(virgo_op(), "select_if")
   fns <- map(ops, function(op) function(x, ...) {
-    if (is_missing(x)) { # vg_count() with missing arg
+    if (is_missing(x) || is_virgo_selection(x)) { # vg_count() with missing arg
       NULL
     } else { 
       x

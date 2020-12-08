@@ -13,22 +13,24 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     data <- NULL
   }
   data <- data %||% v$data$values
+
   if (!is.null(encoding)) {
-    layer <- c(layer, list(encoding = eval_encoding(data, encoding)))
-  }
-  if (!is.null(selection)) {
-    if (is_virgo_condition(selection)) {
+    which_selection <- map_lgl(encoding, function(x) 
+      if (quo_is_call(x)) call_name(x) == "select_if" else FALSE)
+    encoding_sel <- encoding[which_selection]
+    layer <- c(layer, list(
+      encoding = eval_encoding(data, encoding[!which_selection])))
+
+    selection <- map(encoding_sel, eval_tidy, data = data)
+    if (has_length(selection)) {
       trues <- map(selection, function(x) x$true)
       falses <- map(selection, function(x) x$false)
       fields <- c(fields, trues, falses)
-      condition <- eval_condition(data, selection)
+      condition <- eval_condition(data, selection, names(encoding_sel))
       layer$encoding <- c(layer$encoding, condition)
       selection <- selection[[1]]$selection
+      layer <- c(list(selection = unclass(selection)), layer)
     }
-    if (is_virgo_selection(selection)) {
-      sel <- unclass(selection)
-    }
-    layer <- c(layer, list(selection = sel))
   }
 
   # data needs updating

@@ -146,35 +146,14 @@ rand_id <- function() {
   paste0(rand, collapse = "")
 }
 
-virgo_condition_factory <- function(encoding = "color") {
-  force(encoding)
-  function(selection, true, false) {
-    stopifnot(is_virgo_selection(selection))
-    new_virgo_condition(list(list(selection = selection,
-      true = enquo(true), false =  enquo(false), encoding = encoding)))
-  }
+select_if <- function(selection, true, false) {
+  stopifnot(is_virgo_selection(selection))
+  new_virgo_condition(list(selection = selection,
+    true = enquo(true), false = enquo(false)))
 }
 
 new_virgo_condition <- function(x) {
   structure(x, class = "virgo_condition")
-}
-
-fill_if <- virgo_condition_factory("fill")
-size_if <- virgo_condition_factory("size")
-shape_if <- virgo_condition_factory("shape")
-color_if <- virgo_condition_factory("color")
-colour_if <- virgo_condition_factory("color")
-stroke_if <- virgo_condition_factory("stroke")
-opacity_if <- virgo_condition_factory("opacity")
-fill_opacity_if <- virgo_condition_factory("fillOpacity")
-stroke_opacity_if <- virgo_condition_factory("strokeOpacity")
-
-#' @export
-c.virgo_condition <- function(...) {
-  lst <- vec_c(!!!map(list2(...), unclass))
-  sel_name <- unique(map(lst, function(x) selection_composition(x$selection)))
-  stopifnot(has_length(sel_name, 1))
-  new_virgo_condition(lst)
 }
 
 is_virgo_selection <- function(x) {

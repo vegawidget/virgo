@@ -6,31 +6,42 @@ mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    selection = selection)
+    data = selection)
 
 mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    selection = select_interval(init = list(x = c(2, 4), y = c(15, 25))))
+    data = I(selection))
 
 mtcars %>%
   vega() %>%
-  mark_point(
-    encoding = enc(x = wt, y = mpg),
-    selection = c(
-      size_if(selection, 180, 60),
-      color_if(selection, factor(cyl), "grey")))
+  mark_circle(
+    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
+    data = select_interval(init = list(x = c(2, 4), y = c(15, 25))))
+
+
+mtcars %>%
+  vega() %>%
+  mark_point(enc(
+    x = wt, y = mpg,
+    colour = select_if(selection, factor(cyl), "grey")))
+
+mtcars %>%
+  vega() %>%
+  mark_point(enc(
+    x = wt, y = mpg,
+    colour = select_if(selection, factor(cyl), "grey"),
+    size = select_if(selection, 180, 60)))
 
 p1 <- mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(selection = color_if(selection, factor(cyl), "grey"))
+  mark_point(enc(color = select_if(selection, factor(cyl), "grey")))
 p2 <- mtcars %>%
   vega() %>%
-  mark_point(
-    encoding = enc(x = disp, y = hp,
-                   color = select_if(selection, factor(cyl), "#99d8c9")))
-# update
+  mark_point(enc(
+    x = disp, y = hp,
+    color = select_if(selection, factor(cyl), "#99d8c9")))
 hconcat(p1, p2)
 
 p3 <- mtcars %>%
@@ -43,7 +54,8 @@ hconcat(p1, p3)
 p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = selection)
+    size = 3, data = selection) -> test
+identical(test$layer[[1]]$selection, test$layer[[2]]$selection)
 # vg_window()
 
 p_bar <- mtcars %>%
@@ -73,22 +85,22 @@ c(color_if(a | b, "red", "grey"), size_if(a & b, 2, 3))
 
 p4 <- mtcars %>%
   vega() %>%
-  mark_point(
-    encoding = enc(x = wt, y = mpg),
-    selection = color_if(a | b, factor(cyl), "grey"))
+  mark_point(enc(
+    x = wt, y = mpg,
+    color = select_if(a | b, factor(cyl), "grey")))
 p4
 
 mtcars %>%
   vega() %>%
-  mark_point(
-    encoding = enc(x = wt, y = mpg),
-    selection = color_if(!(a | b), factor(cyl), "grey"))
+  mark_point(enc(
+    x = wt, y = mpg,
+    color = select_if(!(a | b), factor(cyl), "grey")))
 
 p5 <- mtcars %>%
   vega() %>%
   mark_point(
-    encoding = enc(x = disp, y = hp),
-    selection = color_if(a | b, factor(cyl), "#99d8c9"))
+    encoding = enc(x = disp, y = hp,
+    color = select_if(a | b, factor(cyl), "#99d8c9")))
 hconcat(p4, p5)
 
 mtcars %>%
@@ -96,15 +108,15 @@ mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = cyl,
-      tooltip = c(hp, cyl)),
-    selection = size_if(select_legend(cyl), 100, 20))
+      tooltip = c(hp, cyl),
+      size = select_if(select_legend(cyl), 100, 20)))
 
 mtcars %>%
   mutate(gear = factor(gear)) %>%
   vega() %>%
   mark_circle(
-    encoding = enc(x = wt, y = mpg, color = factor(cyl), shape = gear),
-    selection = opacity_if(select_legend(gear), 1, .2))
+    encoding = enc(x = wt, y = mpg, color = factor(cyl), shape = gear,
+      opacity = select_if(select_legend(gear), 1, .2)))
 
 mtcars %>%
   vega() %>%
