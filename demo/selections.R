@@ -28,8 +28,9 @@ p1 <- mtcars %>%
 p2 <- mtcars %>%
   vega() %>%
   mark_point(
-    encoding = enc(x = disp, y = hp),
-    selection = color_if(selection, factor(cyl), "#99d8c9"))
+    encoding = enc(x = disp, y = hp,
+                   color = select_if(selection, factor(cyl), "#99d8c9")))
+# update
 hconcat(p1, p2)
 
 # vg_filter(selection)
@@ -42,8 +43,10 @@ p3 <- mtcars %>%
 hconcat(p1, p3)
 
 p1 %>%
-  mark_rule(encoding = enc(x = NULL, y = vg_mean(mpg)), size = 3, color = "red",
-    transform = selection)
+  mark_rule(
+    encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
+    size = 3, data = selection)
+# vg_window()
 
 p_bar <- mtcars %>%
   vega(enc(x = disp)) %>%
