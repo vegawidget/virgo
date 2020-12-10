@@ -6,19 +6,19 @@ mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    data = selection)
+    selection = selection)
 
 mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    data = I(selection))
+    selection = I(selection))
 
 mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    data = select_interval(init = list(x = c(2, 4), y = c(15, 25))))
+    selection = select_interval(init = list(x = c(2, 4), y = c(15, 25))))
 
 
 mtcars %>%
@@ -48,25 +48,25 @@ p3 <- mtcars %>%
   vega() %>%
   mark_point(
     encoding = enc(x = disp, y = hp),
-    data = selection)
+    selection = selection)
 hconcat(p1, p3)
 
 p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = selection)
+    size = 3, selection = selection)
 # vg_window()
 
 p_bar <- mtcars %>%
   vega(enc(x = disp)) %>%
   mark_histogram() %>%
-  mark_histogram(data = selection, colour = "red")
+  mark_histogram(selection = selection, colour = "red")
 hconcat(p1, p_bar)
 
 p_box <- mtcars %>%
   vega(enc(x = factor(cyl), y = mpg)) %>%
   mark_boxplot() %>%
-  mark_boxplot(data = selection, colour = "red")
+  mark_boxplot(selection = selection, colour = "red")
 hconcat(p1, p_box)
 
 evt <- "[mousedown[!event.shiftKey], mouseup] > mousemove"
@@ -128,7 +128,7 @@ mtcars %>%
   vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    data = select_domain())
+    selection = select_domain())
 
 sp500 <- readr::read_csv("https://vega.github.io/vega-editor/app/data/sp500.csv") %>%
   mutate(date = lubridate::mdy(date))
@@ -139,13 +139,13 @@ v1 <- sp500 %>%
   scale_x(name = NULL, domain = brush)
 v2 <- sp500 %>%
   vega(enc(x = date, y = price), height = 100) %>%
-  mark_area(data = I(brush))
+  mark_area(selection = I(brush))
 vconcat(v1, v2)
 
 # input element binding
 
 select_cyl <-
-  select_bind(cyl = input_radio(choices = unique(factor(mtcars$cyl))),
+  select_bind(cyl = input_radio(choices = levels(factor(mtcars$cyl))),
               id = "Cylinders")
 
 mtcars %>%
@@ -158,7 +158,7 @@ mtcars %>%
 
 
 select_cyl <-
-  select_bind(cyl = input_select(choices = unique(factor(mtcars$cyl))),
+  select_bind(cyl = input_select(choices = levels(factor(mtcars$cyl))),
               id = "Cylinders")
 
 mtcars %>%
@@ -177,8 +177,7 @@ slider <- select_bind(
 mtcars %>%
   vega() %>%
   mark_circle(
-    enc(x = hp, y = mpg),
-    selection = color_if(slider, factor(cyl), "grey")
+    enc(x = hp, y = mpg, colour = select_if(slider, factor(cyl), "grey"))
   )
 
 slider <- select_bind(
@@ -192,7 +191,7 @@ mtcars %>%
   )
 
 double_slider <- select_bind(
-  cyl = input_select(choices = unique(factor(mtcars$cyl))),
+  cyl = input_select(choices = levels(factor(mtcars$cyl))),
   carb = input_slider(min = 1, max = 8, step = 1, init = 8)
 )
 
