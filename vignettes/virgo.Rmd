@@ -1,0 +1,19 @@
+---
+title: "Using virgo to explore Melbourne's microclimate"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using virgo to explore Melbourne's microclimate}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(virgo)
+```
