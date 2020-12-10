@@ -42,7 +42,6 @@ data <- jsonlite::fromJSON('[
       {"date": "Sun, 01 Jan 2012 00:15:00", "distance": 3}
     ]')
 
-# FIXME: `step` not working
 data %>%
   vega(enc(x = vg_minutes(date, step = 5), y = vg_sum(distance))) %>%
   mark_bar()

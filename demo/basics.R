@@ -130,7 +130,6 @@ mtcars %>%
   mark_point() %>%
   scale_colour(scheme = "category20b")
 
-# FIXME: domain_mid not working
 mtcars %>%
   vega(enc(x = wt, y = mpg, colour = hp)) %>%
   mark_point() %>%

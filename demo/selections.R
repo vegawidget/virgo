@@ -152,9 +152,9 @@ mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega() %>%
   mark_circle(
-    enc(x = hp, y = mpg),
-    selection = color_if(select_cyl, cyl, "black")
-  )
+    enc(x = hp, y = mpg,
+    color = select_if(select_cyl, cyl, "black")
+  ))
 
 
 select_cyl <-
@@ -196,16 +196,13 @@ double_slider <- select_bind(
   carb = input_slider(min = 1, max = 8, step = 1, init = 8)
 )
 
-# does not quite work how i thought it would...
-p <- mtcars %>%
+# FIXME: does not quite work how i thought it would...
+mtcars %>%
   vega() %>%
   mark_circle(
-    enc(x = hp, y = mpg),
-    selection = c(
-      color_if(double_slider, factor(cyl), "grey"),
-      size_if(double_slider, 100, 50)
-    )
-  )
+    enc(x = hp, y = mpg,
+      colour = select_if(double_slider, factor(cyl), "grey"),
+      size = select_if(double_slider, 100, 50)))
 
 stocks <- readr::read_csv(
   "https://vega.github.io/vega-editor/app/data/stocks.csv"
@@ -216,9 +213,9 @@ hover <- select_single(on = "mouseover", empty = "all", init = list(symbol = "AA
 stocks %>%
   filter(symbol != "IBM") %>%
   vega(enc(x = date, y = price)) %>%
-  mark_line(selection =
-    c(colour_if(hover, symbol, "grey"),
-      opacity_if(hover, 1, 0.2))) %>%
+  mark_line(enc(
+    colour = select_if(hover, symbol, "grey"),
+    opacity = select_if(hover, 1, 0.2))) %>%
   mark_text(
     encoding = enc(x = vg_max(date), y = vg_argmax(price, date), text = symbol),
     dx = 4, align = "left")
