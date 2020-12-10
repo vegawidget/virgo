@@ -69,7 +69,7 @@ as_vegaspec.virgo <- function(spec, ...) {
 
 #' @export
 print.virgo <- function(x, ...) {
-  print(as_vegaspec(x), ...)
+  print(vegawidget(as_vegaspec(x), embed = vega_embed(actions = FALSE)), ...)
   invisible(x)
 }
 
