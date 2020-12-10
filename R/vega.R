@@ -68,8 +68,10 @@ as_vegaspec.virgo <- function(spec, ...) {
 }
 
 #' @export
-print.virgo <- function(x, ...) {
-  print(vegawidget(as_vegaspec(x), embed = vega_embed(actions = FALSE)), ...)
+print.virgo <- function(x, renderer = "canvas", ...) {
+  renderer <- arg_match(renderer, c("canvas", "svg"))
+  print(vegawidget(as_vegaspec(x),
+    embed = vega_embed(renderer = renderer, actions = FALSE)), ...)
   invisible(x)
 }
 
