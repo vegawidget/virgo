@@ -20,7 +20,6 @@ mtcars %>%
   facet_views(row = cyl, column = gear)
 
 mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg),
-    width = 50, height = 50) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
   facet_views(row = cyl, column = gear)
