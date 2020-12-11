@@ -1,11 +1,19 @@
+#' @importFrom scales log10_trans sqrt_trans expand_range
 # zap() gives defaults
 # NULL removes/disables
 # TODO: args accepted in ... depend on continuous or discrete scales,
 # e.g. `nice` in continuous and `format` in temporal
 scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
-  orient = "bottom", ...) {
+  breaks = zap(), orient = "bottom", ...) {
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$x$scale$type <- type
+    data <- v$layer[[i]]$data$values
+    field <- v$layer[[i]]$encoding$x$field
+    v$layer[[i]]$encoding$x$scale$domain <- rescale_domain(data, field, type)
+    v$layer[[i]]$encoding$x$axis$values <- rebreak_axis(data, field, type)
+    if (!is_zap(breaks)) {
+      v$layer[[i]]$encoding$x$axis$values <- breaks
+    }
     if (!is_zap(name)) {
       title <- list(title = name) # special case for name = NULL
       v$layer[[i]]$encoding$x <- c(v$layer[[i]]$encoding$x, title)
@@ -24,9 +32,16 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
 }
 
 scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
-  orient = "left", ...) {
+  breaks = zap(), orient = "left", ...) {
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$y$scale$type <- type
+    data <- v$layer[[i]]$data$values
+    field <- v$layer[[i]]$encoding$y$field
+    v$layer[[i]]$encoding$y$scale$domain <- rescale_domain(data, field, type)
+    v$layer[[i]]$encoding$y$axis$values <- rebreak_axis(data, field, type)
+    if (!is_zap(breaks)) {
+      v$layer[[i]]$encoding$y$axis$values <- breaks
+    }
     if (!is_zap(name)) {
       title <- list(title = name)
       v$layer[[i]]$encoding$y <- c(v$layer[[i]]$encoding$y, title)
@@ -66,10 +81,25 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(), ...) {
 
 scale_colour <- scale_color
 
-scale_type <- function(x, type = "linear") {
+rescale_domain <- function(data, field, type = "linear") {
+  x <- data[[field]]
   switch(type,
-    "log" = log(x, 10),
-    "sqrt" = sqrt(x),
+    "log" = log10_trans()$inverse(expand_domain(log(x, 10))),
+    "sqrt" = sqrt_trans()$inverse(expand_domain(sqrt(x))),
     x
   )
+}
+
+rebreak_axis <- function(data, field, type = "linear") {
+  x <- data[[field]]
+  switch(type,
+    "log" = log10_trans()$breaks(x),
+    "sqrt" = sqrt_trans()$breaks(x),
+    x
+  )
+}
+
+expand_domain <- function(x) {
+  rng <- range(x, na.rm = TRUE)
+  expand_range(rng, mul = 0.05)
 }

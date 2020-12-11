@@ -95,14 +95,12 @@ encoding_spec.default <- function(x, field, ...) {
 
 encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
-  res <- list2(field = as_field(field), !!!type)
+  res <- list2(
+    field = as_field(field), !!!type, 
+    axis = list(values = scales::breaks_pretty()(x))
+  )
   if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
-  rng <- range(x, na.rm = TRUE)
-  width <- diff(rng)
-  min_x <- min(x, na.rm = TRUE) - 0.05 * width
-  max_x <- max(x, na.rm = TRUE) + 0.05 * width
-  domain <- c(min_x, max_x)
-  list2(!!!res, scale = list(domain = domain))
+  list2(!!!res, scale = list(domain = expand_domain(x)))
 }
 
 encoding_spec.factor <- function(x, field, encoding_name, ...) {

@@ -21,35 +21,6 @@ mtcars %>%
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  scale_x(type = "log")
-
-vega(mtcars) %>%
-  mark_point(encoding = enc(x = log(wt), y = mpg))
-
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  facet_views(row = cyl)
-
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(data = mtcars) %>%
-  facet_views(row = cyl)
-
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  facet_views(column = cyl)
-
-mtcars %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  facet_views(row = cyl, column = gear)
-
-mtcars %>%
-  mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
   mark_point()
 
