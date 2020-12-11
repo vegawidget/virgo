@@ -165,8 +165,8 @@ vconcat(v1, v2)
 # input element binding
 
 select_cyl <-
-  select_bind(cyl = input_radio(choices = levels(factor(mtcars$cyl))),
-              id = "Cylinders")
+  select_bind(
+    cyl = input_radio("Cylinders", choices = levels(factor(mtcars$cyl))))
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
@@ -177,8 +177,7 @@ mtcars %>%
   ))
 
 select_cyl <-
-  select_bind(cyl = input_select(choices = levels(factor(mtcars$cyl))),
-              id = "Cylinders")
+  select_bind(cyl = input_select(choices = levels(factor(mtcars$cyl))))
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
@@ -212,7 +211,6 @@ double_slider <- select_bind(
   cyl = input_select(choices = levels(factor(mtcars$cyl)))
 )
 
-# FIXME: does not quite work how i thought it would...
 mtcars %>%
   vega() %>%
   mark_circle(

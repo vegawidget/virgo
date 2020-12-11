@@ -12,21 +12,21 @@ new_virgo_input <- function(x, init = NULL) {
 }
 # inputs that are bound to an HTML element are special case of
 # single selection
-input_slider <- function(min, max, step, init = NULL) {
+input_slider <- function(name = NULL, min, max, step, init = NULL) {
   new_virgo_input(
-    list(input = "range", min = min, max = max, step = step),
+    list(input = "range", min = min, max = max, step = step, name = name),
     init = init
   )
 }
-input_radio <- function(choices, labels = NULL, init = NULL) {
+input_radio <- function(name = NULL, choices, labels = NULL, init = NULL) {
   new_virgo_input(
-    list(input = "radio", options = choices, labels = labels),
+    list(input = "radio", options = choices, labels = labels, name = name),
     init = init
   )
 }
-input_select <- function(choices, labels = NULL, init = NULL) {
+input_select <- function(name = NULL, choices, labels = NULL, init = NULL) {
   new_virgo_input(
-    list(input = "select", options = choices, labels = labels),
+    list(input = "select", options = choices, labels = labels, name = name),
     init = init
   )
 }
@@ -46,39 +46,33 @@ input_color <- input_colour <- input_factory("color")
 input_textbox <- input_factory("text")
 input_checkbox <- input_factory("checkbox")
 
-select_bind <- function(..., id = NULL) {
+select_bind <- function(...) {
   elements <- map(enquos(..., .named = TRUE), eval_tidy)
+  # FIXME: expect the same type of inputs
   stopifnot(all(map_lgl(elements, is_virgo_input)))
-  fields <- names(elements)
-  if (length(fields) == 1) {
-    fields <- list(fields)
-  }
+  fields <- list(names(elements))
   inits <- map(elements, function(.) attr(., "init"))
   # init does not work unless all elements are specified
   if (any(map_lgl(inits, is.null))) {
     inits <- NULL
   }
   binds <- map(elements, unclass)
-  if (is.null(id)) {
-    id <- rand_id()
-  }
   new_virgo_selection(
     list2(
-      !!id := list(type = "single",
-                   fields = fields,
-                   bind = binds,
-                   init = inits)
+      !!rand_id() := list(type = "single",
+                          fields = fields,
+                          bind = binds,
+                          init = inits)
     )
   )
 }
 
-select_single <- function(encodings = NULL, init = NULL, bind = NULL,
-  nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
-  resolve = "global") {
+select_single <- function(encodings = NULL, init = NULL, nearest = FALSE,
+  on = "click", clear = "dblclick", empty = "all", resolve = "global") {
   new_virgo_selection(list2(!!rand_id() := list(
     type = "single", encodings = encodings, init = init,
-    bind = bind, nearest = nearest,
-    on = on, clear = clear, empty = empty, resolve = resolve)))
+    nearest = nearest, on = on, clear = clear, empty = empty,
+    resolve = resolve)))
 }
 
 select_multi <- function(encodings = NULL, init = NULL,
