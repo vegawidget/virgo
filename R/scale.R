@@ -9,8 +9,8 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
     v$layer[[i]]$encoding$x$scale$type <- type
     data <- v$layer[[i]]$data$values
     field <- v$layer[[i]]$encoding$x$field
-    v$layer[[i]]$encoding$x$scale$domain <- rescale_domain(data, field, type)
-    v$layer[[i]]$encoding$x$axis$values <- rebreak_axis(data, field, type)
+    v$layer[[i]]$encoding$x$scale$domain <- rescale_domain(data[[field]], type)
+    v$layer[[i]]$encoding$x$axis$values <- rebreak_axis(data[[field]], type)
     if (!is_zap(breaks)) {
       v$layer[[i]]$encoding$x$axis$values <- breaks
     }
@@ -37,8 +37,8 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
     v$layer[[i]]$encoding$y$scale$type <- type
     data <- v$layer[[i]]$data$values
     field <- v$layer[[i]]$encoding$y$field
-    v$layer[[i]]$encoding$y$scale$domain <- rescale_domain(data, field, type)
-    v$layer[[i]]$encoding$y$axis$values <- rebreak_axis(data, field, type)
+    v$layer[[i]]$encoding$y$scale$domain <- rescale_domain(data[[field]], type)
+    v$layer[[i]]$encoding$y$axis$values <- rebreak_axis(data[[field]], type)
     if (!is_zap(breaks)) {
       v$layer[[i]]$encoding$y$axis$values <- breaks
     }
@@ -81,8 +81,7 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(), ...) {
 
 scale_colour <- scale_color
 
-rescale_domain <- function(data, field, type = "linear") {
-  x <- data[[field]]
+rescale_domain <- function(x, type = "linear") {
   switch(type,
     "log" = log10_trans()$inverse(expand_domain(log(x, 10))),
     "sqrt" = sqrt_trans()$inverse(expand_domain(sqrt(x))),
@@ -90,12 +89,19 @@ rescale_domain <- function(data, field, type = "linear") {
   )
 }
 
-rebreak_axis <- function(data, field, type = "linear") {
-  x <- data[[field]]
+rebreak_axis <- function(x, type = "linear") {
+  UseMethod("rebreak_axis")
+}
+
+rebreak_axis.default <- function(x, type = "linear") {
+  NULL
+}
+
+rebreak_axis.numeric <- function(x, type = "linear") {
   switch(type,
     "log" = log10_trans()$breaks(x),
     "sqrt" = sqrt_trans()$breaks(x),
-    x
+    breaks_pretty()(x)
   )
 }
 
