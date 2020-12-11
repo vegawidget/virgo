@@ -8,7 +8,7 @@
 # init = list(x = c(55, 160), y = c(13, 37))
 
 new_virgo_input <- function(x, init = NULL) {
-  structure(x, init = init, class = c("virgo_input", "list"))
+  structure(x, init = init, class = "virgo_input")
 }
 # inputs that are bound to an HTML element are special case of
 # single selection
@@ -146,7 +146,7 @@ rand_id <- function() {
   paste0(rand, collapse = "")
 }
 
-select_if <- function(selection, true, false) {
+encode_if <- function(selection, true, false) {
   stopifnot(is_virgo_selection(selection))
   new_virgo_condition(list(selection = selection,
     true = enquo(true), false = enquo(false)))

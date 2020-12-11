@@ -65,3 +65,11 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(), ...) {
 }
 
 scale_colour <- scale_color
+
+scale_type <- function(x, type = "linear") {
+  switch(type,
+    "log" = log(x, 10),
+    "sqrt" = sqrt(x),
+    x
+  )
+}
