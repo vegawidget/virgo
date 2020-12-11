@@ -67,29 +67,14 @@ p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
     size = 3, selection = selection)
-p1 %>%
-  mark_rule(
-    encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = selection)
-p1 %>%
-  mark_rule(
-    encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, selection = selection)
 
-p1 %>%
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point() %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = mtcars[1:10, ], selection = selection)
+    size = 3, data = mtcars[mtcars$cyl %in% c(4, 6), ], selection = selection)
 
-p1 %>%
-  mark_rule(
-    encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = mtcars[1:10, ], selection = selection)
-
-p1 %>%
-  mark_rule(
-    encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
-    size = 3, data = mtcars[1:10, ])
 # vg_window()
 
 p_bar <- mtcars %>%

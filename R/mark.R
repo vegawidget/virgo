@@ -15,7 +15,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
 
   if (!is.null(encoding)) {
     which_selection <- map_lgl(encoding, function(x) 
-      quo_is_call(x) && call_name(x) == "select_if")
+      quo_is_call(x) && call_name(x) == "encode_if")
     encoding_sel <- encoding[which_selection]
     layer <- c(layer, list(
       encoding = eval_encoding(data, encoding[!which_selection])))

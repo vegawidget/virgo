@@ -139,7 +139,7 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
 }
 
 virgo_op_env <- function() {
-  ops <- c(virgo_op(), "select_if")
+  ops <- c(virgo_op(), "encode_if")
   fns <- map(ops, function(op) function(x, ...) {
     if (is_missing(x) || is_virgo_selection(x)) { # vg_count() with missing arg
       NULL
