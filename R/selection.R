@@ -18,15 +18,15 @@ input_slider <- function(name = NULL, min, max, step, init = NULL) {
     init = init
   )
 }
-input_radio <- function(name = NULL, choices, labels = NULL, init = NULL) {
+input_radio <- function(name = NULL, choices, init = NULL) {
   new_virgo_input(
-    list(input = "radio", options = choices, labels = labels, name = name),
+    list(input = "radio", options = choices, labels = names(choices), name = name),
     init = init
   )
 }
-input_select <- function(name = NULL, choices, labels = NULL, init = NULL) {
+input_select <- function(name = NULL, choices, init = NULL) {
   new_virgo_input(
-    list(input = "select", options = choices, labels = labels, name = name),
+    list(input = "select", options = choices, labels = names(choices), name = name),
     init = init
   )
 }
