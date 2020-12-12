@@ -93,6 +93,17 @@ encoding_spec.default <- function(x, field, ...) {
   list2(field = as_field(field), !!!type)
 }
 
+encoding_spec.Date <- function(x, field, encoding_name, ...) {
+  type <- data_type(x)
+  res <- list2(
+    field = as_field(field), !!!type, 
+    axis = list(values = unname(interpret_domain(scales::breaks_pretty()(x))))
+  )
+  if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
+  domain <- date_trans()$inverse(expand_domain(date_trans()$transform(x)))
+  list2(!!!res, scale = list(domain = interpret_domain(domain)))
+}
+
 encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(

@@ -34,14 +34,13 @@ as_vegaspec.virgo <- function(spec, ...) {
     c(x$encoding$x$scale$domain, x$encoding$x2$scale$domain))
   ys <- map(layer, function(x) 
     c(x$encoding$y$scale$domain, x$encoding$y2$scale$domain))
-  xvec <- vec_c(!!!xs)
-  yvec <- vec_c(!!!ys)
-  xrng <- yrng <- NULL
-  if (!is.null(xvec) && !has_name(xvec, "selection")) {
-    xrng <- range(xvec)
+  xrng <- vec_c(!!!xs)
+  yrng <- vec_c(!!!ys)
+  if (!is.null(xrng) && !has_name(xrng, "selection") && !is_bare_list(xrng)) {
+    xrng <- range(xrng)
   }
-  if (!is.null(yvec) && !has_name(yvec, "selection")) {
-    yrng <- range(yvec)
+  if (!is.null(yrng) && !has_name(yrng, "selection") && !is_bare_list(yrng)) {
+    yrng <- range(yrng)
   }
   for (i in seq_along(layer)) {
     mark_type <- layer[[i]]$mark$type

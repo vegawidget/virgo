@@ -2,25 +2,6 @@ library(dplyr)
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  scale_x(domain = c(2, 4))
-
-mtcars %>%
-  mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point() %>%
-  scale_x(orient = "top") %>%
-  scale_y(orient = "right")
-
-mtcars %>%
-  mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(clip = TRUE) %>%
-  scale_x(domain = c(2, 4))
-
-mtcars %>%
-  mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
   mark_point()
 

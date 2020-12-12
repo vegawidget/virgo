@@ -1,4 +1,4 @@
-#' @importFrom scales log10_trans sqrt_trans expand_range
+#' @importFrom scales log10_trans sqrt_trans date_trans expand_range breaks_pretty
 # zap() gives defaults
 # NULL removes/disables
 # TODO: args accepted in ... depend on continuous or discrete scales,
@@ -19,12 +19,8 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
       v$layer[[i]]$encoding$x <- c(v$layer[[i]]$encoding$x, title)
     }
     if (!is_zap(domain)) {
-      if (is_virgo_selection(domain)) {
-        v$layer[[i]]$encoding$x$scale$domain <- 
-          list(selection = selection_composition(domain))
-      } else {
-        v$layer[[i]]$encoding$x$scale$domain <- domain
-      }
+      # rescale_domain(domain, type) includes points outside of specified domain
+      v$layer[[i]]$encoding$x$scale$domain <- interpret_domain(domain)
     }
     v$layer[[i]]$encoding$x$axis$orient <- orient
   }
@@ -47,12 +43,7 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
       v$layer[[i]]$encoding$y <- c(v$layer[[i]]$encoding$y, title)
     }
     if (!is_zap(domain)) {
-      if (is_virgo_selection(domain)) {
-        v$layer[[i]]$encoding$y$scale$domain <- 
-          list(selection = selection_composition(domain))
-      } else {
-        v$layer[[i]]$encoding$y$scale$domain <- domain
-      }
+      v$layer[[i]]$encoding$y$scale$domain <- rescale_domain(domain, type)
     }
     v$layer[[i]]$encoding$y$axis$orient <- orient
   }
@@ -82,11 +73,20 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(), ...) {
 scale_colour <- scale_color
 
 rescale_domain <- function(x, type = "linear") {
+  UseMethod("rescale_domain")
+}
+
+rescale_domain.default <- function(x, type = "linear") {
   switch(type,
-    "log" = log10_trans()$inverse(expand_domain(log(x, 10))),
-    "sqrt" = sqrt_trans()$inverse(expand_domain(sqrt(x))),
-    x
+    "log" = log10_trans()$inverse(expand_domain(log10_trans()$transform(x))),
+    "sqrt" = sqrt_trans()$inverse(expand_domain(sqrt_trans()$transform(x))),
+    expand_domain(x)
   )
+}
+
+rescale_domain.Date <- function(x, type = "time") {
+  domain <- date_trans()$inverse(expand_domain(date_trans()$transform(x)))
+  interpret_domain(domain)
 }
 
 rebreak_axis <- function(x, type = "linear") {
@@ -105,7 +105,37 @@ rebreak_axis.numeric <- function(x, type = "linear") {
   )
 }
 
+rebreak_axis.Date <- function(x, type = "linear") {
+  unname(interpret_domain(breaks_pretty()(x)))
+}
+
 expand_domain <- function(x) {
   rng <- range(x, na.rm = TRUE)
   expand_range(rng, mul = 0.05)
+}
+
+interpret_domain <- function(x) {
+  UseMethod("interpret_domain")
+}
+
+interpret_domain.default <- function(x) {
+  x
+}
+
+interpret_domain.virgo_selection <- function(x) {
+  list(selection = selection_composition(x)) 
+}
+
+interpret_domain.Date <- function(x) {
+  lst <- as.POSIXlt(x)
+  map(lst, function(x) 
+    list(year = 1900 + x$year, month = x$mon + 1, date = x$mday))
+}
+
+interpret_domain.POSIXt <- function(x) {
+  lst <- as.POSIXlt(x)
+  map(lst, function(x) 
+    list(year = 1900 + x$year, month = x$mon + 1, date = x$mday,
+      hours = x$hour, minutes = x$min, seconds = x$sec %/% 1,
+      milliseconds = (x$sec %% 1 * 1000) %/% 1))
 }
