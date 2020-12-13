@@ -131,8 +131,7 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
-  v$layer[[last]]$encoding$x$scale <- NULL
-  v$layer[[last]]$encoding$y$scale <- NULL
+  v$layer[[last]]$encoding$y$scale$zero <- TRUE
   v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v
 }
@@ -148,6 +147,7 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ..., position = "stack", bin = TRUE) { # bin = list() opts
   v <- mark_bar(v, encoding, data, selection, ..., position = position)
   last <- nlayer(v)
+  v$layer[[last]]$encoding$x$scale$padding <- 10
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
@@ -172,7 +172,6 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v$layer[[last]]$transform <- list(list2(density = density_field,
     groupby = groupby, !!!density))
   v$layer[[last]]$encoding$x$field <- "value"
-  v$layer[[last]]$encoding$x$scale$domain <- NULL
   v$layer[[last]]$encoding$y <- c(enc$y, field = "density", type = "quantitative")
   v
 }

@@ -95,21 +95,14 @@ encoding_spec.default <- function(x, field, ...) {
 
 encoding_spec.Date <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
-  res <- list2(
-    field = as_field(field), !!!type, 
-    axis = list(values = unname(interpret_domain(scales::breaks_pretty()(x))))
-  )
+  res <- list2(field = as_field(field), !!!type)
   if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
-  domain <- date_trans()$inverse(expand_domain(date_trans()$transform(x)))
-  list2(!!!res, scale = list(domain = interpret_domain(domain)))
+  list2(!!!res, scale = list(padding = 10))
 }
 
 encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
-  res <- list2(
-    field = as_field(field), !!!type, 
-    axis = list(values = scales::breaks_pretty()(x))
-  )
+  res <- list2(field = as_field(field), !!!type)
   if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
   list2(!!!res, scale = list(domain = expand_domain(x)))
 }
@@ -133,18 +126,18 @@ encoding_spec.virgo_aggregate <- function(x, field, ...) {
     arg_field <- as_string(call_args(field)[[2]])
     list2(
       field = as_field(field), aggregate = list2(!!aggregate := arg_field),
-      type = type, scale = list(zero = FALSE))
+      type = type, scale = list(zero = FALSE, padding = 10))
   } else {
     list2(
       field = as_field(field), aggregate = aggregate,
-      type = type, scale = list(zero = FALSE))
+      type = type, scale = list(zero = FALSE, padding = 10))
   }
 }
 
 encoding_spec.virgo_timeunit <- function(x, field, ...) {
   list2(field = as_field(field),
-    timeUnit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc",
-    type = "temporal")
+    timeUnit = list(unit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc"),
+    type = "temporal", scale = list(padding = 10))
 }
 
 virgo_op_env <- function() {

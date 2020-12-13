@@ -27,7 +27,7 @@ population %>%
   vega() %>%
   mark_bar(enc(x = vg_sum(people), y = ordered(age)))
 
-population %>%
+ population %>%
   filter(year == 2000) %>%
   vega() %>%
   mark_bar(enc(x = ordered(age), y = vg_sum(people), color = factor(sex)))

@@ -45,15 +45,3 @@ data <- jsonlite::fromJSON('[
 data %>%
   vega(enc(x = vg_minutes(date, step = 5), y = vg_sum(distance))) %>%
   mark_bar()
-
-library(vegawidget)
-list(
-  `$schema` = vega_schema(), # specifies Vega-Lite
-  data = list(values = data),
-  mark = "bar",
-  encoding = list(
-    x = list(field = "date", timeUnit = list(unit = "minutes"), type = "temporal"),
-    y = list(field = "distance", aggregate = "sum", type = "quantitative")
-  )
-) %>%
-  as_vegaspec()
