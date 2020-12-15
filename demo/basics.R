@@ -20,6 +20,10 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, group = cyl)) %>%
   mark_line()
 
+iris %>%
+  vega(encoding = enc(x = Sepal.Length, y = Sepal.Width)) %>%
+  mark_point()
+
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, tooltip = wt)) %>%
   mark_point()

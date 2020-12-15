@@ -72,15 +72,15 @@ as_field <- function(quo) {
       if (vec_in(fn, "vg_count")) {
         ""
       } else if (vec_in(fn, virgo_op())) {
-        as_label(call_args(quo)[[1]])
+        square_brackets(as_label(call_args(quo)[[1]]))
       } else {
-        as_label(quo)
+        square_brackets(as_label(quo))
       }
     } else {
-      as_label(quo)
+      square_brackets(as_label(quo))
     }
   } else {
-    as_label(quo)
+    square_brackets(as_label(quo))
   }
 }
 
