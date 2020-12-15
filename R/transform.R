@@ -67,3 +67,8 @@ vg_hours <- virgo_timeunit_factory("hours")
 vg_minutes <- virgo_timeunit_factory("minutes")
 vg_seconds <- virgo_timeunit_factory("seconds")
 vg_milliseconds <- virgo_timeunit_factory("milliseconds")
+
+vg_window <- function(x, frame = list(NULL, 0), op = "sum", sort = NULL) {
+  new_virgo_op(x, window = list(op = op), frame = frame,
+    class = "virgo_window")
+}

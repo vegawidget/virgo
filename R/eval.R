@@ -140,6 +140,10 @@ encoding_spec.virgo_timeunit <- function(x, field, ...) {
     type = "temporal", scale = list(padding = 10))
 }
 
+encoding_spec.virgo_window <- function(x, field, ...) {
+  abort("`encoding` specs don't know how to handle `vg_window()`.")
+}
+
 virgo_op_env <- function() {
   ops <- c(virgo_op(), "encode_if")
   fns <- map(ops, function(op) function(x, ...) {

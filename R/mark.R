@@ -169,8 +169,13 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   density_field <- enc$x$field
   groupby <- as.list(unique(c(enc$color$field, enc$fill$field, enc$detail$field,
     enc$stroke$field)))
-  v$layer[[last]]$transform <- list(list2(density = density_field,
-    groupby = groupby, !!!density))
+  dens <- list2(density = density_field, groupby = groupby, !!!density)
+  trans <- vec_c(!!!v$layer[[last]]$transform)
+  if (is.null(trans)) {
+    v$layer[[last]]$transform <- list(dens)
+  } else {
+    v$layer[[last]]$transform <- list(trans, dens)
+  }
   v$layer[[last]]$encoding$x$field <- "value"
   v$layer[[last]]$encoding$y <- c(enc$y, field = "density", type = "quantitative")
   v
@@ -200,8 +205,23 @@ mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
   v
 }
 
-mark_smooth <- function() {
-
+mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  method = "lm", formula = y ~ x, bandwidth = 0.3) {
+  method <- arg_match(method, c("lm", "loess"))
+  method <- if (method == "lm") "regression" else "loess"
+  layer <- list(mark = list2(type = "line", !!!mark_properties(...)))
+  v <- vega_layer(v, layer, encoding, data, selection)
+  last <- nlayer(v)
+  x <- v$layer[[last]]$encoding$x
+  y <- v$layer[[last]]$encoding$y
+  smooth_fn <- list2(!!method := x$field, on = y$field, bandwidth = bandwidth)
+  trans <- vec_c(!!!v$layer[[last]]$transform)
+  if (is.null(trans)) {
+    v$layer[[last]]$transform <- list(smooth_fn)
+  } else {
+    v$layer[[last]]$transform <- list(trans, smooth_fn)
+  }
+  v
 }
 
 mark_qq <- function() {

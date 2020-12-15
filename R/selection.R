@@ -2,11 +2,6 @@
 # it will never be evaluated in console mode
 # a random id needs to be assigned when it's created for composition
 
-# slider <- input_slider(1:10, min, max, step, init)
-# bind = c(Year = slider)
-# init = c(Cycliners = 4, Year = 1977)
-# init = list(x = c(55, 160), y = c(13, 37))
-
 new_virgo_input <- function(x, init = NULL) {
   structure(x, init = init, class = "virgo_input")
 }
@@ -111,8 +106,9 @@ select_domain <- function() {
     type = "interval", bind = "scales")))
 }
 
-new_virgo_selection <- function(x, composition = NULL) {
-  structure(x, composition = composition, class = "virgo_selection")
+new_virgo_selection <- function(x, composition = NULL, transform = NULL) {
+  structure(x, composition = composition, transform = transform,
+    class = "virgo_selection")
 }
 
 #' @export
@@ -171,4 +167,12 @@ selection_union <- function(x) {
   x[[1]]$selection <- vec_set_names(unnamed_sel, names_sel[unique_idx])
   x <- c(x[1], map(x[-1], function(x) {x$selection <- NULL; x}))
   x
+}
+
+mutate.virgo_selection <- function(.data, ...) {
+  quos <- enquos(..., .named = TRUE)
+  fields <- names(quos)
+  window_ops <- quos[[1]]
+  trans <- list(list(window = list()))
+  new_virgo_selection()
 }
