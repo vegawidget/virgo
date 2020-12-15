@@ -96,15 +96,19 @@ encoding_spec.default <- function(x, field, ...) {
 encoding_spec.Date <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(field = as_field(field), !!!type)
-  if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
-  list2(!!!res, scale = list(padding = 10))
+  if (any(vec_in(c("x", "y"), encoding_name))) {
+    res <- list2(!!!res, scale = list(padding = 10))
+  }
+  res
 }
 
 encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(field = as_field(field), !!!type)
-  if (any(vec_in(c("color", "fill", "tooltip"), encoding_name))) { return(res) }
-  list2(!!!res, scale = list(domain = expand_domain(x)))
+  if (any(vec_in(c("x", "y"), encoding_name))) {
+    res <- list2(!!!res, scale = list(domain = expand_domain(x)))
+  }
+  res
 }
 
 encoding_spec.factor <- function(x, field, encoding_name, ...) {
@@ -119,25 +123,31 @@ encoding_spec.factor <- function(x, field, encoding_name, ...) {
 
 encoding_spec.character <- encoding_spec.factor
 
-encoding_spec.virgo_aggregate <- function(x, field, ...) {
+encoding_spec.virgo_aggregate <- function(x, field, encoding_name, ...) {
   aggregate <- x %@% "aggregate"
   type <- x %@% "type"
   if (vec_in(aggregate, c("argmin", "argmax"))) {
     arg_field <- as_string(call_args(field)[[2]])
-    list2(
+    res <- list2(
       field = as_field(field), aggregate = list2(!!aggregate := arg_field),
-      type = type, scale = list(zero = FALSE, padding = 10))
+      type = type)
   } else {
-    list2(
-      field = as_field(field), aggregate = aggregate,
-      type = type, scale = list(zero = FALSE, padding = 10))
+    res <- list2(field = as_field(field), aggregate = aggregate, type = type)
   }
+  if (any(vec_in(c("x", "y"), encoding_name))) {
+    res <- list2(!!!res, scale = list(zero = FALSE, padding = 10))
+  }
+  res
 }
 
-encoding_spec.virgo_timeunit <- function(x, field, ...) {
-  list2(field = as_field(field),
+encoding_spec.virgo_timeunit <- function(x, field, encoding_name, ...) {
+  res <- list2(field = as_field(field),
     timeUnit = list(unit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc"),
-    type = "temporal", scale = list(padding = 10))
+    type = "temporal")
+  if (any(vec_in(c("x", "y"), encoding_name))) {
+    res <- list2(!!!res, scale = list(padding = 10))
+  }
+  res
 }
 
 encoding_spec.virgo_window <- function(x, field, ...) {

@@ -201,7 +201,7 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
-  v$layer[[last]]$encoding$y <- c(x, list(bin = bin))
+  v$layer[[last]]$encoding$y <- c(y, list(bin = bin))
   v
 }
 
