@@ -105,7 +105,7 @@ encoding_spec.Date <- function(x, field, encoding_name, ...) {
 encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(field = as_field(field), !!!type)
-  if (any(vec_in(c("x", "y"), encoding_name))) {
+  if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
     res <- list2(!!!res, scale = list(domain = expand_domain(x)))
   }
   res
@@ -134,7 +134,7 @@ encoding_spec.virgo_aggregate <- function(x, field, encoding_name, ...) {
   } else {
     res <- list2(field = as_field(field), aggregate = aggregate, type = type)
   }
-  if (any(vec_in(c("x", "y"), encoding_name))) {
+  if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
     res <- list2(!!!res, scale = list(zero = FALSE, padding = 10))
   }
   res
@@ -144,7 +144,7 @@ encoding_spec.virgo_timeunit <- function(x, field, encoding_name, ...) {
   res <- list2(field = as_field(field),
     timeUnit = list(unit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc"),
     type = "temporal")
-  if (any(vec_in(c("x", "y"), encoding_name))) {
+  if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
     res <- list2(!!!res, scale = list(padding = 10))
   }
   res
