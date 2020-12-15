@@ -30,7 +30,7 @@ ggplot(stocks) +
 
 stocks %>%
   vega(enc(x = date, y = price)) %>%
-  mark_line(enc(colour = symbol), clip = TRUE) %>%
+  mark_line(enc(colour = symbol), clip = FALSE) %>%
   scale_x(domain = c(as.Date("2002-01-01"), as.Date("2008-01-01")))
 
 mtcars %>%
@@ -49,5 +49,5 @@ mtcars %>%
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
-  mark_point(clip = TRUE) %>%
+  mark_point() %>%
   scale_x(domain = c(2, 4))

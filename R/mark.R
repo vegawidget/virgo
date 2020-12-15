@@ -81,6 +81,9 @@ mark_properties <- function(...) {
   if (!(has_name(dots, "tooltip"))) { # enable tooltip by default
     dots$tooltip <- TRUE
   }
+  if (!has_name(dots, "clip")) {
+    dots$clip <- TRUE
+  }
   dots
 }
 
