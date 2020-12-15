@@ -8,13 +8,6 @@ mtcars %>%
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
     selection = selection)
 
-mtcars %>%
-  vega() %>%
-  mark_circle(
-    encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    data = selection)
-
-
 vega() %>%
   mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
@@ -67,6 +60,13 @@ p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
     size = 3, selection = selection)
+
+p1 %>%
+  mark_rule(
+    encoding = enc(x = NULL, y = avg, colour = factor(cyl)),
+    size = 3,
+    selection = selection %>%
+      mutate(avg = vg_window(mpg, op = "mean", frame = list(NULL, NULL))))
 
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%

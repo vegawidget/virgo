@@ -6,10 +6,18 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     if (inherits(selection, "AsIs")) {
       layer <- c(layer, list(selection = unclass(selection)))
     } else {
+      filter <- list(filter = list(selection = selection_composition(selection)))
+      trans <- unclass(selection %@% "transform")
+      if (is.null(trans)) {
+        trans_spec <- list(filter)
+      } else {
+        new_vars <- trans$window[[1]]$as
+        data[[new_vars]] <- 1L # place holder
+        trans_spec <- list(filter, trans)
+      }
       layer <- c(layer, 
         list(selection = unclass(selection)),
-        list(transform = list(list(filter = 
-          list(selection = selection_composition(selection))))))
+        list(transform = trans_spec))
     }
   }
 

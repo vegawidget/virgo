@@ -8,7 +8,7 @@ is_virgo_op <- function(x) {
 
 virgo_op <- function() {
   c("vg_sum", "vg_mean", "vg_count", "vg_distinct", "vg_median", "vg_min",
-    "vg_max", "vg_argmin", "vg_argmax",
+    "vg_max", "vg_argmin", "vg_argmax", "vg_window",
     "vg_year", "vg_quarter", "vg_month", "vg_yearmonth", "vg_date", "vg_week",
     "vg_day", "vg_dayofyear", "vg_hours", "vg_minutes", "vg_seconds",
     "vg_milliseconds")
@@ -69,6 +69,6 @@ vg_seconds <- virgo_timeunit_factory("seconds")
 vg_milliseconds <- virgo_timeunit_factory("milliseconds")
 
 vg_window <- function(x, frame = list(NULL, 0), op = "sum", sort = NULL) {
-  new_virgo_op(x, window = list(op = op), frame = frame,
+  new_virgo_op(list(window = list(op = op), frame = frame),
     class = "virgo_window")
 }

@@ -172,7 +172,8 @@ selection_union <- function(x) {
 mutate.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
-  window_ops <- quos[[1]]
-  trans <- list(list(window = list()))
-  new_virgo_selection()
+  window_lst <- eval_tidy(quos[[1]])
+  window_lst$window <- list(
+    list(op = window_lst$window$op, field = as_field(quos[[1]]), as = fields[1]))
+  new_virgo_selection(unclass(.data), .data %@% "composition", window_lst)
 }
