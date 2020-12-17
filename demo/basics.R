@@ -182,3 +182,14 @@ industries %>%
   vega() %>%
   mark_streamgraph(
     enc(x = vg_yearmonth(date), y = vg_sum(count), colour = series))
+
+img <- jsonlite::fromJSON('[
+      {"x": 0.5, "y": 0.5, "img": "https://vega.github.io/vega-editor/app/data/ffox.png"},
+      {"x": 1.5, "y": 1.5, "img": "https://vega.github.io/vega-editor/app/data/gimp.png"},
+      {"x": 2.5, "y": 2.5, "img": "https://vega.github.io/vega-editor/app/data/7zip.png"}
+    ]')
+
+img %>%
+  vega(enc(x, y, url = img)) %>%
+  mark_image(width = 50, height = 50) %>%
+  scale_x(domain = c(0, 3))
