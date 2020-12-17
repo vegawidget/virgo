@@ -7,13 +7,13 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
       layer <- c(layer, list(selection = unclass(selection)))
     } else {
       filter <- list(filter = list(selection = selection_composition(selection)))
-      trans <- unclass(selection %@% "transform")
+      trans <- selection %@% "transform"
       if (is.null(trans)) {
         trans_spec <- list(filter)
       } else {
-        new_vars <- trans$window[[1]]$as
-        data[[new_vars]] <- 1L # place holder
-        trans_spec <- list(filter, trans)
+        new_vars <- map_chr(trans, function(x) x[[1]][[1]]$as)
+        for (i in new_vars) { data[[i]] <- 1L } # place holder
+        trans_spec <- list(filter, vec_c(!!!trans))
       }
       layer <- c(layer, 
         list(selection = unclass(selection)),

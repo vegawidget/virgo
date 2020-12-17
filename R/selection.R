@@ -106,9 +106,10 @@ select_domain <- function() {
     type = "interval", bind = "scales")))
 }
 
-new_virgo_selection <- function(x, composition = NULL, transform = NULL) {
+new_virgo_selection <- function(x, composition = NULL, transform = NULL,
+  groupby = NULL) {
   structure(x, composition = composition, transform = transform,
-    class = "virgo_selection")
+    groupby = groupby, class = "virgo_selection")
 }
 
 #' @export
@@ -169,11 +170,46 @@ selection_union <- function(x) {
   x
 }
 
+group_by.virgo_selection <- function(.data, ...) {
+  vars <- list(map_chr(enexprs(...), as_string))
+  new_virgo_selection(unclass(.data), .data %@% "composition",
+    .data %@% "transform", groupby = vars)
+}
+
 mutate.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
-  window_lst <- eval_tidy(quos[[1]])
-  window_lst$window <- list(
-    list(op = window_lst$window$op, field = as_field(quos[[1]]), as = fields[1]))
-  new_virgo_selection(unclass(.data), .data %@% "composition", window_lst)
+  lst <- map(quos, eval_tidy)
+  by <- .data %@% groupby
+  res <- vec_init_along(lst)
+  for (i in seq_along(res)) {
+    res[[i]] <- unclass(translate(lst[[i]], quos[[i]], fields[[i]], by))
+  }
+  new_virgo_selection(unclass(.data), .data %@% "composition", res)
+}
+
+translate <- function(x, quo, field, by) {
+  UseMethod("translate")
+}
+
+translate.virgo_window <- function(x, quo, field, by) {
+  x$window <- list(
+    list(op = x$window$op, field = as_field(quo), as = field))
+  x$groupby <- by
+  x
+}
+
+translate.virgo_aggregate <- function(x, quo, field, by) {
+  x$joinaggregate <- list(
+    list(op = x$aggregate, field = as_field(quo), as = field))
+  x$groupby <- by
+  x$aggregate <- NULL
+  x
+}
+
+translate.default <- function(x, quo, field, by) {
+  # TODO
+  x$calculate <- list(
+    list(op = x$window$op, field = as_field(quo), as = field))
+  x
 }

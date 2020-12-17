@@ -59,6 +59,7 @@ vg_seconds <- virgo_timeunit_factory("seconds")
 vg_milliseconds <- virgo_timeunit_factory("milliseconds")
 
 vg_window <- function(x, frame = list(NULL, 0), op = "sum", sort = NULL) {
+  frame <- if (is_atomic(frame)) list(frame) else frame
   new_virgo_op(list(window = list(op = op), frame = frame),
     class = "virgo_window")
 }

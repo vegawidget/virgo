@@ -66,6 +66,15 @@ p1 %>%
     encoding = enc(x = NULL, y = avg, colour = factor(cyl)),
     size = 3,
     selection = selection %>%
+      group_by(cyl) %>%
+      mutate(avg = vg_mean(mpg)))
+
+p1 %>%
+  mark_rule(
+    encoding = enc(x = NULL, y = avg, colour = factor(cyl)),
+    size = 3,
+    selection = selection %>%
+      group_by(cyl) %>%
       mutate(avg = vg_window(mpg, op = "mean", frame = list(NULL, NULL))))
 
 mtcars %>%
