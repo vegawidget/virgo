@@ -16,9 +16,7 @@ virgo_op <- function() {
 
 virgo_aggregate_factory <- function(aggregate) {
   function(x) {
-    stopifnot(!is_missing(x))
-    new_virgo_op(x, type = data_type(x)[["type"]], aggregate = aggregate,
-      class = "virgo_aggregate")
+    new_virgo_op(list(aggregate = aggregate), class = "virgo_aggregate")
   }
 }
 
@@ -27,30 +25,22 @@ vg_min <- virgo_aggregate_factory("min")
 vg_max <- virgo_aggregate_factory("max")
 vg_mean <- virgo_aggregate_factory("mean")
 vg_median <- virgo_aggregate_factory("median")
+vg_count <- virgo_aggregate_factory("count")
 vg_distinct <- virgo_aggregate_factory("distinct")
 
-vg_count <- function(x) {
-  if (is_missing(x)) { # "count" can take empty values
-    x <- list()
-  }
-  new_virgo_op(x, aggregate = "count", class = "virgo_aggregate")
-}
-
 vg_argmin <- function(x, y) {
-  new_virgo_op(x, y = y, type = data_type(x)[["type"]], aggregate = "argmin",
-    class = "virgo_aggregate")
+  new_virgo_op(list(y = y, aggregate = "argmin"), class = "virgo_aggregate")
 }
 
 vg_argmax <- function(x, y) {
-  new_virgo_op(x, y = y, type = data_type(x)[["type"]], aggregate = "argmax",
-    class = "virgo_aggregate")
+  new_virgo_op(list(y = y, aggregate = "argmax"), class = "virgo_aggregate")
 }
 
 virgo_timeunit_factory <- function(unit) {
   force(unit)
   function(x, step = 1, utc = FALSE) {
     stopifnot(!is_missing(x))
-    new_virgo_op(x, timeUnit = unit, step = step, utc = utc, 
+    new_virgo_op(list(unit = unit, step = step, utc = utc),
       class = "virgo_timeunit")
   }
 }

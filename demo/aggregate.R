@@ -17,6 +17,7 @@ population %>%
   vega() %>%
   mark_bar(enc(y = vg_sum(people)))
 
+# FIXME: abort for nested calls
 population %>%
   filter(year == 2000) %>%
   vega() %>%

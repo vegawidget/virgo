@@ -124,15 +124,16 @@ encoding_spec.factor <- function(x, field, encoding_name, ...) {
 encoding_spec.character <- encoding_spec.factor
 
 encoding_spec.virgo_aggregate <- function(x, field, encoding_name, ...) {
-  aggregate <- x %@% "aggregate"
-  type <- x %@% "type"
+  data <- dots_list(...)$data
+  aggregate <- x$aggregate
+  type <- data_type(data[[as_field(field)]])
   if (vec_in(aggregate, c("argmin", "argmax"))) {
     arg_field <- as_string(call_args(field)[[2]])
     res <- list2(
       field = as_field(field), aggregate = list2(!!aggregate := arg_field),
-      type = type)
+      !!!type)
   } else {
-    res <- list2(field = as_field(field), aggregate = aggregate, type = type)
+    res <- list2(field = as_field(field), aggregate = aggregate, !!!type)
   }
   if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
     res <- list2(!!!res, scale = list(zero = FALSE, padding = 10))
@@ -141,9 +142,7 @@ encoding_spec.virgo_aggregate <- function(x, field, encoding_name, ...) {
 }
 
 encoding_spec.virgo_timeunit <- function(x, field, encoding_name, ...) {
-  res <- list2(field = as_field(field),
-    timeUnit = list(unit = x %@% "timeUnit", step = x %@% "step", utc = x %@% "utc"),
-    type = "temporal")
+  res <- list2(field = as_field(field), timeUnit = unclass(x), type = "temporal")
   if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
     res <- list2(!!!res, scale = list(padding = 10))
   }
