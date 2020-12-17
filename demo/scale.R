@@ -51,3 +51,25 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
   scale_x(domain = c(2, 4))
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg, colour = cyl)) %>%
+  mark_point() %>%
+  scale_color(guide = FALSE)
+
+mtcars %>%
+  vega(enc(x = wt, y = mpg, colour = factor(cyl))) %>%
+  mark_point() %>%
+  scale_colour(name = "Cylinders",
+               range = c("purple", "#ff0000", "teal"))
+
+mtcars %>%
+  vega(enc(x = wt, y = mpg, colour = factor(cyl))) %>%
+  mark_point() %>%
+  scale_colour(scheme = "category20b")
+
+mtcars %>%
+  vega(enc(x = wt, y = mpg, colour = hp)) %>%
+  mark_point() %>%
+  scale_colour(range = "diverging", domain_mid = 300)

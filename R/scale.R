@@ -48,7 +48,8 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
   v
 }
 
-scale_color <- function(v, name = zap(), range = zap(), scheme = zap(), ...) {
+scale_color <- function(v, name = zap(), range = zap(), scheme = zap(),
+  guide = TRUE, ...) {
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
   dots <- vec_set_names(dots, standardise_names(names(dots)))
   for (i in seq_along(v$layer)) {
@@ -62,6 +63,10 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(), ...) {
     if (!is_zap(scheme)) {
       v$layer[[i]]$encoding$color$scale$range <- NULL
       v$layer[[i]]$encoding$color$scale$scheme <- scheme
+    }
+    if (!guide) {
+      legend <- list(legend = NULL)
+      v$layer[[i]]$encoding$color <- c(v$layer[[i]]$encoding$color, legend)
     }
     v$layer[[i]]$encoding$color$scale <- c(v$layer[[i]]$encoding$color$scale, dots)
   }
