@@ -1,6 +1,7 @@
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   selection = NULL) {
   fields <- encoding <- merge_encoding(c(v$encoding, encoding))
+  is_data_inherit <- is.null(data)
   data <- data %||% v$data$values
   if (!is.null(selection)) {
     if (inherits(selection, "AsIs")) {
@@ -44,7 +45,11 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   # data needs updating
   fields <- vec_set_names(fields, map_chr(fields, as_field))
   data <- eval_virgo_mask(data, fields, names(encoding))
-  layer <- c(list(data = list(values = data)), layer)
+  if (is_data_inherit) {
+    v$data$values <- data
+  } else {
+    layer <- c(list(data = list(values = data)), layer)
+  }
 
   spec <- build_layer(v, add_layer(v$layer, layer))
   new_virgo(spec)
