@@ -230,7 +230,7 @@ mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
-  smooth_fn <- list2(!!method := x$field, on = y$field, bandwidth = bandwidth)
+  smooth_fn <- list2(!!method := y$field, on = x$field, bandwidth = bandwidth)
   trans <- vec_c(!!!v$layer[[last]]$transform)
   if (is.null(trans)) {
     v$layer[[last]]$transform <- list(smooth_fn)

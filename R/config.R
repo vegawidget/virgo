@@ -6,7 +6,7 @@ config_ggplot <- function(v) {
   # mark props
   mark_color <- "#000"
   point <- circle <- square <- list(color = mark_color, opacity = 1, size = 60)
-  line <- tick <- trail <- shape <- list(color = mark_color)
+  line <- tick <- trail <- geoshape <- list(color = mark_color)
   bar <- area <- rect <- list(fill = "#595959")
   # box-plot uses bar so default will be black instead of usual white
 
@@ -37,7 +37,7 @@ config_ggplot <- function(v) {
     line = line,
     trail = trail,
     tick = tick,
-    shape = shape,
+    geoshape = geoshape,
     square = square,
     rect = rect,
     area = area,
