@@ -152,7 +152,7 @@ encoding_spec.virgo_window <- function(x, field, ...) {
   abort("`encoding` specs don't know how to handle `vg_window()`.")
 }
 
-virgo_op_env <- function() {
+virgo_encoding_env <- function() {
   ops <- c(virgo_op(), "encode_if")
   fns <- map(ops, function(op) function(x, ...) {
     if (is_missing(x) || is_virgo_selection(x)) { # vg_count() with missing arg
@@ -164,7 +164,7 @@ virgo_op_env <- function() {
   new_environment(vec_set_names(fns, ops))
 }
 
-new_virgo_mask <- function(data, env = virgo_op_env()) {
+new_virgo_mask <- function(data, env = virgo_encoding_env()) {
   bottom <- as_environment(data, parent = env)
   new_data_mask(bottom, top = env)
 }
