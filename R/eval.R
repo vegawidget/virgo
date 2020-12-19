@@ -4,8 +4,7 @@ enc <- function(x, y, ...) {
 
 simple_select <- function(x) {
   x <- enexpr(x)
-  if (is_call(x)) {
-    stopifnot(call_name(x) == "c")
+  if (is_call(x, "c")) {
     args <- call_args(x)
     map_chr(args, as_string)
   } else if (is.null(x)) {

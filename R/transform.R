@@ -8,7 +8,10 @@ is_virgo_op <- function(x) {
 
 virgo_op <- function() {
   c("vg_sum", "vg_mean", "vg_count", "vg_distinct", "vg_median", "vg_min",
-    "vg_max", "vg_argmin", "vg_argmax", "vg_window",
+    "vg_max", "vg_argmin", "vg_argmax",
+    "vg_window_mean", "vg_window_sum", "vg_window_rank", "vg_window_count",
+    "vg_cumsum", "vg_cummean", "vg_lead", "vg_lag", "vg_ntile", "vg_row_number",
+    "vg_rank", "vg_dense_rank", "vg_percent_rank", "vg_cume_dist",
     "vg_year", "vg_quarter", "vg_month", "vg_yearmonth", "vg_date", "vg_week",
     "vg_day", "vg_dayofyear", "vg_hours", "vg_minutes", "vg_seconds",
     "vg_milliseconds")
@@ -58,7 +61,83 @@ vg_minutes <- virgo_timeunit_factory("minutes")
 vg_seconds <- virgo_timeunit_factory("seconds")
 vg_milliseconds <- virgo_timeunit_factory("milliseconds")
 
-vg_window <- function(x, frame = list(NULL, 0), op = "sum", sort = NULL) {
-  new_virgo_op(list(window = list(op = op), frame = frame),
-    class = "virgo_window")
+virgo_window_factory <- function(op) {
+  force(op)
+  function(x, frame = list(NULL, 0), sort = NULL) {
+    sort <- simple_sort(!!enexpr(sort))
+    if (is.null(sort)) {
+      res <- list(window = list(op = op), frame = frame)
+    } else {
+      res <- list(window = list(op = op), frame = frame, sort = list(sort))
+    }
+    new_virgo_op(res, class = "virgo_window")
+  }
+}
+
+vg_window_sum <- virgo_window_factory("sum")
+vg_window_mean <- virgo_window_factory("mean")
+vg_window_rank <- virgo_window_factory("rank")
+vg_window_count <- virgo_window_factory("count")
+
+vg_cumsum <- function(x, sort = NULL) {
+  vg_window_sum(x, sort = !!enexpr(sort))
+}
+
+vg_cummean <- function(x, sort = NULL) {
+  vg_window_mean(x, sort = !!enexpr(sort))
+}
+
+vg_ranking <- function(x, n = 1, sort = NULL, op) {
+  sort <- simple_sort(!!enexpr(sort))
+  if (is.null(sort)) {
+    res <- list(window = list(op = op, param = n))
+  } else {
+    res <- list(window = list(op = op, param = n), sort = list(sort))
+  }
+  new_virgo_op(res, class = "virgo_window")
+}
+
+vg_row_number <- function(x, sort = NULL) {
+  vg_ranking(x, n = 0, sort = !!enexpr(sort), "row_number")
+}
+
+vg_rank <- function(x, sort = NULL) {
+  vg_ranking(x, n = 0, sort = !!enexpr(sort), "rank")
+}
+
+vg_dense_rank <- function(x, sort = NULL) {
+  vg_ranking(x, n = 0, sort = !!enexpr(sort), "dense_rank")
+}
+
+vg_percent_rank <- function(x, sort = NULL) {
+  vg_ranking(x, n = 0, sort = !!enexpr(sort), "percent_rank")
+}
+
+vg_cume_dist <- function(x, sort = NULL) {
+  vg_ranking(x, n = 0, sort = !!enexpr(sort), "cume_dist")
+}
+
+vg_ntile <- function(x, n = 1, sort = NULL) {
+  vg_ranking(x, n = n, sort = !!enexpr(sort), "ntile")
+}
+
+vg_lead <- function(x, n = 1, sort = NULL) {
+  vg_ranking(x, n = n, sort = !!enexpr(sort), "lead")
+}
+
+vg_lag <- function(x, n = 1, sort = NULL) {
+  vg_ranking(x, n = n, sort = !!enexpr(sort), "lag")
+}
+
+simple_sort <- function(x) {
+  x <- enexpr(x)
+  if (is.null(x)) {
+    NULL
+  } else if (is_call(x, "-")) {
+    list(field = as_string(call_args(x)[[1]]), order = "descending")
+  } else if (!is_call(x, "c")) {
+    list(field = as_string(x), order = "ascending")
+  } else {
+    map(call_args(x), simple_sort)
+  }
 }

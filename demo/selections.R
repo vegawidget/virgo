@@ -75,7 +75,20 @@ p1 %>%
     size = 3,
     selection = selection %>%
       group_by(cyl) %>%
-      mutate(avg = vg_window(mpg, op = "mean", frame = list(NULL, NULL))))
+      mutate(avg = vg_window_mean(mpg, frame = list(NULL, NULL))))
+
+p1 %>%
+  mark_rule(
+    encoding = enc(x = NULL, y = avg),
+    size = 3,
+    selection = selection %>%
+      mutate(avg = vg_cumsum(mpg)))
+
+selection_lag <- selection %>% mutate(lag_wt = vg_lag(wt, sort = wt))
+p4 <- mtcars %>%
+  vega() %>%
+  mark_point(enc(x = wt, y = lag_wt), selection = selection_lag)
+hconcat(p1, p4)
 
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
@@ -88,7 +101,7 @@ mtcars %>%
 
 p_bar <- mtcars %>%
   vega(enc(x = disp)) %>%
-  mark_histogram() %>%
+  # mark_histogram() %>%
   mark_histogram(selection = selection, colour = "red")
 hconcat(p1, p_bar)
 
