@@ -85,20 +85,32 @@ nlayer <- function(v) {
 mark_properties <- function(...) {
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
   dots <- vec_set_names(dots, standardise_names(names(dots)))
+  input_lgl <- map_lgl(dots, is_virgo_input)
+  params <- vec_init(list(), n = sum(input_lgl))
+  for (i in seq_along(params)) {
+    if (is_virgo_input(dots[input_lgl][[i]])) {
+      input <- dots[input_lgl][[i]]
+      dots[input_lgl][[i]] <- list(expr = input$name)
+      params[[i]] <- list(name = input$name, value = input %@% "init", 
+        bind = unclass(input))
+    }
+  }
   if (!(has_name(dots, "tooltip"))) { # enable tooltip by default
     dots$tooltip <- TRUE
   }
   if (!has_name(dots, "clip")) {
     dots$clip <- TRUE
   }
-  dots
+  list(props = dots, params = params)
 }
 
 # use vega options name but in snake_case
 mark_factory <- function(type = "point") {
   force(type)
   function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
-    layer <- list(mark = list2(type = type, !!!mark_properties(...)))
+    marks <- mark_properties(...)
+    v$params <- marks$params
+    layer <- list(mark = list2(type = type, !!!marks$props))
     vega_layer(v, layer, encoding, data, selection)
   }
 }
@@ -136,7 +148,9 @@ position_to_stack <- function(position = "stack") {
 
 mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "stack") {
-  layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
+  marks <- mark_properties(...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "area", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
@@ -146,7 +160,9 @@ mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "stack") {
-  layer <- list(mark = list2(type = "bar", !!!mark_properties(...)))
+  marks <- mark_properties(...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "bar", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
@@ -156,8 +172,9 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ...) {
-  layer <- list(mark = list2(type = "errorbar",
-    !!!mark_properties(ticks = TRUE, ...)))
+  marks <- mark_properties(ticks = TRUE, ...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "errorbar", !!!marks$props))
   vega_layer(v, layer, encoding, data, selection)
 }
 
@@ -174,8 +191,9 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
 }
 
 mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
-  layer <- list(mark = list2(type = "line",
-    !!!mark_properties(interpolate = "step-after", ...)))
+  marks <- mark_properties(interpolate = "step-after", ...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "line", !!!marks$props))
   vega_layer(v, layer, encoding, data, selection)
 }
 
@@ -202,7 +220,9 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   bin = TRUE) { # bin = list() opts
   # TODO: `bin` needs to take `x` and `y` bin setup
-  layer <- list(mark = list2(type = "rect", !!!mark_properties(...)))
+  marks <- mark_properties(...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "rect", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
@@ -214,7 +234,9 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ...) {
-  layer <- list(mark = list2(type = "area", !!!mark_properties(...)))
+  marks <- mark_properties(...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "area", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- "center"
@@ -225,9 +247,11 @@ mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
 
 mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   method = "lm", formula = y ~ x, bandwidth = 0.3) {
+  marks <- mark_properties(...)
+  v$params <- marks$params
   method <- arg_match(method, c("lm", "loess"))
   method <- if (method == "lm") "regression" else "loess"
-  layer <- list(mark = list2(type = "line", !!!mark_properties(...)))
+  layer <- list(mark = list2(type = "line", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x

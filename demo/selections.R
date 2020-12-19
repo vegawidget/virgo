@@ -93,6 +93,13 @@ p1 %>%
     selection = selection %>%
       mutate(avg = vg_cumsum(mpg)))
 
+p1 %>%
+  mark_rule(
+    encoding = enc(x = NULL, y = avg),
+    size = 3,
+    selection = selection %>%
+      mutate(avg = mpg + 2))
+
 selection_lag <- selection %>% mutate(lag_wt = vg_lag(wt, sort = wt))
 p4 <- mtcars %>%
   vega() %>%
@@ -194,6 +201,13 @@ v2 <- sp500 %>%
 vconcat(v1, v2)
 
 # input element binding
+
+alpha <- input_slider(min = 0, max = 1, step = 0.1, init = 0.3, name = "alpha")
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega() %>%
+  mark_circle(enc(x = hp, y = mpg), colour = "red", opacity = alpha)
 
 select_cyl <-
   select_bind(
