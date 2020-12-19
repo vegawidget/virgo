@@ -5,6 +5,7 @@
 new_virgo_input <- function(x, init = NULL) {
   structure(x, init = init, class = "virgo_input")
 }
+
 # inputs that are bound to an HTML element are special case of
 # single selection
 input_slider <- function(name = NULL, min, max, step, init = NULL) {
@@ -13,17 +14,17 @@ input_slider <- function(name = NULL, min, max, step, init = NULL) {
     init = init
   )
 }
+
 input_radio <- function(name = NULL, choices, init = NULL) {
   new_virgo_input(
-    list(input = "radio", options = choices, labels = names(choices), name = name),
-    init = init
-  )
+    list(input = "radio", options = choices, labels = names(choices),
+      name = name), init = init)
 }
+
 input_select <- function(name = NULL, choices, init = NULL) {
   new_virgo_input(
-    list(input = "select", options = choices, labels = names(choices), name = name),
-    init = init
-  )
+    list(input = "select", options = choices, labels = names(choices),
+      name = name), init = init)
 }
 
 input_factory  <- function(input) {
@@ -166,7 +167,7 @@ selection_union <- function(x) {
   unique_idx <- vec_match(vec_unique(names_sel), names_sel)
   unnamed_sel <- vec_c(!!!map(x, function(x) x$selection))[unique_idx]
   x[[1]]$selection <- vec_set_names(unnamed_sel, names_sel[unique_idx])
-  x <- c(x[1], map(x[-1], function(x) {x$selection <- NULL; x}))
+  x <- c(x[1], map(x[-1], function(x) { x$selection <- NULL; x }))
   x
 }
 
@@ -180,13 +181,25 @@ mutate.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
   lst <- map(quos, eval_tidy)
-  by <- .data %@% groupby
+  by <- .data %@% "groupby"
   res <- vec_init_along(lst)
   for (i in seq_along(res)) {
     res[[i]] <- unclass(translate(lst[[i]], quos[[i]], fields[[i]], by))
   }
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
+
+summarise.virgo_selection <- function(.data, ...) {
+  trans <- mutate.virgo_selection(.data, ...) %@% "transform"
+  res <- map(trans, function(x) {
+    x$aggregate <- x$joinaggregate
+    x$joinaggregate <- NULL
+    rev(x) # swap groupby and aggregate positions
+  })
+  new_virgo_selection(unclass(.data), .data %@% "composition", res)
+}
+
+summarize.virgo_selection <- summarise.virgo_selection
 
 translate <- function(x, quo, field, by) {
   UseMethod("translate")
@@ -209,7 +222,5 @@ translate.virgo_aggregate <- function(x, quo, field, by) {
 
 translate.default <- function(x, quo, field, by) {
   # TODO
-  x$calculate <- list(
-    list(op = x$window$op, field = as_field(quo), as = field))
-  x
+  list(calculate = NULL, as = field)
 }

@@ -40,6 +40,7 @@ mtcars %>%
     size = encode_if(selection, 180, 60)))
 
 p1 <- mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point(enc(colour = encode_if(selection, factor(cyl), "grey")))
 p2 <- mtcars %>%
@@ -60,6 +61,14 @@ p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = vg_mean(mpg), colour = factor(cyl)),
     size = 3, selection = selection)
+
+p1 %>%
+  mark_rule(
+    encoding = enc(x = NULL, y = avg, colour = cyl),
+    size = 3,
+    selection = selection %>%
+      group_by(cyl) %>%
+      summarise(avg = vg_mean(mpg)))
 
 p1 %>%
   mark_rule(
