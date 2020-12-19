@@ -180,26 +180,35 @@ group_by.virgo_selection <- function(.data, ...) {
 mutate.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
-  lst <- map(quos, eval_tidy)
+  lst <- eval_trans_mask(quos)
   by <- .data %@% "groupby"
   res <- vec_init_along(lst)
   for (i in seq_along(res)) {
-    res[[i]] <- unclass(translate(lst[[i]], quos[[i]], fields[[i]], by))
+    res[[i]] <- translate(lst[[i]], quos[[i]], fields[[i]], by)
   }
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
 
 summarise.virgo_selection <- function(.data, ...) {
-  trans <- mutate.virgo_selection(.data, ...) %@% "transform"
-  res <- map(trans, function(x) {
-    x$aggregate <- x$joinaggregate
-    x$joinaggregate <- NULL
-    rev(x) # swap groupby and aggregate positions
-  })
+  quos <- enquos(..., .named = TRUE)
+  fields <- names(quos)
+  lst <- eval_trans_mask(quos)
+  by <- .data %@% "groupby"
+  res <- vec_init_along(lst)
+  for (i in seq_along(res)) {
+    res[[i]] <- translate_aggregate(lst[[i]], quos[[i]], fields[[i]], by)
+  }
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
 
 summarize.virgo_selection <- summarise.virgo_selection
+
+translate_aggregate <- function(x, quo, field, by) {
+  x$aggregate <- list(
+    list(op = x$aggregate, field = as_field(quo), as = field))
+  x$groupby <- by
+  list(x = unclass(x), as = field, field = as_field(quo))
+}
 
 translate <- function(x, quo, field, by) {
   UseMethod("translate")
@@ -209,7 +218,7 @@ translate.virgo_window <- function(x, quo, field, by) {
   x$window <- list(
     list(op = x$window$op, field = as_field(quo), as = field))
   x$groupby <- by
-  x
+  list(x = unclass(x), as = field, field = as_field(quo))
 }
 
 translate.virgo_aggregate <- function(x, quo, field, by) {
@@ -217,10 +226,32 @@ translate.virgo_aggregate <- function(x, quo, field, by) {
     list(op = x$aggregate, field = as_field(quo), as = field))
   x$groupby <- by
   x$aggregate <- NULL
-  x
+  list(x = unclass(x), as = field, field = as_field(quo))
 }
 
 translate.default <- function(x, quo, field, by) {
-  # TODO
-  list(calculate = NULL, as = field)
+  list(x = list(calculate = x, as = field), as = field, field = as_field(quo))
+}
+
+virgo_trans_env <- function() {
+  ops <- c("+", "-", "*", "/", "^", "==", "!=", ">", ">=", "<", "<=")
+  fns <- map(ops, function(op) function(e1, e2) {
+    if (catch_symbol(e1)) {
+      e1 <- paste0("datum.", deparse(substitute(e1)))
+    }
+    if (catch_symbol(e2)) {
+      e2 <- paste0("datum.", deparse(substitute(e2)))
+    }
+    paste(e1, op, e2)
+  })
+  new_environment(vec_set_names(fns, ops))
+}
+
+eval_trans_mask <- function(quo) {
+  data_mask <- new_virgo_mask(list(), virgo_trans_env())
+  map(quo, function(x) eval_tidy(x, data_mask))
+}
+
+catch_symbol <- function(x) {
+  tryCatch(is_symbol(x), error = function(e) TRUE)
 }

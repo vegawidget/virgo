@@ -169,7 +169,7 @@ new_virgo_mask <- function(data, env = virgo_op_env()) {
   new_data_mask(bottom, top = env)
 }
 
-eval_virgo_mask <- function(data, quo, encoding_name) {
+eval_encoding_mask <- function(data, quo, encoding_name) {
   names <- names(quo)
   data_mask <- new_virgo_mask(data)
   for (i in seq_along(names)) {

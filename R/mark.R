@@ -12,12 +12,14 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
       if (is.null(trans)) {
         trans_spec <- list(filter)
       } else {
-        new_vars <- map_chr(trans, function(x) x[[1]][[1]]$as)
-        old_vars <- map_chr(trans, function(x) x[[1]][[1]]$field)
+        new_vars <- map_chr(trans, function(x) x$as)
+        old_vars <- map_chr(trans, function(x) x$field)
         for (i in seq_along(new_vars)) { 
-          data[[new_vars[i]]] <- data[[old_vars[i]]]
+          new_vals <- eval_tidy(parse_expr(old_vars[i]), data)
+          data <- vec_cbind(data, !!new_vars[i] := new_vals)
         }
-        trans_spec <- list(filter, vec_c(!!!trans))
+        trans_res <- map(trans, function(x) x[["x"]])
+        trans_spec <- list(filter, vec_c(!!!trans_res))
       }
       layer <- c(layer, 
         list(selection = unclass(selection)),
@@ -46,7 +48,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
 
   # data needs updating
   fields <- vec_set_names(fields, map_chr(fields, as_field))
-  data <- eval_virgo_mask(data, fields, names(encoding))
+  data <- eval_encoding_mask(data, fields, names(encoding))
   if (is_data_inherit) {
     v$data$values <- data
   } else {

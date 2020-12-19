@@ -97,8 +97,7 @@ p1 %>%
   mark_rule(
     encoding = enc(x = NULL, y = avg),
     size = 3,
-    selection = selection %>%
-      mutate(avg = mpg + 2))
+    selection = selection %>% mutate(avg = mpg + 2))
 
 selection_lag <- selection %>% mutate(lag_wt = vg_lag(wt, sort = wt))
 p4 <- mtcars %>%
@@ -277,4 +276,4 @@ stocks %>%
     opacity = encode_if(hover, 1, 0.2))) %>%
   mark_text(
     encoding = enc(x = vg_max(date), y = vg_argmax(price, date), text = symbol),
-    dx = 4, align = "left")
+    dx = 4, align = "left", clip = FALSE)
