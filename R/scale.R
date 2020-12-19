@@ -7,7 +7,7 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
   breaks = zap(), orient = "bottom", ...) {
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$x$scale$type <- type
-    data <- v$layer[[i]]$data$values
+    data <- v$layer[[i]]$data$values %||% v$data$values
     field <- v$layer[[i]]$encoding$x$field
     v$layer[[i]]$encoding$x$scale$domain <- rescale_domain(data[[field]], type)
     if (!is_zap(breaks)) {
@@ -30,7 +30,7 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
   breaks = zap(), orient = "left", ...) {
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$y$scale$type <- type
-    data <- v$layer[[i]]$data$values
+    data <- v$layer[[i]]$data$values %||% v$data$values
     field <- v$layer[[i]]$encoding$y$field
     v$layer[[i]]$encoding$y$scale$domain <- rescale_domain(data[[field]], type)
     if (!is_zap(breaks)) {
