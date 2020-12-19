@@ -15,8 +15,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
         new_vars <- map_chr(trans, function(x) x$as)
         old_vars <- map_chr(trans, function(x) x$field)
         for (i in seq_along(new_vars)) { 
-          new_vals <- eval_tidy(parse_expr(old_vars[i]), data)
-          data <- vec_cbind(data, !!new_vars[i] := new_vals)
+          data[[new_vars[i]]] <- eval_tidy(parse_expr(old_vars[i]), data)
         }
         trans_res <- map(trans, function(x) x[["x"]])
         trans_spec <- list(filter, vec_c(!!!trans_res))
