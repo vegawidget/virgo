@@ -219,8 +219,8 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 }
 
 mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  bin = TRUE) { # bin = list() opts
-  # TODO: `bin` needs to take `x` and `y` bin setup
+  bin = list(x = TRUE, y = TRUE)) {
+  # list(x = list(maxbins = 10))
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "rect", !!!marks$props))
@@ -228,8 +228,8 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
-  v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
-  v$layer[[last]]$encoding$y <- c(y, list(bin = bin))
+  v$layer[[last]]$encoding$x <- c(x, list(bin = bin$x))
+  v$layer[[last]]$encoding$y <- c(y, list(bin = bin$y))
   v
 }
 
@@ -265,12 +265,4 @@ mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
     v$layer[[last]]$transform <- list(trans, smooth_fn)
   }
   v
-}
-
-mark_qq <- function() {
-
-}
-
-mark_parcoords <- function() {
-
 }

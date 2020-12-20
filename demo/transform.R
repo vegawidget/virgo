@@ -24,5 +24,5 @@ as_tibble(movies) %>%
   mark_smooth(colour = "firebrick", selection = !select_interval())
 
 as_tibble(movies) %>%
-  vega(enc(x = Rotten_Tomatoes_Rating, y = IMDB_Rating, colour = vg_count())) %>%
-  mark_bin2d(bin = list(maxbins = 40))
+  vega(enc(x = IMDB_Rating, y = Rotten_Tomatoes_Rating, colour = vg_count())) %>%
+  mark_bin2d(bin = list(x = list(maxbins = 60), y = list(maxbins = 40)))
