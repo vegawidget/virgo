@@ -8,7 +8,7 @@ is_virgo_op <- function(x) {
 
 virgo_op <- function() {
   c("vg_sum", "vg_mean", "vg_count", "vg_distinct", "vg_median", "vg_min",
-    "vg_max", "vg_argmin", "vg_argmax",
+    "vg_max", "vg_argmin", "vg_argmax", "vg_bin",
     "vg_window_mean", "vg_window_sum", "vg_window_rank", "vg_window_count",
     "vg_cumsum", "vg_cummean", "vg_lead", "vg_lag", "vg_ntile", "vg_row_number",
     "vg_rank", "vg_dense_rank", "vg_percent_rank", "vg_cume_dist",
@@ -140,4 +140,11 @@ simple_sort <- function(x) {
   } else {
     map(call_args(x), simple_sort)
   }
+}
+
+vg_bin <- function(x, base = 10, divide = c(5, 2), extent = NULL, maxbins = 10,
+  nice = TRUE, step = NULL) {
+  bin <- list(base = base, divide = divide, extent = extent, maxbins = maxbins,
+    nice = nice, step = step)
+  new_virgo_op(bin, class = "virgo_bin")
 }

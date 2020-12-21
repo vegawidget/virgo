@@ -229,6 +229,11 @@ translate.virgo_aggregate <- function(x, quo, field, by) {
   list(x = unclass(x), as = field, field = as_field(quo))
 }
 
+translate.virgo_bin <- function(x, quo, field, by) {
+  list(x = list(bin = unclass(x), field = as_field(quo), as = field),
+    as = field, field = as_field(quo))
+}
+
 translate.default <- function(x, quo, field, by) {
   list(x = list(calculate = x, as = field), as = field, field = as_field(quo))
 }

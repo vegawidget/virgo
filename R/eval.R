@@ -149,6 +149,14 @@ encoding_spec.virgo_timeunit <- function(x, field, encoding_name, ...) {
   res
 }
 
+encoding_spec.virgo_bin <- function(x, field, encoding_name, ...) {
+  res <- list2(field = as_field(field), bin = unclass(x))
+  if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
+    res <- list2(!!!res, scale = list(padding = 10))
+  }
+  res
+}
+
 encoding_spec.virgo_window <- function(x, field, ...) {
   abort("`encoding` specs don't know how to handle `vg_window()`.")
 }

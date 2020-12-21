@@ -4,6 +4,10 @@ movies <- jsonlite::read_json(
   "https://vega.github.io/vega-editor/app/data/movies.json"
   , simplifyVector = TRUE)
 
+as_tibble(movies) %>%
+  vega(enc(x = Rotten_Tomatoes_Rating, y = IMDB_Rating)) %>%
+  mark_point(enc(colour = vg_bin(IMDB_Rating, step = 3)))
+
 movies %>%
   vega() %>%
   mark_bar(enc(x = vg_argmax(Production_Budget, US_Gross), y = Major_Genre))
