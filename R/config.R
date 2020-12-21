@@ -1,5 +1,24 @@
-config_vega <- function(v) {
-  new_virgo(c(unclass(v), list(config = list())))
+config <- function(v, background = "white", axis = list(), axis_x = list(),
+  axis_y = list(), header = list(), legend = list(), title = list(), 
+  view = list(), concat = list(), facet = list()) {
+
+  fn <- function(x) {
+    vec_set_names(x, standardise_names(names(x)))
+  }
+
+  res <- list(
+    background = background,
+    axis = fn(axis),
+    axis_x = fn(axis_x),
+    axis_y = fn(axis_y),
+    header = fn(header),
+    legend = fn(legend),
+    title = fn(title),
+    view = fn(view),
+    concat = fn(concat),
+    facet = fn(facet)
+  )
+  new_virgo(c(unclass(v), list(config = res)))
 }
 
 config_ggplot <- function(v) {

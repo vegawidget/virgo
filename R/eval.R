@@ -105,7 +105,8 @@ encoding_spec.numeric <- function(x, field, encoding_name, ...) {
   type <- data_type(x)
   res <- list2(field = as_field(field), !!!type)
   if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
-    res <- list2(!!!res, scale = list(domain = expand_domain(x)))
+    res <- list2(!!!res, scale = list(domain = expand_domain(x)),
+      axis = list(tickCount = 5))
   }
   res
 }
