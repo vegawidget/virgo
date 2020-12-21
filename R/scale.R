@@ -75,6 +75,69 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(),
 
 scale_colour <- scale_color
 
+scale_size <- function(v, name = zap(), range = zap(), type = "linear",
+  guide = TRUE, ...) {
+  dots <- dots_list(..., .named = TRUE, .homonyms = "error")
+  dots <- vec_set_names(dots, standardise_names(names(dots)))
+  for (i in seq_along(v$layer)) {
+    if (!is_zap(name)) {
+      title <- list(title = name)
+      v$layer[[i]]$encoding$size <- c(v$layer[[i]]$encoding$size, title)
+    }
+    if (!is_zap(range)) {
+      v$layer[[i]]$encoding$size$scale$range <- range
+    }
+    v$layer[[i]]$encoding$size$scale$type <- type
+    if (!guide) {
+      legend <- list(legend = NULL)
+      v$layer[[i]]$encoding$size <- c(v$layer[[i]]$encoding$size, legend)
+    }
+    v$layer[[i]]$encoding$size$scale <- c(v$layer[[i]]$encoding$size$scale, dots)
+  }
+  v
+}
+
+scale_opacity <- function(v, name = zap(), range = zap(), type = "linear",
+  guide = TRUE, ...) {
+  dots <- dots_list(..., .named = TRUE, .homonyms = "error")
+  dots <- vec_set_names(dots, standardise_names(names(dots)))
+  for (i in seq_along(v$layer)) {
+    if (!is_zap(name)) {
+      title <- list(title = name)
+      v$layer[[i]]$encoding$opacity <- c(v$layer[[i]]$encoding$opacity, title)
+    }
+    if (!is_zap(range)) {
+      v$layer[[i]]$encoding$opacity$scale$range <- range
+    }
+    v$layer[[i]]$encoding$opacity$scale$type <- type
+    if (!guide) {
+      legend <- list(legend = NULL)
+      v$layer[[i]]$encoding$opacity <- c(v$layer[[i]]$encoding$opacity, legend)
+    }
+    v$layer[[i]]$encoding$opacity$scale <- c(v$layer[[i]]$encoding$opacity$scale,
+      dots)
+  }
+  v
+}
+
+scale_shape <- function(v, name = zap(), guide = TRUE, ...) {
+  dots <- dots_list(..., .named = TRUE, .homonyms = "error")
+  dots <- vec_set_names(dots, standardise_names(names(dots)))
+  for (i in seq_along(v$layer)) {
+    if (!is_zap(name)) {
+      title <- list(title = name)
+      v$layer[[i]]$encoding$shape <- c(v$layer[[i]]$encoding$shape, title)
+    }
+    if (!guide) {
+      legend <- list(legend = NULL)
+      v$layer[[i]]$encoding$shape <- c(v$layer[[i]]$encoding$shape, legend)
+    }
+    v$layer[[i]]$encoding$shape$scale <- c(v$layer[[i]]$encoding$shape$scale,
+      dots)
+  }
+  v
+}
+
 rescale_domain <- function(x, type = "linear") {
   UseMethod("rescale_domain")
 }
