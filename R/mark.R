@@ -255,9 +255,11 @@ mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   layer <- list(mark = list2(type = "line", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
-  x <- v$layer[[last]]$encoding$x
-  y <- v$layer[[last]]$encoding$y
-  smooth_fn <- list2(!!method := y$field, on = x$field, bandwidth = bandwidth)
+  enc <- v$layer[[last]]$encoding
+  groupby <- as.list(unique(c(enc$color$field, enc$fill$field, enc$detail$field,
+    enc$stroke$field)))
+  smooth_fn <- list2(!!method := enc$y$field, on = enc$x$field,
+    groupby = groupby, bandwidth = bandwidth)
   trans <- vec_c(!!!v$layer[[last]]$transform)
   if (is.null(trans)) {
     v$layer[[last]]$transform <- list(smooth_fn)

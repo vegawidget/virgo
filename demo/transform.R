@@ -15,7 +15,7 @@ movies %>%
 as_tibble(movies) %>%
   vega(enc(x = Rotten_Tomatoes_Rating, y = IMDB_Rating)) %>%
   mark_point() %>%
-  mark_smooth(colour = "firebrick")
+  mark_smooth(enc(colour = Major_Genre))
 
 as_tibble(movies) %>%
   vega(enc(x = Rotten_Tomatoes_Rating, y = IMDB_Rating)) %>%
