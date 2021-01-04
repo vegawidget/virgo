@@ -258,8 +258,9 @@ mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   enc <- v$layer[[last]]$encoding
   groupby <- as.list(unique(c(enc$color$field, enc$fill$field, enc$detail$field,
     enc$stroke$field)))
+  f <- interpret_formula(formula)
   smooth_fn <- list2(!!method := enc$y$field, on = enc$x$field,
-    groupby = groupby, bandwidth = bandwidth)
+    groupby = groupby, !!!f, bandwidth = bandwidth)
   trans <- vec_c(!!!v$layer[[last]]$transform)
   if (is.null(trans)) {
     v$layer[[last]]$transform <- list(smooth_fn)
@@ -267,4 +268,25 @@ mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
     v$layer[[last]]$transform <- list(trans, smooth_fn)
   }
   v
+}
+
+interpret_formula <- function(formula) {
+  # TODO:
+  # 1. abort if more than one calls in the specified formula
+  # 2. no support for "pow" option, don't know how to distinguish pow and poly
+  rhs <- f_rhs(formula)
+  if (is_symbol(rhs)) {
+    list(method = "linear")
+  } else if (is_call(rhs, "log")) {
+    list(method = "log")
+  } else if (is_call(rhs, "exp")) {
+    list(method = "exp")
+  } else if (is_call(rhs, "^")) {
+    order <- call_args(rhs)[[2]]
+    if (order == 2) {
+      list(method = "quad")
+    } else {
+      list(method = "poly", order = order)
+    }
+  }
 }

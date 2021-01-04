@@ -20,6 +20,11 @@ as_tibble(movies) %>%
 as_tibble(movies) %>%
   vega(enc(x = Rotten_Tomatoes_Rating, y = IMDB_Rating)) %>%
   mark_point() %>%
+  mark_smooth(colour = "firebrick", formula = y ~ x^3)
+
+as_tibble(movies) %>%
+  vega(enc(x = Rotten_Tomatoes_Rating, y = IMDB_Rating)) %>%
+  mark_point() %>%
   mark_smooth(colour = "firebrick", method = "loess")
 
 as_tibble(movies) %>%
