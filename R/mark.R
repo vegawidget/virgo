@@ -109,6 +109,7 @@ mark_properties <- function(...) {
 mark_factory <- function(type = "point") {
   force(type)
   function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
+    abort_if_not_virgo(v)
     marks <- mark_properties(...)
     v$params <- marks$params
     layer <- list(mark = list2(type = type, !!!marks$props))
@@ -121,7 +122,7 @@ mark_ribbon <- mark_factory(type = "area")
 mark_boxplot <- mark_factory(type = "boxplot")
 mark_circle <- mark_factory(type = "point")
 mark_errorband <- mark_factory(type = "errorband")
-mark_geoshape <- mark_factory(type = "geoshape")
+# mark_geoshape <- mark_factory(type = "geoshape")
 mark_image <- mark_factory(type = "image")
 mark_line <- mark_factory(type = "line")
 mark_point <- mark_factory(type = "circle")
@@ -149,6 +150,7 @@ position_to_stack <- function(position = "stack") {
 
 mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "stack") {
+  abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "area", !!!marks$props))
@@ -161,6 +163,7 @@ mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "stack") {
+  abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "bar", !!!marks$props))
@@ -173,6 +176,7 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ...) {
+  abort_if_not_virgo(v)
   marks <- mark_properties(ticks = TRUE, ...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "errorbar", !!!marks$props))
@@ -192,6 +196,7 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
 }
 
 mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
+  abort_if_not_virgo(v)
   marks <- mark_properties(interpolate = "step-after", ...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "line", !!!marks$props))
@@ -221,6 +226,7 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   bin = list(x = TRUE, y = TRUE)) {
   # list(x = list(maxbins = 10))
+  abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "rect", !!!marks$props))
@@ -235,6 +241,7 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ...) {
+  abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "area", !!!marks$props))
@@ -248,6 +255,7 @@ mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
 
 mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   method = "lm", formula = y ~ x, bandwidth = 0.3) {
+  abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   method <- arg_match(method, c("lm", "loess"))

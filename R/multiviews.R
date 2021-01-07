@@ -1,5 +1,6 @@
 # No facet_wrap() since vega `layer` doesn't handle `facet` encoding
 facet_views <- function(v, row = NULL, column = NULL) {
+  abort_if_not_virgo(v)
   v$facet <- list()
   row <- enexpr(row)
   column <- enexpr(column)
@@ -25,6 +26,7 @@ vconcat <- function(...) {
 }
 
 resolve_views <- function(v, scale = list(), axis = list(), legend = list()) {
+  abort_if_not_virgo(v)
   v$resolve <- list(scale = scale, axis = axis, legend = legend)
   v
 }

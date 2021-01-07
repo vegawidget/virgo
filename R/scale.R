@@ -5,6 +5,7 @@
 # e.g. `nice` in continuous and `format` in temporal
 scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
   breaks = zap(), orient = "bottom", ...) {
+  abort_if_not_virgo(v)
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$x$scale$type <- type
     data <- v$layer[[i]]$data$values %||% v$data$values
@@ -28,6 +29,7 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
 
 scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
   breaks = zap(), orient = "left", ...) {
+  abort_if_not_virgo(v)
   for (i in seq_along(v$layer)) {
     v$layer[[i]]$encoding$y$scale$type <- type
     data <- v$layer[[i]]$data$values %||% v$data$values
@@ -50,6 +52,7 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
 
 scale_color <- function(v, name = zap(), range = zap(), scheme = zap(),
   guide = TRUE, ...) {
+  abort_if_not_virgo(v)
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
   dots <- vec_set_names(dots, standardise_names(names(dots)))
   for (i in seq_along(v$layer)) {
@@ -77,6 +80,7 @@ scale_colour <- scale_color
 
 scale_size <- function(v, name = zap(), range = zap(), type = "linear",
   guide = TRUE, ...) {
+  abort_if_not_virgo(v)
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
   dots <- vec_set_names(dots, standardise_names(names(dots)))
   for (i in seq_along(v$layer)) {
@@ -99,6 +103,7 @@ scale_size <- function(v, name = zap(), range = zap(), type = "linear",
 
 scale_opacity <- function(v, name = zap(), range = zap(), type = "linear",
   guide = TRUE, ...) {
+  abort_if_not_virgo(v)
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
   dots <- vec_set_names(dots, standardise_names(names(dots)))
   for (i in seq_along(v$layer)) {
@@ -121,6 +126,7 @@ scale_opacity <- function(v, name = zap(), range = zap(), type = "linear",
 }
 
 scale_shape <- function(v, name = zap(), guide = TRUE, ...) {
+  abort_if_not_virgo(v)
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
   dots <- vec_set_names(dots, standardise_names(names(dots)))
   for (i in seq_along(v$layer)) {

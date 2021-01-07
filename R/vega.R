@@ -81,7 +81,18 @@ print.virgo <- function(x, renderer = "canvas", ...) {
 
 # NOTE: leave all styling properties to `config()`
 entitle <- function(v, title = NULL, subtitle = NULL, description = NULL) {
+  abort_if_not_virgo(v)
   v$title <- list(text = title, subtitle = subtitle)
   v$description <- description
   v
+}
+
+is_virgo <- function(v) {
+  inherits(v, "virgo")
+}
+
+abort_if_not_virgo <- function(v) {
+  if (!is_virgo(v)) {
+    abort("Only takes a `vega()` input.")
+  }
 }
