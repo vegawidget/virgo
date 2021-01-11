@@ -21,7 +21,7 @@ following elements:
     and sliders (using `input_slider()`), via the `select_*` and
     `input_*` family of functions
   - aesthetic mappings/encodings via `enc()`
-  - reactive data transformations via `filter()` and `select_if()`
+  - data transformations via [selections]()
   - plot composition via faceting and concatenation using
     `facet_views()`, `hconcat()` and `vconcat()`
 
