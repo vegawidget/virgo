@@ -4,6 +4,13 @@ new_virgo <- function(spec) {
   structure(spec, class = "virgo")
 }
 
+#' Create a new vega visualisation
+#' 
+#' @param data A data frame.
+#' @param encoding A list of aethetic encodings via [`enc()`].
+#' @param width,height Data plotting width and height. 
+#'
+#' @export
 vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
   spec <- list(
     data = list(values = data), encoding = encoding,

@@ -1,5 +1,19 @@
+#' Map data variables to visual encodings
+#'
+#' @param x,y,... A set of name-value pairs to describe the mappings of data
+#' variables to visual encodings in `vega()` and individual mark layers `mark_*()`.
+#' Use `NULL` to disable a layer encoding to inherit from its parent encodings.
+#'
+#' @return A list of quosures or constants.
+#' @export
+#' @examples
+#' enc(x = mpg, y = wt)
+#' enc(colour = cyl)
+#' enc(color = cyl)
+#' enc(x = NULL)
 enc <- function(x, y, ...) {
-  enquos(x = x, y = y, ..., .ignore_empty = "all")
+  encoding <- enquos(x = x, y = y, ..., .ignore_empty = "all")
+  vec_set_names(encoding, standardise_names(names(encoding)))
 }
 
 simple_select <- function(x) {
@@ -26,12 +40,10 @@ eval_enc <- function(data, encoding, encoding_name) {
 }
 
 eval_encoding <- function(data, encoding) {
-  encoding <- vec_set_names(encoding, standardise_names(names(encoding)))
   map2(encoding, names(encoding), function(x, y) eval_enc(data, x, y))
 }
 
 eval_condition <- function(data, selection, encoding) {
-  encoding <- standardise_names(encoding)
   selection_cp <- selection
   n_sel <- length(selection_cp)
   res <- vec_init(list(), n = n_sel)
