@@ -100,6 +100,6 @@ is_virgo <- function(v) {
 
 abort_if_not_virgo <- function(v) {
   if (!is_virgo(v)) {
-    abort("Only takes a `vega()` input.")
+    abort("Must be a `vega()` object.")
   }
 }

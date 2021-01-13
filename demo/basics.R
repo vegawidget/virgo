@@ -16,6 +16,10 @@ mtcars %>%
   mark_point(fill_opacity = .3)
 
 mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg, fill2 = factor(cyl), fill3 = cyl)) %>%
+  mark_point(fill_opacity = .3)
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg, group = cyl)) %>%
   mark_line()
