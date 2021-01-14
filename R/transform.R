@@ -23,18 +23,55 @@ virgo_aggregate_factory <- function(aggregate) {
   }
 }
 
+#' @export
+print.virgo_aggregate <- function(x, ...) {
+  cat(fmt_bullets(x), sep = "\n")
+  invisible(x)
+}
+
+#' Interactive aggregation operations
+#'
+#' @param x A data variable, used in conjunction with `enc()` or dplyr verbs.
+#' `vg_count()` can accept an empty input.
+#' @param y A data variable that maxmises/minimises `x` in `vg_argmin()` and
+#' `vg_argmax()`.
+#'
+#' @rdname vg-aggregate
+#' @export
 vg_sum <- virgo_aggregate_factory("sum")
+
+#' @rdname vg-aggregate
+#' @export
 vg_min <- virgo_aggregate_factory("min")
+
+#' @rdname vg-aggregate
+#' @export
 vg_max <- virgo_aggregate_factory("max")
+
+#' @rdname vg-aggregate
+#' @export
 vg_mean <- virgo_aggregate_factory("mean")
+
+#' @rdname vg-aggregate
+#' @export
 vg_median <- virgo_aggregate_factory("median")
+
+#' @rdname vg-aggregate
+#' @export
 vg_count <- virgo_aggregate_factory("count")
+
+#' @rdname vg-aggregate
+#' @export
 vg_distinct <- virgo_aggregate_factory("distinct")
 
+#' @rdname vg-aggregate
+#' @export
 vg_argmin <- function(x, y) {
   new_virgo_op(list(y = y, aggregate = "argmin"), class = "virgo_aggregate")
 }
 
+#' @rdname vg-aggregate
+#' @export
 vg_argmax <- function(x, y) {
   new_virgo_op(list(y = y, aggregate = "argmax"), class = "virgo_aggregate")
 }
@@ -48,17 +85,61 @@ virgo_timeunit_factory <- function(unit) {
   }
 }
 
+#' @export
+print.virgo_timeunit <- print.virgo_aggregate
+
+#' Interactive time unit operations
+#'
+#' @inheritParams vg_sum
+#' @param step An integer to define the number of time steps.
+#' @param utc If `TRUE`, parse data in UTC time, otherwise in local time.
+#'
+#' @rdname vg-timeunit
+#' @export
 vg_year <- virgo_timeunit_factory("year")
+
+#' @rdname vg-timeunit
+#' @export
 vg_quarter <- virgo_timeunit_factory("quarter")
+
+#' @rdname vg-timeunit
+#' @export
 vg_month <- virgo_timeunit_factory("month")
+
+#' @rdname vg-timeunit
+#' @export
 vg_yearmonth <- virgo_timeunit_factory("yearmonth")
+
+#' @rdname vg-timeunit
+#' @export
 vg_date <- virgo_timeunit_factory("date")
+
+#' @rdname vg-timeunit
+#' @export
 vg_week <- virgo_timeunit_factory("week")
+
+#' @rdname vg-timeunit
+#' @export
 vg_day <- virgo_timeunit_factory("day")
+
+#' @rdname vg-timeunit
+#' @export
 vg_dayofyear <- virgo_timeunit_factory("dayofyear")
+
+#' @rdname vg-timeunit
+#' @export
 vg_hours <- virgo_timeunit_factory("hours")
+
+#' @rdname vg-timeunit
+#' @export
 vg_minutes <- virgo_timeunit_factory("minutes")
+
+#' @rdname vg-timeunit
+#' @export
 vg_seconds <- virgo_timeunit_factory("seconds")
+
+#' @rdname vg-timeunit
+#' @export
 vg_milliseconds <- virgo_timeunit_factory("milliseconds")
 
 virgo_window_factory <- function(op) {
@@ -74,19 +155,48 @@ virgo_window_factory <- function(op) {
   }
 }
 
+#' @export
+print.virgo_window <- print.virgo_aggregate
+
+#' Interactive window operations
+#'
+#' @param x A data variable, used in conjunction with `dplyr::mutate()`.
+#' @param frame A list/vector of two elements to indicate the number of data values
+#' preceding and following the current data object. `NULL` gives unbounded elements
+#' proceding or following the current position.
+#' @param sort A variable for sorting data within a window in ascending order.
+#' `-` before the variable gives descending order. `NULL` disables sorting.
+#'
+#' @rdname vg-window
+#' @export
 vg_window_sum <- virgo_window_factory("sum")
+
+#' @rdname vg-window
+#' @export
 vg_window_mean <- virgo_window_factory("mean")
+
+#' @rdname vg-window
+#' @export
 vg_window_rank <- virgo_window_factory("rank")
+
+#' @rdname vg-window
+#' @export
 vg_window_count <- virgo_window_factory("count")
 
+#' @rdname vg-window
+#' @export
 vg_cumsum <- function(x, sort = NULL) {
   vg_window_sum(x, sort = !!enexpr(sort))
 }
 
+#' @rdname vg-window
+#' @export
 vg_cummean <- function(x, sort = NULL) {
   vg_window_mean(x, sort = !!enexpr(sort))
 }
 
+#' @rdname vg-window
+#' @export
 vg_ranking <- function(x, n = 1, sort = NULL, op) {
   sort <- simple_sort(!!enexpr(sort))
   if (is.null(sort)) {
@@ -97,34 +207,50 @@ vg_ranking <- function(x, n = 1, sort = NULL, op) {
   new_virgo_op(res, class = "virgo_window")
 }
 
+#' @rdname vg-window
+#' @export
 vg_row_number <- function(x, sort = NULL) {
   vg_ranking(x, n = 0, sort = !!enexpr(sort), "row_number")
 }
 
+#' @rdname vg-window
+#' @export
 vg_rank <- function(x, sort = NULL) {
   vg_ranking(x, n = 0, sort = !!enexpr(sort), "rank")
 }
 
+#' @rdname vg-window
+#' @export
 vg_dense_rank <- function(x, sort = NULL) {
   vg_ranking(x, n = 0, sort = !!enexpr(sort), "dense_rank")
 }
 
+#' @rdname vg-window
+#' @export
 vg_percent_rank <- function(x, sort = NULL) {
   vg_ranking(x, n = 0, sort = !!enexpr(sort), "percent_rank")
 }
 
+#' @rdname vg-window
+#' @export
 vg_cume_dist <- function(x, sort = NULL) {
   vg_ranking(x, n = 0, sort = !!enexpr(sort), "cume_dist")
 }
 
+#' @rdname vg-window
+#' @export
 vg_ntile <- function(x, n = 1, sort = NULL) {
   vg_ranking(x, n = n, sort = !!enexpr(sort), "ntile")
 }
 
+#' @rdname vg-window
+#' @export
 vg_lead <- function(x, n = 1, sort = NULL) {
   vg_ranking(x, n = n, sort = !!enexpr(sort), "lead")
 }
 
+#' @rdname vg-window
+#' @export
 vg_lag <- function(x, n = 1, sort = NULL) {
   vg_ranking(x, n = n, sort = !!enexpr(sort), "lag")
 }

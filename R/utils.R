@@ -27,3 +27,7 @@ square_brackets <- function(x) {
     x
   }
 }
+
+fmt_bullets <- function(x) {
+  paste(paste("*", names(x)), x, sep = ": ")
+}
