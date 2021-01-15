@@ -136,8 +136,6 @@ selection_composition(a | b)
 selection_composition(a | !b)
 selection_composition(!(a & b))
 selection_composition(!(a & b) & select_interval())
-c(color_if(a | b, "red", "grey"), size_if(a | b, 2, 3))
-c(color_if(a | b, "red", "grey"), size_if(a & b, 2, 3))
 
 p4 <- mtcars %>%
   vega() %>%

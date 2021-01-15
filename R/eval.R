@@ -13,7 +13,8 @@
 #' enc(x = NULL)
 enc <- function(x, y, ...) {
   encoding <- enquos(x = x, y = y, ..., .ignore_empty = "all")
-  vec_set_names(encoding, standardise_names(names(encoding)))
+  s_names <- standardise_encodings(names(encoding))
+  vec_set_names(encoding, s_names)
 }
 
 simple_select <- function(x) {

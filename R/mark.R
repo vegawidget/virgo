@@ -85,7 +85,7 @@ nlayer <- function(v) {
 
 mark_properties <- function(...) {
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")
-  dots <- vec_set_names(dots, standardise_names(names(dots)))
+  dots <- vec_set_names(dots, standardise_encodings(names(dots)))
   input_lgl <- map_lgl(dots, is_virgo_input)
   params <- vec_init(list(), n = sum(input_lgl))
   for (i in seq_along(params)) {
