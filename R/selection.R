@@ -8,6 +8,24 @@ new_virgo_input <- function(x, init = NULL) {
 
 # inputs that are bound to an HTML element are special case of
 # single selection
+input_factory <- function(input) {
+  force(input)
+  function(init = NULL, ...) {
+    new_virgo_input(list(input = input, ...), init = init)
+  }
+}
+
+#' HTML elements that bind to selections
+#'
+#' @param name Name of the HTML input.
+#' @param min,max Minimum and maximum values. 
+#' @param step Incremental step.
+#' @param init An initial value.
+#' @param choices A (named) vector of options.
+#' @param ... Not sure.
+#'
+#' @rdname vega-input
+#' @export
 input_slider <- function(name = NULL, min, max, step, init = NULL) {
   new_virgo_input(
     list(input = "range", min = min, max = max, step = step, name = name),
@@ -15,71 +33,110 @@ input_slider <- function(name = NULL, min, max, step, init = NULL) {
   )
 }
 
+#' @rdname vega-input
+#' @export
 input_radio <- function(name = NULL, choices, init = NULL) {
   new_virgo_input(
     list(input = "radio", options = choices, labels = names(choices),
       name = name), init = init)
 }
 
+#' @rdname vega-input
+#' @export
 input_select <- function(name = NULL, choices, init = NULL) {
   new_virgo_input(
     list(input = "select", options = choices, labels = names(choices),
       name = name), init = init)
 }
 
-input_factory  <- function(input) {
-  force(input)
-  function(init = NULL, ...) {
-    new_virgo_input(list(input = input, ...), init = init)
-  }
-}
-
-input_date <- input_factory("date")
-input_datetime <- input_factory("datetime")
-input_month <- input_factory("month")
-input_week <- input_factory("week")
-input_color <- input_colour <- input_factory("color")
+#' @rdname vega-input
+#' @export
 input_textbox <- input_factory("text")
+
+#' @rdname vega-input
+#' @export
 input_checkbox <- input_factory("checkbox")
 
-select_bind <- function(...) {
-  elements <- map(enquos(..., .named = TRUE), eval_tidy)
-  # FIXME: expect the same type of inputs
-  stopifnot(all(map_lgl(elements, is_virgo_input)))
-  fields <- list(names(elements))
-  inits <- map(elements, function(.) attr(., "init"))
-  # init does not work unless all elements are specified
-  if (any(map_lgl(inits, is.null))) {
-    inits <- NULL
-  }
-  binds <- map(elements, unclass)
-  new_virgo_selection(
-    list2(
-      !!rand_id() := list(type = "single",
-                          fields = fields,
-                          bind = binds,
-                          init = inits)
-    )
-  )
-}
+#' @rdname vega-input
+#' @export
+input_color <- input_factory("color")
 
-select_single <- function(encodings = NULL, init = NULL, nearest = FALSE,
-  on = "click", clear = "dblclick", empty = "all", resolve = "global") {
+#' @rdname vega-input
+#' @export
+input_colour <- input_factory("color")
+
+#' @rdname vega-input
+#' @export
+input_date <- input_factory("date")
+
+#' @rdname vega-input
+#' @export
+input_datetime <- input_factory("datetime")
+
+#' @rdname vega-input
+#' @export
+input_month <- input_factory("month")
+
+#' @rdname vega-input
+#' @export
+input_week <- input_factory("week")
+
+#' Initiate a selection
+#'
+#' @section Composing Multiple Selections:
+#' A set of operations ...
+#'
+#' @param encodings A character vector of encoding channels, such as "x" and "y".
+#' @param fields A character vector of data fields.
+#' @param init An initial value upon selection.
+#' @param nearest If `FALSE`, data values must be interacted with directly to
+#' be added to the selection.
+#' @param on,clear An event type that triggers/clears the selection. Options are
+#' "click", "dblclick", "dragenter", "dragleave", "dragover", "keydown", "keypress",
+#' "keyup", "mousedown", "mouseover", "mousemove", "mouseout", "mouseup",
+#' "mousewheel", "touchend", "touchmove", "touchstart", "wheel".
+#' @param empty An empty selection includes "all" or "none" data values.
+#' @param resolve One of "global", "union", "intersect" options to resolve
+#' ambiguity for layered and multi-view displays.
+#' @param toggle A logical to control whether data values should be toggled or
+#' only ever inserted into multi selections.
+#' @param mark A named vector of mark properties for brushed rectangle.
+#' @param translate A string or logical to interactively move an interval
+#' selection back-and-forth.
+#' @param zoom If `TRUE`, interactively resize an interval selection.
+#' @param ... A set of name-value pairs with data variables on the LHS and
+#' `input_*()` on the RHS.
+#'
+#' @rdname vega-selection
+#' @export
+select_single <- function(encodings = NULL, fields = NULL, init = NULL,
+  nearest = FALSE, on = "click", clear = "dblclick", empty = "all",
+  resolve = "global") {
+  if (!is.null(fields)) {
+    fields <- as.list(fields)
+  }
   new_virgo_selection(list2(!!rand_id() := list(
-    type = "single", encodings = encodings, init = init,
+    type = "single", encodings = encodings, fields = fields, init = init,
     nearest = nearest, on = on, clear = clear, empty = empty,
     resolve = resolve)))
 }
 
-select_multi <- function(encodings = NULL, init = NULL,
+#' @rdname vega-selection
+#' @export
+select_multi <- function(encodings = NULL, fields = NULL, init = NULL,
   toggle = TRUE, nearest = FALSE, on = "click", clear = "dblclick",
   empty = "all", resolve = "global") {
+  if (!is.null(fields)) {
+    fields <- as.list(fields)
+  }
   new_virgo_selection(list2(!!rand_id() := list(
-    type = "multi", encodings = encodings, init = init, toggle = toggle,
-    nearest = nearest, on = on, clear = clear, empty = empty,
+    type = "multi", encodings = encodings, fields = fields, init = init,
+    toggle = toggle, nearest = nearest, on = on, clear = clear, empty = empty,
     resolve = resolve)))
 }
 
+#' @rdname vega-selection
+#' @export
 select_interval <- function(encodings = c("x", "y"), init = NULL,
   mark = NULL, on = "[mousedown, window:mouseup] > window:mousemove!",
   clear = "dblclick", translate = on, empty = "all", zoom = TRUE,
@@ -94,17 +151,39 @@ select_interval <- function(encodings = c("x", "y"), init = NULL,
     resolve = resolve)))
 }
 
-select_legend <- function(field, on = "click", clear = "dblclick") {
+#' @rdname vega-selection
+#' @export
+select_legend <- function(fields, on = "click", clear = "dblclick") {
   # vega only supports legend bindings for one field or channel
   field <- as.list(simple_select(!!enexpr(field)))
-  stopifnot(has_length(field, 1))
+  stopifnot(has_length(fields, 1))
   new_virgo_selection(list2(!!rand_id() := list(
-    type = "multi", fields = field, bind = "legend")))
+    type = "multi", fields = fields, bind = "legend")))
 }
 
+#' @rdname vega-selection
+#' @export
 select_domain <- function() {
   new_virgo_selection(list2(!!rand_id() := list(
     type = "interval", bind = "scales")))
+}
+
+#' @rdname vega-selection
+#' @export
+select_bind <- function(...) {
+  elements <- map(enquos(..., .named = TRUE), eval_tidy)
+  # FIXME: expect the same type of inputs
+  stopifnot(all(map_lgl(elements, is_virgo_input)))
+  fields <- list(names(elements))
+  inits <- map(elements, function(.) attr(., "init"))
+  # init does not work unless all elements are specified
+  if (any(map_lgl(inits, is.null))) {
+    inits <- NULL
+  }
+  binds <- map(elements, unclass)
+  new_virgo_selection(
+    list2(!!rand_id() := list(type = "single", fields = fields, bind = binds,
+      init = inits)))
 }
 
 new_virgo_selection <- function(x, composition = NULL, transform = NULL,
@@ -138,6 +217,12 @@ rand_id <- function() {
   paste0(rand, collapse = "")
 }
 
+#' Conditional encoding selection
+#'
+#' @param selection A selection or selection compositions.
+#' @param true,false Values for true/false element of `selection`.
+#'
+#' @export
 encode_if <- function(selection, true, false) {
   stopifnot(is_virgo_selection(selection))
   new_virgo_condition(list(selection = selection,
@@ -171,12 +256,22 @@ selection_union <- function(x) {
   x
 }
 
+#' Dplyr methods for selections
+#'
+#' @keywords internal
+#' @name vega-dplyr
+NULL
+
+#' @rdname vega-dplyr
+#' @export
 group_by.virgo_selection <- function(.data, ...) {
   vars <- list(map_chr(enexprs(...), as_string))
   new_virgo_selection(unclass(.data), .data %@% "composition",
     .data %@% "transform", groupby = vars)
 }
 
+#' @rdname vega-dplyr
+#' @export
 mutate.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
@@ -189,6 +284,8 @@ mutate.virgo_selection <- function(.data, ...) {
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
 
+#' @rdname vega-dplyr
+#' @export
 summarise.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
@@ -201,6 +298,8 @@ summarise.virgo_selection <- function(.data, ...) {
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
 
+#' @rdname vega-dplyr
+#' @export
 summarize.virgo_selection <- summarise.virgo_selection
 
 translate_aggregate <- function(x, quo, field, by) {

@@ -10,8 +10,14 @@ mtcars %>%
 
 vega() %>%
   mark_circle(
+    encoding = enc(x = wt, y = mpg,
+      color = encode_if(select_single(), factor(cyl), "grey")),
+    data = mtcars)
+
+vega() %>%
+  mark_circle(
     encoding = enc(x = wt, y = mpg, color = factor(cyl)),
-    data = mtcars, selection = selection)
+    data = mtcars, selection = select_single(fields = "cyl"))
 
 mtcars %>%
   vega() %>%

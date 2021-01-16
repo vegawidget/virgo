@@ -2,7 +2,7 @@
 % Please edit documentation in R/multiviews.R
 \name{resolve_views}
 \alias{resolve_views}
-\title{Resolve scale and guide for multiple layers}
+\title{Resolve scale and guide for layered and multi-view displays}
 \usage{
 resolve_views(v, scale = list(), axis = list(), legend = list())
 }
@@ -18,5 +18,5 @@ resolve_views(v, scale = list(), axis = list(), legend = list())
 \code{opacity}, \code{shape}, and \code{size}.}
 }
 \description{
-Resolve scale and guide for multiple layers
+Resolve scale and guide for layered and multi-view displays
 }

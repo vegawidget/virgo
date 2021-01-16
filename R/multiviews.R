@@ -47,7 +47,7 @@ vconcat <- function(...) {
   new_virgo(spec)
 }
 
-#' Resolve scale and guide for multiple layers
+#' Resolve scale and guide for layered and multi-view displays
 #'
 #' @inheritParams facet_views
 #' @param scale A named list of every channel to define either "shared" or 
