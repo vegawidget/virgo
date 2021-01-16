@@ -1,5 +1,5 @@
 #' @import rlang tidyselect vctrs
-#' @importFrom vegawidget as_vegaspec vega_embed vegawidget
+#' @importFrom vegawidget as_vegaspec vega_embed vega_schema vegawidget
 
 new_virgo <- function(spec) {
   structure(spec, class = "virgo")
