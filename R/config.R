@@ -10,26 +10,36 @@
 config <- function(v, background = "white", axis = list(), axis_x = list(),
   axis_y = list(), header = list(), legend = list(), title = list(), 
   view = list(), concat = list(), facet = list()) {
-  abort_if_not_virgo(v)
+  default <- config_ggplot(v)$config
 
   fn <- function(x) {
     vec_set_names(x, standardise_names(names(x)))
   }
 
+  axis <- replace(default$axis, names(axis), fn(axis))
+  axis_x <- replace(default$axis_x, names(axis_x), fn(axis_x))
+  axis_y <- replace(default$axis_y, names(axis_y), fn(axis_y))
+  header <- replace(default$header, names(header), fn(header))
+  legend <- replace(default$legend, names(legend), fn(legend))
+  title <- replace(default$title, names(title), fn(title))
+  view <- replace(default$view, names(view), fn(view))
+  concat <- replace(default$concat, names(concat), fn(concat))
+  facet <- replace(default$facet, names(facet), fn(facet))
+
   res <- list(
     background = background,
-    axis = fn(axis),
-    axis_x = fn(axis_x),
-    axis_y = fn(axis_y),
-    headerRow = list(labelOrient = "right", titleOrient = "right"),
-    header = fn(header),
-    legend = fn(legend),
-    title = fn(title),
-    view = fn(view),
-    concat = fn(concat),
-    facet = fn(facet)
+    axis = axis,
+    axisX = axis_x,
+    axisY = axis_y,
+    header = header,
+    legend = legend,
+    title = title,
+    view = view,
+    concat = concat,
+    facet = facet
   )
-  new_virgo(c(unclass(v), list(config = res)))
+  old <- default[!vec_in(names(default), names(res))]
+  new_virgo(c(unclass(v), list(config = c(old, res))))
 }
 
 #' @rdname vega-config
@@ -76,7 +86,12 @@ config_ggplot <- function(v) {
     area = area,
     bar = bar,
     axis = axis,
-    legend = legend
+    axisX = list(),
+    axisY = list(),
+    header = list(),
+    legend = legend,
+    title = list(),
+    concat = list()
   ))))
 }
 

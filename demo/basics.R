@@ -7,9 +7,9 @@ mtcars %>%
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%
-  vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
+  vega(encoding = enc(x = wt, y = mpg, fill = cyl)) %>%
   mark_point() %>%
-  config()
+  config(axis_x = list(orient = "top"))
 
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, fill = factor(cyl))) %>%
