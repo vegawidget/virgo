@@ -1,8 +1,24 @@
 #' @importFrom scales log10_trans sqrt_trans date_trans expand_range
-# zap() gives defaults
-# NULL removes/disables
-# TODO: args accepted in ... depend on continuous or discrete scales,
-# e.g. `nice` in continuous and `format` in temporal
+#' @title Vega scales
+#'
+#' @param v A `vega()` object.
+#' @param name A string for an axis label. `zap()` is the default label.
+#' `NULL` removes the label.
+#' @param domain A vector of two elements to define the range.
+#' @param type One of "linear", "log", "sqrt", "temporal", "band", "category" scale types.
+#' @param breaks One of:
+#' * `NULL` for no breaks
+#' * `zap()` for default breaks
+#' * A vector for custom breaks
+#' @param orient One of "bottom" and "top" for `scale_x()`. One of "left" and "right"
+#' for `scale_y()`.
+#' @param range Custom range specification for colour, opacity, and size.
+#' @param scheme Colour scheme.
+#' @param guide If `FALSE`, remove the legend.
+#' @param ... Other parameters passed to vega specs.
+#'
+#' @rdname vega-scales
+#' @export
 scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
   breaks = zap(), orient = "bottom", ...) {
   abort_if_not_virgo(v)
@@ -27,6 +43,8 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
   v
 }
 
+#' @rdname vega-scales
+#' @export
 scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
   breaks = zap(), orient = "left", ...) {
   abort_if_not_virgo(v)
@@ -50,6 +68,8 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
   v
 }
 
+#' @rdname vega-scales
+#' @export
 scale_color <- function(v, name = zap(), range = zap(), scheme = zap(),
   guide = TRUE, ...) {
   abort_if_not_virgo(v)
@@ -76,8 +96,12 @@ scale_color <- function(v, name = zap(), range = zap(), scheme = zap(),
   v
 }
 
+#' @rdname vega-scales
+#' @export
 scale_colour <- scale_color
 
+#' @rdname vega-scales
+#' @export
 scale_size <- function(v, name = zap(), range = zap(), type = "linear",
   guide = TRUE, ...) {
   abort_if_not_virgo(v)
@@ -125,6 +149,8 @@ scale_opacity <- function(v, name = zap(), range = zap(), type = "linear",
   v
 }
 
+#' @rdname vega-scales
+#' @export
 scale_shape <- function(v, name = zap(), guide = TRUE, ...) {
   abort_if_not_virgo(v)
   dots <- dots_list(..., .named = TRUE, .homonyms = "error")

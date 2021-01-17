@@ -81,6 +81,13 @@ input_month <- input_factory("month")
 #' @export
 input_week <- input_factory("week")
 
+#' @export
+print.virgo_selection <- function(x, ...) {
+  lst <- map(x, function(x) paste(paste0("  ", fmt_bullets(x)), sep = "\n"))
+  map2(names(lst), lst, function(x, y) cat(x, y, sep = "\n"))
+  invisible(x)
+}
+
 #' Initiate a selection
 #'
 #' @section Composing Multiple Selections:
