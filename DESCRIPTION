@@ -1,15 +1,21 @@
 Package: virgo
-Title: What the Package Does (One Line, Title Case)
+Title: A Domain Specific Language for Layered Grammar of Interactive Graphics
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    c(person(given = "Earo",
+           family = "Wang",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "earo.wang@gmail.com",
+           comment = c(ORCID = "0000-0001-6448-5260")),
+      person(given = "Stuart",
+            family = "Lee",
+            role = "aut",
+            email = "stuart.andrew.lee@gmail.com",
+            comment = c(ORCID = "0000-0003-1179-8436")),
+      person("Vega/Vega-Lite Developers", role = c("aut")))
+Description: An implementation of a grammar of interactive graphics using 'vega'
+    in R.
+License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Imports: 
