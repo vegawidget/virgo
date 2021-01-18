@@ -197,6 +197,7 @@ position_to_stack <- function(position = "stack") {
   }
 }
 
+#' @param position One of "identity", "stack", "fill".
 #' @rdname vega-marks
 #' @export
 mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
@@ -262,6 +263,7 @@ mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
   vega_layer(v, layer, encoding, data, selection)
 }
 
+#' @param density Density parameters.
 #' @rdname vega-marks
 #' @export
 mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
@@ -284,6 +286,7 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
+#' @param bin A list of `bin` parameters.
 #' @rdname vega-marks
 #' @export
 mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
@@ -318,6 +321,14 @@ mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
   v
 }
 
+#' @param method One of "lm" or "loess".
+#' @param formula One of:
+#' * y ~ x
+#' * y ~ x^2
+#' * y ~ x^[order]
+#' * y ~ log(x)
+#' * y ~ exp(x)
+#' @param bandwidth Degree of smoother.
 #' @rdname vega-marks
 #' @export
 mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,

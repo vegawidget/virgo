@@ -13,8 +13,6 @@
 #' @param orient One of "bottom" and "top" for `scale_x()`. One of "left" and "right"
 #' for `scale_y()`.
 #' @param range Custom range specification for colour, opacity, and size.
-#' @param scheme Colour scheme.
-#' @param guide If `FALSE`, remove the legend.
 #' @param ... Other parameters passed to vega specs.
 #'
 #' @rdname vega-scales
@@ -68,6 +66,8 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
   v
 }
 
+#' @param scheme Colour scheme.
+#' @param guide If `FALSE`, remove the legend.
 #' @rdname vega-scales
 #' @export
 scale_color <- function(v, name = zap(), range = zap(), scheme = zap(),
