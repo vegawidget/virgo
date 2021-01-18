@@ -117,20 +117,69 @@ mark_factory <- function(type = "point") {
   }
 }
 
+#' Add new marks to `vega()` visualisation
+#'
+#' @param v A `vega()` object.
+#' @param encoding An aesthetic mapping via `enc()`.
+#' @param data A data frame for the layer.
+#' @param selection A selection object.
+#' @param ... Additional mark properties.
+#'
+#' @rdname vega-marks
+#' @export
 mark_arc <- mark_factory(type = "arc")
+
+#' @rdname vega-marks
+#' @export
 mark_ribbon <- mark_factory(type = "area")
+
+#' @rdname vega-marks
+#' @export
 mark_boxplot <- mark_factory(type = "boxplot")
+
+#' @rdname vega-marks
+#' @export
 mark_circle <- mark_factory(type = "point")
+
+#' @rdname vega-marks
+#' @export
 mark_errorband <- mark_factory(type = "errorband")
 # mark_geoshape <- mark_factory(type = "geoshape")
+
+#' @rdname vega-marks
+#' @export
 mark_image <- mark_factory(type = "image")
+
+#' @rdname vega-marks
+#' @export
 mark_line <- mark_factory(type = "line")
+
+#' @rdname vega-marks
+#' @export
 mark_point <- mark_factory(type = "circle")
+
+#' @rdname vega-marks
+#' @export
 mark_rect <- mark_factory(type = "rect")
-mark_linerange <- mark_rule <- mark_factory(type = "rule")
+
+#' @rdname vega-marks
+#' @export
+mark_rule <- mark_factory(type = "rule")
+
+#' @rdname vega-marks
+#' @export
 mark_square <- mark_factory(type = "square")
+
+#' @rdname vega-marks
+#' @export
 mark_text <- mark_factory(type = "text")
+
+#' @rdname vega-marks
+#' @export
 mark_tick <- mark_factory(type = "tick")
+
+#' @rdname vega-marks
+#' @export
 mark_trail <- mark_factory(type = "trail")
 
 position_to_stack <- function(position = "stack") {
@@ -148,6 +197,8 @@ position_to_stack <- function(position = "stack") {
   }
 }
 
+#' @rdname vega-marks
+#' @export
 mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "stack") {
   abort_if_not_virgo(v)
@@ -161,6 +212,8 @@ mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
+#' @rdname vega-marks
+#' @export
 mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "stack") {
   abort_if_not_virgo(v)
@@ -174,6 +227,8 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
+#' @rdname vega-marks
+#' @export
 mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ...) {
   abort_if_not_virgo(v)
@@ -183,6 +238,8 @@ mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
   vega_layer(v, layer, encoding, data, selection)
 }
 
+#' @rdname vega-marks
+#' @export
 mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ..., position = "stack", bin = TRUE) { # bin = list() opts
   v <- mark_bar(v, encoding, data, selection, ..., position = position)
@@ -195,6 +252,8 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
   v
 }
 
+#' @rdname vega-marks
+#' @export
 mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
   abort_if_not_virgo(v)
   marks <- mark_properties(interpolate = "step-after", ...)
@@ -203,6 +262,8 @@ mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
   vega_layer(v, layer, encoding, data, selection)
 }
 
+#' @rdname vega-marks
+#' @export
 mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   position = "identity", density = list()) {
   v <- mark_area(v, encoding, data, selection, ..., position = position)
@@ -223,6 +284,8 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
+#' @rdname vega-marks
+#' @export
 mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   bin = list(x = TRUE, y = TRUE)) {
   # list(x = list(maxbins = 10))
@@ -239,6 +302,8 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v
 }
 
+#' @rdname vega-marks
+#' @export
 mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
   ...) {
   abort_if_not_virgo(v)
@@ -253,6 +318,8 @@ mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
   v
 }
 
+#' @rdname vega-marks
+#' @export
 mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   method = "lm", formula = y ~ x, bandwidth = 0.3) {
   abort_if_not_virgo(v)
