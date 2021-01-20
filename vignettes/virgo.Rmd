@@ -20,11 +20,12 @@ to some sophisticated interactive examples.
 Throughout this vignette we will be exploring three months of microclimate sensor data collected from December 2019 until February 2020 from Melbourne City Council. This data is built into to **virgo** and consists of measurements for things like temperature and relative humidity at 5 different locations. 
 ```{r setup, echo = TRUE}
 library(virgo)
+library(lubridate)
 library(dplyr)
 melbweather
 ```
 
-## Data and Encodings
+## Data, Encodings and Marks
 
 To construct a visualisation, we begin with tidy data and map columns to visual elements using encodings:
 
@@ -37,8 +38,6 @@ melbweather %>%
 The data is piped into the `vega()` function and aesthetic mappings are
 specified with the `enc()`. Valid encodings depend on the **mark** or graphical element being used. As there are no marks for this **virgo** chart, blank canvas is printed. The `vega()` function is required to be called in order to produce a valid visualisation, however as well we see later both data and marks can be specified elsewhere.
 
-## Marks
-
 To produce interesting charts, we can add **marks** which are visual layers that are added to the chart. 
 
 Let's go back to our data:
@@ -47,10 +46,29 @@ Let's go back to our data:
 melbweather
 ```
 
-Suppose we are interested in the relationship between ambient temperature and relative humidity. It is theorised that as ambient temperature increases, relative humidity decreases. We can check whether this is the case with our data by creating a scatter plot.
+To begin, we will collapse our quarter hourly 
+measurements for each site to hourly averages using **dplyr**:
 
 ```{r}
-melbweather %>% 
+hourly_weather <- melbweather %>% 
+  group_by(site, date, hour_of_day = hour(date_time) ) %>% 
+  summarise(
+    across(
+      c(ambient_temperature:pm10), 
+      mean, 
+      na.rm = TRUE
+    )
+  ) %>% 
+  ungroup()
+
+hourly_weather
+```
+Suppose we are interested in the relationship between ambient temperature and relative humidity. It is theorised that as ambient temperature increases, relative humidity decreases.
+
+We can check whether this is the case with our data by creating a scatter plot.
+
+```{r}
+hourly_weather %>% 
   vega() %>% 
   mark_point(enc(x = ambient_temperature, y = relative_humidity))
 ```
@@ -60,7 +78,7 @@ For users, of **ggplot2** the above incantation should look somewhat familiar. W
 The **virgo** library will automatically add legends depending on the type of encoding and input variable. If we color by a continuous variable a scale is automatically determined and placed on the right hand side of the plot. 
 
 ```{r}
-melbweather %>% 
+hourly_weather %>% 
   vega() %>% 
   mark_point(
     enc(x = ambient_temperature, 
@@ -69,16 +87,17 @@ melbweather %>%
   )
 ```
 
-Likewise, we can evaluate expressions inside of the encoding function for example evaluating whether wind speed is greater than 10km/h:
+Likewise, we can evaluate expressions inside of the encoding function for example evaluating the month of the date column
+with **lubridate**:
 
 ```{r}
-melbweather %>% 
+hourly_weather %>% 
   vega() %>% 
   mark_point(
     enc(
       x = ambient_temperature, 
       y = relative_humidity, 
-      color = wind_speed > 10
+      color = month(date, label = TRUE)
     )
   )
 ```
@@ -88,7 +107,7 @@ It appears that there is a slight non-linear and negative relationship between a
 
 
 ```{r}
-melbweather %>% 
+hourly_weather %>% 
   vega() %>% 
   mark_point(
     enc(x = ambient_temperature, y = relative_humidity),
@@ -96,15 +115,88 @@ melbweather %>%
   )
 ```
 
+Multiple marks can be added to a visualisation by piping a sequence of marks together. For example, adding a loess regression
+to a scatter plot.
 
+```{r}
+p <- hourly_weather %>% 
+  vega(enc(x = ambient_temperature, y = relative_humidity)) %>% 
+  mark_point(opacity = 0.1) %>% 
+  mark_smooth(method = "loess", color = "blue")
+p
+```
+
+Here we've specified the encoding at the top level with the `vega()` function, so they are available to all downstream layers. We can have layer specific encodings, by passing the `enc()` to specific layers. In addition to a single regression line, we could generate separate lines for each measurement within each month of the year:
+
+```{r}
+p %>% 
+  mark_smooth(
+    enc(color = month(date, label = TRUE)),
+    method = "loess"
+  )
+```
 
 ## Facets
 
+Sometimes we want to visualise multiple categorical variables at the same time, by creating small multiples (facets) views. Say we were interested in the distribution of wind speed, we could
+create a histogram:
+
+```{r}
+ws <- hourly_weather %>% 
+  vega() %>% 
+  mark_histogram(enc(x = wind_speed), bin = list(step = 1))
+ws
+```
+
+How similar are the wind speeds across each measurement site? We can facet by site to find out:
+
+```{r}
+ws %>% 
+  facet_views(column = site)
+```
+
+Faceting requires specifying a row and/or column encoding, that determines how the subplots are drawn on the canvas.
+
 ## Multiple Views
+
+Often it is helpful to place views side by side that shows all
+of the data rather than subplots like those produced by faceting.
+
+**virgo** provides functions to align plots horizontally or vertically with the `hconcat()` or `vconcat()` functions.
+
+```{r}
+left <- hourly_weather %>% 
+  vega() %>% 
+  mark_point(enc(x = ambient_temperature, y = relative_humidity),
+             opacity = 0.1)
+right <- hourly_weather %>%
+  vega() %>% 
+  mark_point(enc(x = wind_speed, y = relative_humidity),
+             opacity = 0.1)
+hconcat(left, right) # not working?
+```
 
 ## Client side data transformations
 
-In general, we believe it is best to perform data transformations outside of the visualisation environment and recommend using the **tidyverse** suite to 
+The **virgo** package exports special functions that are computed directly by **Vega-Lite** rather than R. These functions are prefixed with `vg`, and should always be called inside of `enc()`.
+
+By using the `vg` functions, we can get **Vega-Lite** to compute the average temperature for each hour across all of the days and sites in the data set.
+```{r}
+hourly_temp <- melbweather %>% 
+  vega(
+    enc(
+      x = vg_hours(date_time), 
+      y = vg_mean(ambient_temperature)
+    )
+  ) %>% 
+  mark_point() %>% 
+  mark_line()
+hourly_temp
+```
+
+
+Generally, we believe it is best to perform data transformations outside of the visualisation environment as the transformations are explicit (i.e. when using the **tidyverse**). However,  as we will see later these client side transformations become especially useful when combined with interactions.
 
 ## Interactivity via selections
+
 
