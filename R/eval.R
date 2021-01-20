@@ -75,7 +75,7 @@ eval_condition <- function(data, selection, encoding) {
   vec_c(!!!res)
 }
 
-as_field <- function(quo) {
+as_field_rhs <- function(quo) {
   if (is_quosure(quo)) {
     if (quo_is_null(quo)) {
       NULL
@@ -84,16 +84,21 @@ as_field <- function(quo) {
       if (vec_in(fn, "vg_count")) {
         ""
       } else if (vec_in(fn, virgo_op())) {
-        square_brackets(as_label(call_args(quo)[[1]]))
+        as_label(call_args(quo)[[1]])
       } else {
-        square_brackets(as_label(quo))
+        as_label(quo)
       }
     } else {
-      square_brackets(as_label(quo))
+      as_label(quo)
     }
   } else {
-    square_brackets(as_label(quo))
+    as_label(quo)
   }
+  
+}
+
+as_field <- function(quo) {
+  square_brackets(as_field_rhs(quo))
 }
 
 encoding_spec <- function(x, field, ...) {

@@ -28,7 +28,8 @@ valid_encodings <- function(x) {
   props <- c("x", "y", "x2", "y2", "details", "fill", "fill_opacity", "color", 
     "size", "opacity", "shape", "angle", "tooltip", "url", "radius", "radius2",
     "stroke", "stroke_opacity", "stroke_cap", "stroke_dash", "stroke_join",
-    "stroke_width", "text", "theta", "theta2", "href", "description")
+    "stroke_width", "text", "theta", "theta2", "href", "description",
+    "interpolate")
   lgl <- vec_in(x, props)
   if (!all(lgl)) {
     abort(c("Invalid property:", x[!lgl]))
@@ -37,7 +38,9 @@ valid_encodings <- function(x) {
 }
 
 square_brackets <- function(x) {
-  if (grepl("\\.", x)) {
+  if (is.null(x)) {
+    x
+  } else if (grepl("\\.", x)) {
     paste0("[", x, "]")
   } else {
     x

@@ -46,7 +46,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   }
 
   # data needs updating
-  fields <- vec_set_names(fields, map_chr(fields, as_field))
+  fields <- vec_set_names(fields, map_chr(fields, as_field_rhs))
   data <- eval_encoding_mask(data, fields, names(encoding))
   if (is_data_inherit) {
     v$data$values <- data
