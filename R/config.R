@@ -3,13 +3,13 @@
 #' @param v A `vega()` object.
 #' @param background A plot background.
 #' @param axix,axis_x,axis_y A named list to define axis.
-#' @param header,legend,title,view,concat,facet A named list.
+#' @param header,legend,title,view,facet A named list.
 #'
 #' @rdname vega-config
 #' @export
 config <- function(v, background = "white", axis = list(), axis_x = list(),
   axis_y = list(), header = list(), legend = list(), title = list(), 
-  view = list(), concat = list(), facet = list()) {
+  view = list(), facet = list()) {
   default <- config_ggplot(v)$config
 
   fn <- function(x) {
@@ -23,7 +23,7 @@ config <- function(v, background = "white", axis = list(), axis_x = list(),
   legend <- replace(default$legend, names(legend), fn(legend))
   title <- replace(default$title, names(title), fn(title))
   view <- replace(default$view, names(view), fn(view))
-  concat <- replace(default$concat, names(concat), fn(concat))
+  # concat <- replace(default$concat, names(concat), fn(concat))
   facet <- replace(default$facet, names(facet), fn(facet))
 
   res <- list(
@@ -35,7 +35,7 @@ config <- function(v, background = "white", axis = list(), axis_x = list(),
     legend = legend,
     title = title,
     view = view,
-    concat = concat,
+    # concat = concat,
     facet = facet
   )
   old <- default[!vec_in(names(default), names(res))]
@@ -90,8 +90,8 @@ config_ggplot <- function(v) {
     axisY = list(),
     header = list(),
     legend = legend,
-    title = list(),
-    concat = list()
+    title = list()
+    # concat = list()
   ))))
 }
 
