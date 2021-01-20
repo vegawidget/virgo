@@ -195,8 +195,10 @@ hourly_temp
 ```
 
 
-Generally, we believe it is best to perform data transformations outside of the visualisation environment as the transformations are explicit (i.e. when using the **tidyverse**). However,  as we will see later these client side transformations become especially useful when combined with interactions.
+Generally, we believe it is best to perform data transformations outside of the visualisation environment as the transformations are explicit (i.e. when using the **tidyverse**). However, as we will see later these client side transformations become especially useful when combined with interactivity.
 
 ## Interactivity via selections
+
+
 
 
