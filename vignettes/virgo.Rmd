@@ -1,8 +1,8 @@
 ---
-title: "Using virgo to explore Melbourne's microclimate"
+title: "Introducing virgo for interactive exploratory graphics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using virgo to explore Melbourne's microclimate}
+  %\VignetteIndexEntry{Introducing virgo for interactive exploratory graphics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,6 +14,97 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+The virgo package developed and extends the grammar of interactive graphics based on the **Vega-Lite** library in Javascript. It is a functional grammar built on top of the **vegawidget** package. In this vignette we detail each component of the grammar, eventually building up
+to some sophisticated interactive examples.
+
+Throughout this vignette we will be exploring three months of microclimate sensor data collected from December 2019 until February 2020 from Melbourne City Council. This data is built into to **virgo** and consists of measurements for things like temperature and relative humidity at 5 different locations. 
+```{r setup, echo = TRUE}
 library(virgo)
+library(dplyr)
+melbweather
 ```
+
+## Data and Encodings
+
+To construct a visualisation, we begin with tidy data and map columns to visual elements using encodings:
+
+```{r}
+melbweather %>%
+  filter(date == "2019-12-01") %>% 
+  vega(encoding = enc(x = ambient_temperature))
+```
+
+The data is piped into the `vega()` function and aesthetic mappings are
+specified with the `enc()`. Valid encodings depend on the **mark** or graphical element being used. As there are no marks for this **virgo** chart, blank canvas is printed. The `vega()` function is required to be called in order to produce a valid visualisation, however as well we see later both data and marks can be specified elsewhere.
+
+## Marks
+
+To produce interesting charts, we can add **marks** which are visual layers that are added to the chart. 
+
+Let's go back to our data:
+
+```{r}
+melbweather
+```
+
+Suppose we are interested in the relationship between ambient temperature and relative humidity. It is theorised that as ambient temperature increases, relative humidity decreases. We can check whether this is the case with our data by creating a scatter plot.
+
+```{r}
+melbweather %>% 
+  vega() %>% 
+  mark_point(enc(x = ambient_temperature, y = relative_humidity))
+```
+
+For users, of **ggplot2** the above incantation should look somewhat familiar. We specify our data at the top level using `vega()` and then add layers using the pipe `%>% ` in combination with marks. Inside the `mark_point()` function we specify the aesthetic mapping or **encoding** that says the x axis should correspond to ambient temperature and the y axis should correspond to relative humidity.
+
+The **virgo** library will automatically add legends depending on the type of encoding and input variable. If we color by a continuous variable a scale is automatically determined and placed on the right hand side of the plot. 
+
+```{r}
+melbweather %>% 
+  vega() %>% 
+  mark_point(
+    enc(x = ambient_temperature, 
+        y = relative_humidity, 
+        color = wind_speed)
+  )
+```
+
+Likewise, we can evaluate expressions inside of the encoding function for example evaluating whether wind speed is greater than 10km/h:
+
+```{r}
+melbweather %>% 
+  vega() %>% 
+  mark_point(
+    enc(
+      x = ambient_temperature, 
+      y = relative_humidity, 
+      color = wind_speed > 10
+    )
+  )
+```
+
+
+It appears that there is a slight non-linear and negative relationship between ambient temperature and relative humidity, however, there is a lot over-plotting in the first example, so perhaps it would be best to add some opacity to the previous scatter plot. Graphical elements that don't depend on columns of the data can be added via extra arguments to the mark function:
+
+
+```{r}
+melbweather %>% 
+  vega() %>% 
+  mark_point(
+    enc(x = ambient_temperature, y = relative_humidity),
+    opacity = 0.1
+  )
+```
+
+
+
+## Facets
+
+## Multiple Views
+
+## Client side data transformations
+
+In general, we believe it is best to perform data transformations outside of the visualisation environment and recommend using the **tidyverse** suite to 
+
+## Interactivity via selections
+
