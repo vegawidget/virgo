@@ -263,22 +263,12 @@ selection_union <- function(x) {
   x
 }
 
-#' Dplyr methods for selections
-#'
-#' @keywords internal
-#' @name vega-dplyr
-NULL
-
-#' @rdname vega-dplyr
-#' @export
 group_by.virgo_selection <- function(.data, ...) {
   vars <- list(map_chr(enexprs(...), as_string))
   new_virgo_selection(unclass(.data), .data %@% "composition",
     .data %@% "transform", groupby = vars)
 }
 
-#' @rdname vega-dplyr
-#' @export
 mutate.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
@@ -291,8 +281,6 @@ mutate.virgo_selection <- function(.data, ...) {
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
 
-#' @rdname vega-dplyr
-#' @export
 summarise.virgo_selection <- function(.data, ...) {
   quos <- enquos(..., .named = TRUE)
   fields <- names(quos)
@@ -305,8 +293,6 @@ summarise.virgo_selection <- function(.data, ...) {
   new_virgo_selection(unclass(.data), .data %@% "composition", res)
 }
 
-#' @rdname vega-dplyr
-#' @export
 summarize.virgo_selection <- summarise.virgo_selection
 
 translate_aggregate <- function(x, quo, field, by) {

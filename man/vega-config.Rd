@@ -15,7 +15,6 @@ config(
   legend = list(),
   title = list(),
   view = list(),
-  concat = list(),
   facet = list()
 )
 
@@ -26,7 +25,7 @@ config_ggplot(v)
 
 \item{background}{A plot background.}
 
-\item{header, legend, title, view, concat, facet}{A named list.}
+\item{header, legend, title, view, facet}{A named list.}
 
 \item{axix, axis_x, axis_y}{A named list to define axis.}
 }

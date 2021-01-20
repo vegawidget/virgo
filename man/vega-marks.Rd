@@ -128,6 +128,25 @@ mark_smooth(
 \item{selection}{A selection object.}
 
 \item{...}{Additional mark properties.}
+
+\item{position}{One of "identity", "stack", "fill".}
+
+\item{bin}{A list of \code{bin} parameters.}
+
+\item{density}{Density parameters.}
+
+\item{method}{One of "lm" or "loess".}
+
+\item{formula}{One of:
+\itemize{
+\item y ~ x
+\item y ~ x^2
+\item y ~ x^\link{order}
+\item y ~ log(x)
+\item y ~ exp(x)
+}}
+
+\item{bandwidth}{Degree of smoother.}
 }
 \description{
 Add new marks to \code{vega()} visualisation
