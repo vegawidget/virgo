@@ -95,29 +95,32 @@ p <- penguins %>%
 p
 ```
 
-
-Now we generate a second scatter plot:
+Once a selection is created, it can be passed into other marks, in order to
+perform a filter. Here, we create a chart with two histogram layers,
+the first will represent the overall distribution of penguin body masses, while
+the latter will be the distribution conditional on the selection, and will
+be shown in purple. 
 
 ```{r right-scatter}
 p_right <- penguins %>% 
-  vega() %>% 
-  mark_circle(
-    enc(
-      x = flipper_length_mm,
-      y = body_mass_g,
-      color = encode_if(selection, species, "black")
-    )
-  )
+  vega(enc(x = body_mass_g)) %>% 
+  mark_histogram(bin = list(maxbins = 20)) %>% 
+  mark_histogram(color = "purple", bin = list(maxbins = 20), selection = selection)
 p_right
 ```
 
-And link them side by side using concatenation.
+By itself, this histogram isn't too exciting but if we place along side
+the scatter plot of penguin bill measurements, we can see how the body mass
+counts change as we brush over the scatter plot. All we have do is simple
+concatenate the plots horizontally!
 
 ```{r linked-brushed-scatter}
 hconcat(p, p_right)
 ```
 
-And that's just the beginning of what's possible!
+From this, we learn that the chinstrap and adelie penguins are generally
+lighter and are less variable in their body mass compared to gentoo penguins.
+The gentoo penguins are heavier, but also have a larger range of masses. 
 
 ## Learning more
 
