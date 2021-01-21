@@ -24,10 +24,11 @@ exploratory data analysis. It is an _idiomatic and opinionated_ R interface to
 the grammar of graphics implemented by [**Vega-Lite**](https://vega.github.io/vega-lite/) which
 defines the following elements:
 
-* graphical elements like `mark_point()`, with the `mark_*` family of functions
-* interactive elements, such as brushes (using `select_interval()`) and sliders (using `input_slider()`),  via the `select_*` and `input_*` family of functions
 * aesthetic mappings/encodings via `enc()` 
-* data transformations via [selections]()
+* graphical elements like `mark_point()`, with the `mark_*` family of functions
+* interactive objects, such as brushes (using `select_interval()`) and sliders (using `input_slider()`), via the `select_*` and `input_*` family of functions
+* interactive calculations, for example mean (using `vg_mean()`), via the `vg_*` family of functions
+* data transformations on selection objects for rich interactivity, with {dplyr} verbs
 * plot composition via faceting and concatenation using `facet_views()`, `hconcat()` and `vconcat()`
 
 
@@ -95,6 +96,8 @@ p <- penguins %>%
 p
 ```
 
+![](man/figures/readme-circle.png)
+
 Once a selection is created, it can be passed into other marks, in order to
 perform a filter. Here, we create a chart with two histogram layers,
 the first will represent the overall distribution of penguin body masses, while
@@ -109,6 +112,8 @@ p_right <- penguins %>%
 p_right
 ```
 
+![](man/figures/readme-histogram.png)
+
 By itself, this histogram isn't too exciting but if we place along side
 the scatter plot of penguin bill measurements, we can see how the body mass
 counts change as we brush over the scatter plot. All we have do is simple
@@ -117,6 +122,8 @@ concatenate the plots horizontally!
 ```{r linked-brushed-scatter}
 hconcat(p, p_right)
 ```
+
+![](man/figures/readme-hconcat.png)
 
 From this, we learn that the chinstrap and adelie penguins are generally
 lighter and are less variable in their body mass compared to gentoo penguins.
@@ -136,6 +143,11 @@ The gentoo penguins are heavier, but also have a larger range of masses.
 The **virgo** package is under rapid development and we are still working 
 through our ideas for incorporating interactive graphics
 into exploratory data analysis. If you have feedback we would love to hear it!
+
+## Related works
+
+* [{ggvis}](http://ggvis.rstudio.com) 
+* [{vegalite}](https://github.com/hrbrmstr/vegalite)
 
 ## Acknowledgements
 
