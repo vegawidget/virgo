@@ -1,5 +1,6 @@
 ---
 title: "Introducing virgo for interactive exploratory graphics"
+author: "Stuart Lee and Earo Wang"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introducing virgo for interactive exploratory graphics}
@@ -14,10 +15,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-The virgo package developed and extends the grammar of interactive graphics based on the **Vega-Lite** library in Javascript. It is a functional grammar built on top of the **vegawidget** package. In this vignette we detail each component of the grammar, eventually building up
-to some sophisticated interactive examples.
+# About virgo
 
-Throughout this vignette we will be exploring three months of microclimate sensor data collected from December 2019 until February 2020 from Melbourne City Council. This data is built into to **virgo** and consists of measurements for things like temperature and relative humidity at 5 different locations. 
+The **virgo** package extends the grammar of interactive graphics based on the **Vega-Lite** library in Javascript, using the design principles of the **tidyverse** suite of packages. It is built on top of the **vegawidget** package, which handles the actual drawing of a **virgo** graphic. 
+
+## Melbourne's microclimate
+
+Throughout this vignette we will be exploring three months of microclimate sensor data collected from December 2019 until February 2020 from Melbourne City Council. This data is built into to **virgo** and consists of measurements for things like temperature and relative humidity at 5 different locations across the city. 
 ```{r setup, echo = TRUE}
 library(virgo)
 library(lubridate)
@@ -49,7 +53,7 @@ melbweather
 To begin, we will collapse our quarter hourly 
 measurements for each site to hourly averages using **dplyr**:
 
-```{r}
+```{r, message = FALSE}
 hourly_weather <- melbweather %>% 
   group_by(site, date, hour_of_day = hour(date_time) ) %>% 
   summarise(
@@ -81,13 +85,15 @@ The **virgo** library will automatically add legends depending on the type of en
 hourly_weather %>% 
   vega() %>% 
   mark_point(
-    enc(x = ambient_temperature, 
-        y = relative_humidity, 
-        color = wind_speed)
+    enc(
+      x = ambient_temperature, 
+      y = relative_humidity, 
+      color = wind_speed
+    )
   )
 ```
 
-Likewise, we can evaluate expressions inside of the encoding function for example evaluating the month of the date column
+Likewise, we can evaluate expressions inside of the encoding function, for example, evaluating the month of the date column
 with **lubridate**:
 
 ```{r}
@@ -115,8 +121,7 @@ hourly_weather %>%
   )
 ```
 
-Multiple marks can be added to a visualisation by piping a sequence of marks together. For example, adding a loess regression
-to a scatter plot.
+Multiple marks can be added to a visualisation by piping a sequence of marks together. We can take our previous scatter plot and draw a loess regression line on top.
 
 ```{r}
 p <- hourly_weather %>% 
@@ -126,7 +131,7 @@ p <- hourly_weather %>%
 p
 ```
 
-Here we've specified the encoding at the top level with the `vega()` function, so they are available to all downstream layers. We can have layer specific encodings, by passing the `enc()` to specific layers. In addition to a single regression line, we could generate separate lines for each measurement within each month of the year:
+Here we've specified the encoding at the top level with the `vega()` function, so they are available to all downstream layers. We can have layer specific encodings, by passing the `enc()` to any mark in the sequence. In addition to a single regression line, we could generate separate lines for each measurement within each month of the year:
 
 ```{r}
 p %>% 
@@ -152,10 +157,12 @@ How similar are the wind speeds across each measurement site? We can facet by si
 
 ```{r}
 ws %>% 
-  facet_views(column = site)
+  facet_views(row = site)
 ```
 
 Faceting requires specifying a row and/or column encoding, that determines how the subplots are drawn on the canvas.
+There appears to be a suspiciously large number of records in site "arc1045" that have recorded an average wind speed between 4-5km. 
+
 
 ## Multiple Views
 
@@ -171,16 +178,21 @@ left <- hourly_weather %>%
              opacity = 0.1)
 right <- hourly_weather %>%
   vega() %>% 
-  mark_point(enc(x = wind_speed, y = relative_humidity),
+  mark_point(enc(x = wind_speed, y = ambient_temperature),
              opacity = 0.1)
-hconcat(left, right) # not working?
+hconcat(left, right)
 ```
+
 
 ## Client side data transformations
 
-The **virgo** package exports special functions that are computed directly by **Vega-Lite** rather than R. These functions are prefixed with `vg`, and should always be called inside of `enc()`.
+The **virgo** package exports special functions that are computed directly by **Vega-Lite** rather than R. These functions are prefixed with `vg`, and are always be called inside of `enc()`.
 
-By using the `vg` functions, we can get **Vega-Lite** to compute the average temperature for each hour across all of the days and sites in the data set.
+
+By using the `vg` functions, we can get **Vega-Lite** to perform
+data transformations or aggregations without the use of **tidyverse**. Suppose we were interested in finding out the hour of the day, where the 
+average temperature across all sites reaches its max:
+ 
 ```{r}
 hourly_temp <- melbweather %>% 
   vega(
@@ -194,11 +206,113 @@ hourly_temp <- melbweather %>%
 hourly_temp
 ```
 
+In the above code, the `vg_hours()` function extract the hour from the date time variable and groups the data within each our block. The y-axis is then average ambient temperature within each hour pooled across all days and sites. We could get a more granular view by using an alternative mark like a boxplot to view the distribution over each hour instead of just the average:
+
+```{r}
+hourly_dist_temp <- melbweather %>% 
+  vega(
+    enc(
+      x = vg_hours(date_time), 
+      y = ambient_temperature
+    ),
+    width = 600
+  ) %>% 
+  mark_boxplot()
+hourly_dist_temp
+```
 
 Generally, we believe it is best to perform data transformations outside of the visualisation environment as the transformations are explicit (i.e. when using the **tidyverse**). However, as we will see later these client side transformations become especially useful when combined with interactivity.
 
 ## Interactivity via selections
 
+Selections are how a **virgo** graphic defines interactions, and are strongly influenced by the **Vega-Lite** javascript API. There are several types of selection, but to begin we will create an interval selection:
 
+```{r}
+selection <- select_interval()
+```
 
+By default, an interval selection will specify a rectangular region, that is generated by dragging the mouse over the view. Each mark can accept a selection object, which will filter the data when the region is active:
+
+```{r}
+p <- hourly_weather %>% 
+  vega(enc(x = ambient_temperature, y = relative_humidity)) %>% 
+  mark_point(opacity = 0.1, selection = selection) 
+p
+```
+
+If you just want to draw the selection without performing the filter, you can specify it as an identity selection
+
+```{r}
+p <- hourly_weather %>% 
+  vega(enc(x = ambient_temperature, y = relative_humidity)) %>% 
+  mark_point(opacity = 0.1, selection = I(selection)) 
+p
+```
+
+Rather than filtering the data, you may want to conditionally encode a visual element based on whether data falls into a selection. The `encode_if()` function allows an encoding to depend on one (or more) selections. We could rewrite the above plot so the points that fall inside of the selection are given an opacity of 0.5, while those outside are given an opacity of 0.1.
+
+```{r}
+p <- hourly_weather %>% 
+  vega(enc(x = ambient_temperature, y = relative_humidity)) %>% 
+  mark_point(
+    enc(opacity = encode_if(selection, 0.5, 0.1))
+  ) 
+p
+```
+Instead of using values, the conditional encoding can depend on a variable instead:
+
+```{r}
+p <- hourly_weather %>% 
+  vega(enc(x = ambient_temperature, y = relative_humidity)) %>% 
+  mark_point(
+    enc(
+      color = encode_if(selection, wind_speed > 10, "grey"),
+      opacity = encode_if(selection, 0.5, 0.01)
+      )
+  ) 
+p
+```
+
+Interval selections can be restricted to a single axis, to a highlight an area of interest:
+
+```{r}
+x_selection <- select_interval(encodings = "x")
+
+overview <- melbweather %>% 
+  vega(
+    enc(
+      x = date,
+      y = vg_mean(ambient_temperature)
+    ),
+    width = 600
+  ) %>% 
+  mark_area(
+    selection = I(x_selection)
+  )
+overview
+```
+
+They can also be bound to a scale, and then composed with another view.
+In this case dragging, the x-axis on the bottom view will zoom into the
+the top view:
+
+```{r}
+context <- melbweather %>% 
+  vega(
+    enc(
+      x = date,
+      y = vg_mean(ambient_temperature)
+    ),
+    width = 600,
+    height = 200
+  ) %>% 
+  mark_area() %>% 
+  scale_x(name = NULL, domain = x_selection)
+
+vconcat(context, overview)
+```
+
+This is just the beginning of what is possible to achieve with selections, for more detail see the selections vignette.
+
+## Sizing and saving
 
