@@ -23,7 +23,7 @@ Imports:
     scales,
     tidyselect,
     vctrs,
-    vegawidget
+    vegawidget (>= 0.3.2)
 Suggests: 
     dplyr,
     knitr,
