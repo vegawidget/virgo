@@ -1,5 +1,6 @@
 #' @import rlang tidyselect vctrs
-#' @importFrom vegawidget as_vegaspec vega_embed vega_schema vegawidget
+#' @importFrom vegawidget as_vegaspec vega_embed vega_schema vegawidget `%>%`
+#' @export `%>%`
 
 new_virgo <- function(spec) {
   structure(spec, class = "virgo")
