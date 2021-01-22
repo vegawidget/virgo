@@ -14,6 +14,35 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(virgo)
-```
+If you're familiar with **ggplot2** this vignette provides a quick guide to getting up to speed with **virgo**. The following table provides
+a mapping between **ggplot2** concepts and **virgo** functions.
+
+| Concept                     | **ggplot2** function                                 | **virgo** function                                   |
+|-----------------------------|------------------------------------------------------|------------------------------------------------------|
+| Initialisation              | `ggplot()`                                           | `vega()`                                             |
+| Aesthetic mappings          | `aes()`                                              | `enc()`                                              |
+| Layers                      | `geom_*`                                             | `mark_*`                                             |
+| Adding layers               | `+`                                                  | `%>%`                                                |
+| Facets (grid layouts)       | `facet_grid()`                                       | `facet_views()`                                      |
+| Scales                      | `scale_{aesthetic}_type()`                           | `scale_{encoding}(type = type)`                      |
+| Statistical transformations | `stat_()`                                            | Performed client side with `vg` family of functions. |
+| Coordinates                 | `coord_*`                                            | Not directly supported                               |
+| View concatenation          | See **patchwork** package                            | `hconcat()`, `vconcat()`                             |
+| Interactivity               | Not directly supported, but see `plotly::ggplotly()` | `select_*()`                                         |
+
+As you can see most of the grammar elements in **ggplot2** have equivalents
+in **virgo**.
+
+# Caveats
+
+Compared to **ggplot2**, **virgo** has fewer available layers (one that
+we wish was available is hex binning) and less support for spatial visualisations. 
+
+Unlike **ggplot2**, the sizing of a **virgo** visualisation has to
+be declared in `vega()`. Here the width and height determine the
+pixel dimensions on the canvas/Rstudio Viewer. By default, we set these to 300.
+When faceting plots, **virgo** the height/width refers to dimensions of the
+entire view not each subplot.
+
+To save a static visualisation with **virgo**, use the **vegawidget** functions
+`vw_write_png()` or `vw_write_svg()`.
