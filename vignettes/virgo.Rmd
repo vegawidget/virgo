@@ -259,6 +259,7 @@ p <- hourly_weather %>%
   ) 
 p
 ```
+
 Instead of using values, the conditional encoding can depend on a variable instead:
 
 ```{r}
@@ -273,7 +274,7 @@ p <- hourly_weather %>%
 p
 ```
 
-Interval selections can be restricted to a single axis, to a highlight an area of interest:
+Interval selections can be restricted to a single axis, so a brush only moves in one direction. The following produces a line plot of the maximum daily temperature, with a brush over the x-axis
 
 ```{r}
 x_selection <- select_interval(encodings = "x")
@@ -282,37 +283,50 @@ overview <- melbweather %>%
   vega(
     enc(
       x = date,
-      y = vg_mean(ambient_temperature)
+      y = vg_max(ambient_temperature)
     ),
     width = 600
   ) %>% 
-  mark_area(
+  mark_line() %>% 
+  mark_point(
     selection = I(x_selection)
   )
 overview
 ```
 
-They can also be bound to a scale, and then composed with another view.
-In this case dragging, the x-axis on the bottom view will zoom into the
-the top view:
+Interval selections can also be bound to a scale and then composed with another
+view to produce a zooming effect.
+After concatenating the two views, dragging the x-axis on the bottom graphic will zoom in on the top view:
 
 ```{r}
 context <- melbweather %>% 
   vega(
     enc(
       x = date,
-      y = vg_mean(ambient_temperature)
+      y = vg_max(ambient_temperature)
     ),
     width = 600,
     height = 200
   ) %>% 
-  mark_area() %>% 
+  mark_line() %>% 
+  mark_point() %>% 
   scale_x(name = NULL, domain = x_selection)
 
 vconcat(context, overview)
+```
+
+Selections can also be used to filter data in multi-view plots.  For example we could view the trail of temperature measurements that each site recorded over the highlighted period in the overview plot.
+```{r}
+active_sensor <- melbweather %>% 
+  vega(enc(x = ambient_temperature, y = site), height = 200) %>% 
+  mark_tick(selection = x_selection) 
+vconcat(overview, active_sensor)
 ```
 
 This is just the beginning of what is possible to achieve with selections, for more detail see the selections vignette.
 
 ## Sizing and saving
 
+The sizing of a plot is controlled inside the `vega()` function with the height and width arguments. These arguments refer to the pixel dimensions of the view.
+
+**virgo** graphics can be saved with the **vegawidget** package using the `vg_write_png()` or `vg_write_svg()` functions.
