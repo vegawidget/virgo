@@ -8,8 +8,8 @@
 #' @rdname vega-config
 #' @export
 config <- function(v, background = "white", axis = list(), axis_x = list(),
-  axis_y = list(), header = list(), legend = list(), title = list(), 
-  view = list(), facet = list()) {
+  axis_y = list(), header = list(), legend = list(), title = list(),
+  view = list(), facet = list(), ...) {
   default <- config_ggplot(v)$config
 
   fn <- function(x) {
@@ -36,7 +36,8 @@ config <- function(v, background = "white", axis = list(), axis_x = list(),
     title = title,
     view = view,
     # concat = concat,
-    facet = facet
+    facet = facet,
+    ...
   )
   old <- default[!vec_in(names(default), names(res))]
   new_virgo(c(unclass(v), list(config = c(old, res))))

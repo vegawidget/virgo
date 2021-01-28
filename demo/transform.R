@@ -35,3 +35,15 @@ as_tibble(movies) %>%
 as_tibble(movies) %>%
   vega(enc(x = IMDB_Rating, y = Rotten_Tomatoes_Rating, colour = vg_count())) %>%
   mark_bin2d(bin = list(x = list(maxbins = 60), y = list(maxbins = 40)))
+
+# missing data
+library(dplyr)
+movies <- jsonlite::read_json(
+  "https://vega.github.io/vega-editor/app/data/movies.json"
+  , simplifyVector = TRUE)
+movies <- movies %>%
+  mutate(missing = is.na(IMDB_Rating) | is.na(Rotten_Tomatoes_Rating))
+movies %>%
+  vega(enc(IMDB_Rating, Rotten_Tomatoes_Rating, colour = missing)) %>%
+  mark_point() %>%
+  config(mark = list(invalid = NULL))
