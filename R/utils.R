@@ -28,7 +28,7 @@ valid_encodings <- function(x) {
   props <- c("x", "y", "x2", "y2", "details", "fill", "fill_opacity", "color", 
     "size", "opacity", "shape", "angle", "tooltip", "url", "radius", "radius2",
     "stroke", "stroke_opacity", "stroke_cap", "stroke_dash", "stroke_join",
-    "stroke_width", "text", "theta", "theta2", "href", "description",
+    "stroke_width", "text", "theta", "theta2", "href", "description", "cursor",
     "interpolate")
   lgl <- vec_in(x, props)
   if (!all(lgl)) {
