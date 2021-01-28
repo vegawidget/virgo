@@ -223,6 +223,7 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   layer <- list(mark = list2(type = "bar", !!!marks$props))
   v <- vega_layer(v, layer, encoding, data, selection)
   last <- nlayer(v)
+  v$layer[[last]]$encoding$x$scale$domain <- NULL
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
   v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v
@@ -246,6 +247,7 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
   v <- mark_bar(v, encoding, data, selection, ..., position = position)
   last <- nlayer(v)
   v$layer[[last]]$encoding$x$scale$padding <- 10
+  # v$layer[[last]]$encoding$y$scale$paddingOuter <- 10
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
