@@ -104,7 +104,7 @@ Once a selection is created, it can be passed into other marks, in order to
 perform a filter. Here, we create a chart with two histogram layers,
 the first will represent the overall distribution of penguin body masses, while
 the latter will be the distribution conditional on the selection, and will
-be shown in purple. We also add a vertical line to highlight the average level
+be shown in purple. We also overlay a vertical line to demonstrate the interactive average
 given the selection.
 
 ```{r right-scatter}
