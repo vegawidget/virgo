@@ -197,3 +197,12 @@ img %>%
   vega(enc(x, y, url = img)) %>%
   mark_image(width = 50, height = 50) %>%
   scale_x(domain = c(0, 3))
+
+neg_bar <- jsonlite::fromJSON('[
+      {"a": "A", "b": -28}, {"a": "B", "b": 55}, {"a": "C", "b": -33},
+      {"a": "D", "b": 91}, {"a": "E", "b": 81}, {"a": "F", "b": 53},
+      {"a": "G", "b": -19}, {"a": "H", "b": 87}, {"a": "I", "b": 52}
+    ]')
+neg_bar %>%
+  vega(enc(a, b)) %>%
+  mark_bar()

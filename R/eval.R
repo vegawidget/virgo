@@ -136,6 +136,7 @@ encoding_spec.factor <- function(x, field, encoding_name, ...) {
   if (any(vec_in(c("color", "fill"), encoding_name))) {
     res <- list2(!!!res, scale = list(range = scales::hue_pal()(ncat)))
   }
+  res$scale$paddingOuter <- 0.2
   res
 }
 
