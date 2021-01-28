@@ -32,7 +32,7 @@ facet_views <- function(v, row = NULL, column = NULL) {
 hconcat <- function(...) {
   lst <- list2(...)
   map(lst, abort_if_not_virgo)
-  lst <- map(lst, function(x) { x$encoding <- NULL; unclass(x) })
+  lst <- map(lst, function(x) { x$encoding <- NULL; as_vegaspec(x) })
   spec <- list(hconcat = list2(!!!lst))
   new_virgo(spec)
 }
@@ -42,7 +42,7 @@ hconcat <- function(...) {
 vconcat <- function(...) {
   lst <- list2(...)
   map(lst, abort_if_not_virgo)
-  lst <- map(lst, function(x) { x$encoding <- NULL; unclass(x) })
+  lst <- map(lst, function(x) { x$encoding <- NULL; as_vegaspec(x) })
   spec <- list(vconcat = list2(!!!lst))
   new_virgo(spec)
 }

@@ -104,13 +104,17 @@ Once a selection is created, it can be passed into other marks, in order to
 perform a filter. Here, we create a chart with two histogram layers,
 the first will represent the overall distribution of penguin body masses, while
 the latter will be the distribution conditional on the selection, and will
-be shown in purple. 
+be shown in purple. We also add a vertical line to highlight the average level
+given the selection.
 
 ```{r right-scatter}
 p_right <- penguins %>% 
   vega(enc(x = body_mass_g)) %>% 
   mark_histogram(bin = list(maxbins = 20)) %>% 
-  mark_histogram(color = "purple", bin = list(maxbins = 20), selection = selection)
+  mark_histogram(color = "purple", bin = list(maxbins = 20),
+    selection = selection) %>% 
+  mark_rule(enc(x = vg_mean(body_mass_g)), color = "red", size = 4,
+    selection = selection)
 p_right
 ```
 
