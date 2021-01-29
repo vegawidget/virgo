@@ -1,5 +1,5 @@
 vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
-  selection = NULL) {
+  selection = NULL, na.rm = TRUE) {
   fields <- encoding <- merge_encoding(c(v$encoding, encoding))
   is_data_inherit <- is.null(data)
   data <- data %||% v$data$values
@@ -48,6 +48,16 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   # data needs updating
   fields <- vec_set_names(fields, map_chr(fields, as_field_rhs))
   data <- eval_encoding_mask(data, fields, names(encoding))
+  # missing data
+  pos_fields <- names(fields[vec_in(names(encoding), c("x", "y", "x2", "y2"))])
+  nna_lgl <- complete.cases(data[pos_fields])
+  n_na <- vec_size(data) - sum(nna_lgl)
+  if (na.rm) {
+    if (n_na > 0) {
+      inform(sprintf("Removed %s rows containing missing values.", n_na))
+    }
+    data <- vec_slice(data, nna_lgl)
+  }
   if (is_data_inherit) {
     v$data$values <- data
   } else {
@@ -108,12 +118,13 @@ mark_properties <- function(...) {
 # use vega options name but in snake_case
 mark_factory <- function(type = "point") {
   force(type)
-  function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
+  function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+    na.rm = TRUE) {
     abort_if_not_virgo(v)
     marks <- mark_properties(...)
     v$params <- marks$params
     layer <- list(mark = list2(type = type, !!!marks$props))
-    vega_layer(v, layer, encoding, data, selection)
+    vega_layer(v, layer, encoding, data, selection, na.rm = na.rm)
   }
 }
 
@@ -124,6 +135,8 @@ mark_factory <- function(type = "point") {
 #' @param data A data frame for the layer.
 #' @param selection A selection object.
 #' @param ... Additional mark properties.
+#' @param na.rm If `TRUE`, missing values are removed with a message.
+#' If `FALSE`, missing values are included.
 #'
 #' @rdname vega-marks
 #' @export
@@ -200,13 +213,13 @@ position_to_stack <- function(position = "stack") {
 #' @param position One of "identity", "stack", "fill".
 #' @rdname vega-marks
 #' @export
-mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  position = "stack") {
+mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL,
+  position = "stack", ..., na.rm = TRUE) {
   abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "area", !!!marks$props))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data, selection, na.rm)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- position_to_stack(position)
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
@@ -215,13 +228,13 @@ mark_area <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 
 #' @rdname vega-marks
 #' @export
-mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  position = "stack") {
+mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL,
+  position = "stack", ..., na.rm = TRUE) {
   abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "bar", !!!marks$props))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data, selection, na.rm)
   last <- nlayer(v)
   v$layer[[last]]$encoding$x$scale$domain <- NULL
   v$layer[[last]]$encoding$y$scale$zero <- TRUE
@@ -232,22 +245,22 @@ mark_bar <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 #' @rdname vega-marks
 #' @export
 mark_errorbar <- function(v, encoding = NULL, data = NULL, selection = NULL,
-  ...) {
+  ..., na.rm = TRUE) {
   abort_if_not_virgo(v)
   marks <- mark_properties(ticks = TRUE, ...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "errorbar", !!!marks$props))
-  vega_layer(v, layer, encoding, data, selection)
+  vega_layer(v, layer, encoding, data, selection, na.rm)
 }
 
 #' @rdname vega-marks
 #' @export
 mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
-  ..., position = "stack", bin = TRUE) { # bin = list() opts
-  v <- mark_bar(v, encoding, data, selection, ..., position = position)
+  position = "stack", ..., bin = TRUE, na.rm = TRUE) { # bin = list() opts
+  v <- mark_bar(v, encoding, data, selection, position = position, ...,
+    na.rm = na.rm)
   last <- nlayer(v)
   v$layer[[last]]$encoding$x$scale$padding <- 10
-  # v$layer[[last]]$encoding$y$scale$paddingOuter <- 10
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
   v$layer[[last]]$encoding$x <- c(x, list(bin = bin))
@@ -257,20 +270,22 @@ mark_histogram <- function(v, encoding = NULL, data = NULL, selection = NULL,
 
 #' @rdname vega-marks
 #' @export
-mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...) {
+mark_step <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  na.rm = TRUE) {
   abort_if_not_virgo(v)
   marks <- mark_properties(interpolate = "step-after", ...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "line", !!!marks$props))
-  vega_layer(v, layer, encoding, data, selection)
+  vega_layer(v, layer, encoding, data, selection, na.rm)
 }
 
 #' @param density Density parameters.
 #' @rdname vega-marks
 #' @export
-mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  position = "identity", density = list()) {
-  v <- mark_area(v, encoding, data, selection, ..., position = position)
+mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL,
+  position = "identity", ..., density = list(), na.rm = TRUE) {
+  v <- mark_area(v, encoding, data, selection, position = position, ...,
+    na.rm = na.rm)
   last <- nlayer(v)
   enc <- v$layer[[last]]$encoding
   density_field <- enc$x$field
@@ -294,13 +309,13 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 #' @rdname vega-marks
 #' @export
 mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  bin = list(x = TRUE, y = TRUE)) {
+  bin = list(x = TRUE, y = TRUE), na.rm = TRUE) {
   # list(x = list(maxbins = 10))
   abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "rect", !!!marks$props))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data, selection, na.rm)
   last <- nlayer(v)
   x <- v$layer[[last]]$encoding$x
   y <- v$layer[[last]]$encoding$y
@@ -312,12 +327,12 @@ mark_bin2d <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 #' @rdname vega-marks
 #' @export
 mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
-  ...) {
+  ..., na.rm = TRUE) {
   abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   layer <- list(mark = list2(type = "area", !!!marks$props))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data, selection, na.rm)
   last <- nlayer(v)
   v$layer[[last]]$encoding$y$stack <- "center"
   # remove y axis as y values not important
@@ -336,14 +351,14 @@ mark_streamgraph <- function(v, encoding = NULL, data = NULL, selection = NULL,
 #' @rdname vega-marks
 #' @export
 mark_smooth <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
-  method = "lm", formula = y ~ x, bandwidth = 0.3) {
+  method = "lm", formula = y ~ x, bandwidth = 0.3, na.rm = TRUE) {
   abort_if_not_virgo(v)
   marks <- mark_properties(...)
   v$params <- marks$params
   method <- arg_match(method, c("lm", "loess"))
   method <- if (method == "lm") "regression" else "loess"
   layer <- list(mark = list2(type = "line", !!!marks$props))
-  v <- vega_layer(v, layer, encoding, data, selection)
+  v <- vega_layer(v, layer, encoding, data, selection, na.rm)
   last <- nlayer(v)
   enc <- v$layer[[last]]$encoding
   groupby <- as.list(unique(c(enc$color$field, enc$fill$field, enc$detail$field,

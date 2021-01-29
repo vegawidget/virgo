@@ -45,5 +45,17 @@ movies <- movies %>%
   mutate(missing = is.na(IMDB_Rating) | is.na(Rotten_Tomatoes_Rating))
 movies %>%
   vega(enc(IMDB_Rating, Rotten_Tomatoes_Rating, colour = missing)) %>%
-  mark_point() %>%
+  mark_point(na.rm = FALSE) %>%
   config(mark = list(invalid = NULL))
+
+movies %>%
+  vega(enc(IMDB_Rating, Rotten_Tomatoes_Rating)) %>%
+  mark_point()
+
+movies %>%
+  vega(enc(IMDB_Rating, Rotten_Tomatoes_Rating)) %>%
+  mark_point(na.rm = FALSE)
+
+palmerpenguins::penguins %>%
+  vega(enc(x = body_mass_g, colour = species)) %>%
+  mark_density()

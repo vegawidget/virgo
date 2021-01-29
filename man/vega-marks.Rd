@@ -26,41 +26,98 @@
 \alias{mark_smooth}
 \title{Add new marks to \code{vega()} visualisation}
 \usage{
-mark_arc(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_arc(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
-mark_ribbon(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_ribbon(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_boxplot(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_boxplot(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_circle(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_circle(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_errorband(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_errorband(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_image(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_image(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_line(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_line(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
-mark_point(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_point(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_rect(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_rect(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
-mark_rule(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_rule(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
-mark_square(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_square(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
-mark_text(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_text(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
-mark_tick(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_tick(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
-mark_trail(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_trail(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
 mark_area(
   v,
   encoding = NULL,
   data = NULL,
   selection = NULL,
+  position = "stack",
   ...,
-  position = "stack"
+  na.rm = TRUE
 )
 
 mark_bar(
@@ -68,32 +125,42 @@ mark_bar(
   encoding = NULL,
   data = NULL,
   selection = NULL,
+  position = "stack",
   ...,
-  position = "stack"
+  na.rm = TRUE
 )
 
-mark_errorbar(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_errorbar(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
 mark_histogram(
   v,
   encoding = NULL,
   data = NULL,
   selection = NULL,
-  ...,
   position = "stack",
-  bin = TRUE
+  ...,
+  bin = TRUE,
+  na.rm = TRUE
 )
 
-mark_step(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_step(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
 
 mark_density(
   v,
   encoding = NULL,
   data = NULL,
   selection = NULL,
-  ...,
   position = "identity",
-  density = list()
+  ...,
+  density = list(),
+  na.rm = TRUE
 )
 
 mark_bin2d(
@@ -102,10 +169,18 @@ mark_bin2d(
   data = NULL,
   selection = NULL,
   ...,
-  bin = list(x = TRUE, y = TRUE)
+  bin = list(x = TRUE, y = TRUE),
+  na.rm = TRUE
 )
 
-mark_streamgraph(v, encoding = NULL, data = NULL, selection = NULL, ...)
+mark_streamgraph(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
 
 mark_smooth(
   v,
@@ -115,7 +190,8 @@ mark_smooth(
   ...,
   method = "lm",
   formula = y ~ x,
-  bandwidth = 0.3
+  bandwidth = 0.3,
+  na.rm = TRUE
 )
 }
 \arguments{
@@ -128,6 +204,9 @@ mark_smooth(
 \item{selection}{A selection object.}
 
 \item{...}{Additional mark properties.}
+
+\item{na.rm}{If \code{TRUE}, missing values are removed with a message.
+If \code{FALSE}, missing values are included.}
 
 \item{position}{One of "identity", "stack", "fill".}
 
