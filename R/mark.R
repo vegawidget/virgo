@@ -287,7 +287,6 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   v$layer[[last]]$encoding$x$field <- "value"
   v$layer[[last]]$encoding$x$scale$padding <- .5
   v$layer[[last]]$encoding$y <- c(enc$y, field = "density", type = "quantitative")
-  v$layer[[last]]$encoding$y$stack <- "zero"
   v
 }
 
