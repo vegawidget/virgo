@@ -29,7 +29,8 @@ Suggests:
     knitr,
     rmarkdown,
     palmerpenguins,
-    covr
+    covr,
+    lubridate
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
