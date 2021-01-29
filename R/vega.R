@@ -7,10 +7,10 @@ new_virgo <- function(spec) {
 }
 
 #' Create a new vega visualisation
-#' 
+#'
 #' @param data A data frame.
 #' @param encoding A list of aethetic encodings via [`enc()`].
-#' @param width,height Data plotting width and height. 
+#' @param width,height Data plotting width and height.
 #'
 #' @export
 vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
@@ -39,9 +39,9 @@ as_vegaspec.virgo <- function(spec, ...) {
   spec$encoding <- spec$transform <- NULL
   # unify default scale domains
   layer <- spec$layer
-  xs <- map(layer, function(x) 
+  xs <- map(layer, function(x)
     c(x$encoding$x$scale$domain, x$encoding$x2$scale$domain))
-  ys <- map(layer, function(x) 
+  ys <- map(layer, function(x)
     c(x$encoding$y$scale$domain, x$encoding$y2$scale$domain))
   xrng <- vec_c(!!!xs)
   yrng <- vec_c(!!!ys)
@@ -82,6 +82,21 @@ print.virgo <- function(x, renderer = "canvas", ...) {
   print(vegawidget(as_vegaspec(x),
     embed = vega_embed(renderer = renderer, actions = FALSE)), ...)
   invisible(x)
+}
+
+
+#' @export
+format.virgo <- function(x, ...) {
+  x <- as_vegaspec(x)
+  format(x, ...)
+}
+
+#' @inheritParams vegawidget::knit_print.vegaspec
+#' @rdname knit_print.vegaspec
+#' @export
+knit_print.virgo <- function(spec, ..., options = NULL) {
+  spec <- as_vegaspec(spec)
+  knitr::knit_print(spec, ..., options = options)
 }
 
 # NOTE: leave all styling properties to `config()`

@@ -15,7 +15,8 @@ config(
   legend = list(),
   title = list(),
   view = list(),
-  facet = list()
+  facet = list(),
+  ...
 )
 
 config_ggplot(v)
