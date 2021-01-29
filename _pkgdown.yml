@@ -5,17 +5,16 @@ template:
 development:
   mode: auto
 
-
 reference:
-  - title: "**virgo** basics"
+  - title: "virgo basics"
     desc: >
       To create a virgo graphic pass your data into `vega()`, and supply some
-      visual encodings (`enc()`). You can then add layers with the `%>%`,
+      visual encodings `enc()`. You can then add layers with the `%>%`,
       and write the results to a file.
     contents:
       - vega
       - enc
-      - %>%
+      - starts_with("%")
       - starts_with("vw_write")
   - title: "Layers"
     desc: >
@@ -38,14 +37,16 @@ reference:
       - facet_views
       - vconcat
       - hconcat
+      - resolve_views
   - title: "Interactivity"
     desc: >
       Interactivity allows you to manipulate a **virgo** graphic, either through
       direct selection using the `select_` functions or by binding data to an
       interface like a button or slider with the `input_` functions. These
-      selections can drive transformations of a graphic or the data. See
+      selections can drive aesthetic transformations of a graphic or the data. See
       `vignette("selections.Rmd")` for details
     contents:
+      - encode_if
       - starts_with("select_")
       - starts_with("input_")
   - title: "Data transformations"
@@ -65,4 +66,10 @@ reference:
       **virgo** comes built in with the following data sets
     contents:
       - melbweather
+  - title: "Utilities"
+    desc: >
+      To assist with using **virgo** in Rmarkdown or packages.
+    contents:
+      - vw_set_base_url
+      - knit_print.vegapsec
 

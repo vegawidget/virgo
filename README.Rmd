@@ -9,8 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%",
-  eval = FALSE
+  eval = FALSE,
+  dev = "png"
 )
 ```
 
@@ -65,7 +65,7 @@ add interactive elements with selections.
 Let's see an example, here we show how we can compose a simple scatter plot
 and gradually build up to a scatter plot with brushing, to a side by side scatter plot.
 
-```{r basic-scatter}
+```{r basic-scatter, eval = TRUE, out.width = "50%"}
 library(virgo)
 library(palmerpenguins)
 p <- penguins %>% 
@@ -138,7 +138,7 @@ The gentoo penguins are heavier, but also have a larger range of masses.
 ## Learning more
 
 - [Example gallery]()
-- [Using **virgo** to explore Melbourne's microclimate]()
+- [Using **virgo** to explore Melbourne's microclimate](articles/virgo.html)
 - [Guide to **virgo** for **ggplot2** users]()
 - [Composing plot interactions with selections]()
 

@@ -17,17 +17,17 @@ interface to the grammar of graphics implemented by
 [**Vega-Lite**](https://vega.github.io/vega-lite/) which defines the
 following elements:
 
--   aesthetic mappings/encodings via `enc()`
--   graphical elements like `mark_point()`, with the `mark_*` family of
+  - aesthetic mappings/encodings via `enc()`
+  - graphical elements like `mark_point()`, with the `mark_*` family of
     functions
--   interactive objects, such as brushes (using `select_interval()`) and
+  - interactive objects, such as brushes (using `select_interval()`) and
     sliders (using `input_slider()`), via the `select_*` and `input_*`
     family of functions
--   interactive calculations, for example mean (using `vg_mean()`), via
+  - interactive calculations, for example mean (using `vg_mean()`), via
     the `vg_*` family of functions
--   data transformations on selection objects for rich interactivity,
+  - data transformations on selection objects for rich interactivity,
     with {dplyr} verbs
--   plot composition via faceting and concatenation using
+  - plot composition via faceting and concatenation using
     `facet_views()`, `hconcat()` and `vconcat()`
 
 ## Installation
@@ -76,6 +76,8 @@ p <- penguins %>%
 p
 ```
 
+<img src="man/figures/README-basic-scatter-1.png" width="50%" />
+
 Interactive elements are generated using selections, for example, we can
 generate a rectangular brush with `select_interval()` and then highlight
 points that fall into the brush using `encode_if()`:
@@ -120,7 +122,7 @@ p_right
 By itself, this histogram isn’t too exciting but if we place along side
 the scatter plot of penguin bill measurements, we can see how the body
 mass counts change as we brush over the scatter plot. All we have do is
-simple concatenate the plots horizontally!
+simple concatenate the plots horizontally\!
 
 ``` r
 hconcat(p, p_right)
@@ -135,10 +137,11 @@ of masses.
 
 ## Learning more
 
--   [Example gallery]()
--   [Using **virgo** to explore Melbourne’s microclimate]()
--   [Guide to **virgo** for **ggplot2** users]()
--   [Composing plot interactions with selections]()
+  - [Example gallery]()
+  - [Using **virgo** to explore Melbourne’s
+    microclimate](articles/virgo.html)
+  - [Guide to **virgo** for **ggplot2** users]()
+  - [Composing plot interactions with selections]()
 
 ## Lifecycle
 
@@ -148,16 +151,16 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 The **virgo** package is under rapid development and we are still
 working through our ideas for incorporating interactive graphics into
 exploratory data analysis. If you have feedback we would love to hear
-it!
+it\!
 
 ## Related works
 
--   [{ggvis}](http://ggvis.rstudio.com)
--   [{vegalite}](https://github.com/hrbrmstr/vegalite)
+  - [{ggvis}](http://ggvis.rstudio.com)
+  - [{vegalite}](https://github.com/hrbrmstr/vegalite)
 
 ## Acknowledgements
 
--   Vega/Vega-Lite developers
--   Ian Lyttle, Hayley Jepson and Alicia Schep for their foundational
+  - Vega/Vega-Lite developers
+  - Ian Lyttle, Hayley Jepson and Alicia Schep for their foundational
     work in the
     [**vegawidget**](https://vegawidget.github.io/vegawidget/) package
