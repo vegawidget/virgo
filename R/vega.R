@@ -65,8 +65,8 @@ as_vegaspec.virgo <- function(spec, ...) {
     data <- spec$data$values
     rowvars <- spec$facet$row$field
     colvars <- spec$facet$col$field
-    nrows <- vec_unique_count(data[, rowvars, drop = FALSE])
-    ncols <- vec_unique_count(data[, colvars, drop = FALSE])
+    nrows <- vec_unique_count(data[rowvars])
+    ncols <- vec_unique_count(data[colvars])
     spec$layer <- map(layer, function(x) { x$data <- NULL; x })
     spec$spec$layer <- spec$layer
     spec$spec$width <- spec$width / ncols
