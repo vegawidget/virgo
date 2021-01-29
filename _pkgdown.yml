@@ -1,0 +1,68 @@
+template:
+  params:
+    bootswatch: sandstone
+
+development:
+  mode: auto
+
+
+reference:
+  - title: "**virgo** basics"
+    desc: >
+      To create a virgo graphic pass your data into `vega()`, and supply some
+      visual encodings (`enc()`). You can then add layers with the `%>%`,
+      and write the results to a file.
+    contents:
+      - vega
+      - enc
+      - %>%
+      - starts_with("vw_write")
+  - title: "Layers"
+    desc: >
+      To add visual layers to a graphic, you need to specify a mark which
+      depends on your data and visual encoding.
+    contents:
+      - starts_with("mark_")
+  - title: "Scales"
+    desc: >
+      To modify how encodings are translated from the data to the visual
+      appearance of a graphic you need to specify a scale.
+    contents:
+      - starts_with("scale_")
+  - title: "Facets and Concatenation"
+    desc: >
+      To generate small multiples and display different subsets of the data,
+      you need to facet. To layout graphics along side one another you need
+      to concatenate
+    contents:
+      - facet_views
+      - vconcat
+      - hconcat
+  - title: "Interactivity"
+    desc: >
+      Interactivity allows you to manipulate a **virgo** graphic, either through
+      direct selection using the `select_` functions or by binding data to an
+      interface like a button or slider with the `input_` functions. These
+      selections can drive transformations of a graphic or the data. See
+      `vignette("selections.Rmd")` for details
+    contents:
+      - starts_with("select_")
+      - starts_with("input_")
+  - title: "Data transformations"
+    desc: >
+      Data transformations can performed directly on the client with the
+      `vg_` family of functions.
+    contents:
+      - starts_with("vg_")
+  - title: "Customisation"
+    desc: >
+      The appearance of a **virgo** graphic can be configured to modify
+      all the non-data elements of a chart.
+    contents:
+      - config
+  - title: "Data"
+    desc: >
+      **virgo** comes built in with the following data sets
+    contents:
+      - melbweather
+
