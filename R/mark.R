@@ -14,13 +14,13 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
       } else {
         new_vars <- map_chr(trans, function(x) x$as)
         old_vars <- map_chr(trans, function(x) x$field)
-        for (i in seq_along(new_vars)) { 
+        for (i in seq_along(new_vars)) {
           data[[new_vars[i]]] <- eval_tidy(parse_expr(old_vars[i]), data)
         }
         trans_res <- map(trans, function(x) x[["x"]])
         trans_spec <- list(filter, vec_c(!!!trans_res))
       }
-      layer <- c(layer, 
+      layer <- c(layer,
         list(selection = unclass(selection)),
         list(transform = trans_spec))
     }
@@ -92,7 +92,7 @@ mark_properties <- function(...) {
     if (is_virgo_input(dots[input_lgl][[i]])) {
       input <- dots[input_lgl][[i]]
       dots[input_lgl][[i]] <- list(expr = input$name)
-      params[[i]] <- list(name = input$name, value = input %@% "init", 
+      params[[i]] <- list(name = input$name, value = input %@% "init",
         bind = unclass(input))
     }
   }
@@ -276,7 +276,8 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   density_field <- enc$x$field
   groupby <- as.list(unique(c(enc$color$field, enc$fill$field, enc$detail$field,
     enc$stroke$field)))
-  dens <- list2(density = density_field, groupby = groupby, !!!density)
+  dens <- list2(density = density_field, groupby = groupby, !!!density,
+    extent = v$layer[[last]]$encoding$x$scale$domain)
   trans <- vec_c(!!!v$layer[[last]]$transform)
   if (is.null(trans)) {
     v$layer[[last]]$transform <- list(dens)
@@ -284,7 +285,9 @@ mark_density <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
     v$layer[[last]]$transform <- list(trans, dens)
   }
   v$layer[[last]]$encoding$x$field <- "value"
+  v$layer[[last]]$encoding$x$scale$padding <- .5
   v$layer[[last]]$encoding$y <- c(enc$y, field = "density", type = "quantitative")
+  v$layer[[last]]$encoding$y$stack <- "zero"
   v
 }
 
