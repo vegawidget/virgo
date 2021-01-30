@@ -142,6 +142,8 @@ encoding_spec.factor <- function(x, field, encoding_name, ...) {
 
 encoding_spec.character <- encoding_spec.factor
 
+encoding_spec.logical <- encoding_spec.factor
+
 encoding_spec.virgo_aggregate <- function(x, field, encoding_name, ...) {
   data <- dots_list(...)$data
   aggregate <- x$aggregate
