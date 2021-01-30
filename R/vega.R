@@ -96,8 +96,10 @@ format.virgo <- function(x, ...) {
 
 #' @inheritParams vegawidget::knit_print.vegaspec
 #' @export
-knit_print.virgo <- function(spec, ..., options = NULL) {
-  spec <- as_vegaspec(spec)
+knit_print.virgo <- function(spec, ..., renderer = "canvas", options = NULL) {
+  spec <- vegawidget(as_vegaspec(spec),
+    embed = vega_embed(renderer = renderer, actions = FALSE),
+    base_url = spec$data$dir)
   knitr::knit_print(spec, ..., options = options)
 }
 
