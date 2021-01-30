@@ -1,38 +1,42 @@
 Package: virgo
-Title: A Domain Specific Language for Layered Grammar of Interactive Graphics
+Title: A Domain Specific Language for Layered Grammar of
+    Interactive Graphics
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Earo",
-           family = "Wang",
-           role = c("aut", "cre"),
-           email = "earo.wang@gmail.com",
-           comment = c(ORCID = "0000-0001-6448-5260")),
+             family = "Wang",
+             role = c("aut", "cre"),
+             email = "earo.wang@gmail.com",
+             comment = c(ORCID = "0000-0001-6448-5260")),
       person(given = "Stuart",
-            family = "Lee",
-            role = "aut",
-            email = "stuart.andrew.lee@gmail.com",
-            comment = c(ORCID = "0000-0003-1179-8436")),
-      person("Vega/Vega-Lite Developers", role = c("ctb", "cph")))
-Description: An implementation of a grammar of interactive graphics using 'vega'
-    in R.
+             family = "Lee",
+             role = "aut",
+             email = "stuart.andrew.lee@gmail.com",
+             comment = c(ORCID = "0000-0003-1179-8436")),
+      person(given = "Vega/Vega-Lite Developers",
+             role = c("ctb", "cph")))
+Description: An implementation of a grammar of interactive
+    graphics using 'vega' in R.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Imports: 
+    jsonlite,
     rlang,
     scales,
     tidyselect,
     vctrs,
     vegawidget (>= 0.3.2)
 Suggests: 
+    covr,
     dplyr,
     knitr,
-    rmarkdown,
+    lubridate,
     palmerpenguins,
-    covr,
-    lubridate
+    rmarkdown
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr

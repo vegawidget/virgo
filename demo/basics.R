@@ -59,7 +59,14 @@ vega() %>%
   mark_point(encoding = enc(x = wt, y = mpg), data = mtcars)
 
 vega(data = iris) %>%
-  mark_point(encoding = enc(x = wt, y = mpg), data = mtcars)
+  mark_point(encoding = enc(x = wt, y = mpg), data = mtcars) %>%
+  vega_serialise_data(path = "~/Downloads")
+
+mtcars %>%
+  mutate(cyl = factor(cyl)) %>%
+  vega(encoding = enc(x = wt, y = mpg)) %>%
+  mark_point(encoding = enc(color = cyl)) %>%
+  vega_serialise_data()
 
 mtcars %>%
   mutate(cyl = factor(cyl)) %>%

@@ -1,5 +1,6 @@
 #' @import rlang tidyselect vctrs
 #' @importFrom vegawidget as_vegaspec vega_embed vega_schema vegawidget `%>%`
+#' @importFrom jsonlite write_json
 #' @export `%>%`
 
 new_virgo <- function(spec) {
@@ -28,11 +29,12 @@ as.list.virgo <- function(x, ...) {
 #' @export
 as_vegaspec.virgo <- function(spec, ...) {
   spec_header <- list(`$schema` = vega_schema())
+  spec$data$dir <- NULL
   if (!has_name(spec, "config")) {
     spec <- config_ggplot(spec)
   }
   spec <- unclass(spec)
-  if (is.null(spec$data$values)) {
+  if (is.null(spec$data$values) && is.null(spec$data$url)) {
     spec$data <- NULL
   }
   # remove top-level encoding & transform, since it already applies to each layer
@@ -80,7 +82,8 @@ as_vegaspec.virgo <- function(spec, ...) {
 print.virgo <- function(x, renderer = "canvas", ...) {
   renderer <- arg_match(renderer, c("canvas", "svg"))
   print(vegawidget(as_vegaspec(x),
-    embed = vega_embed(renderer = renderer, actions = FALSE)), ...)
+    embed = vega_embed(renderer = renderer, actions = FALSE),
+    base_url = x$data$dir), ...)
   invisible(x)
 }
 
@@ -92,15 +95,20 @@ format.virgo <- function(x, ...) {
 }
 
 #' @inheritParams vegawidget::knit_print.vegaspec
-#' @rdname knit_print.vegaspec
 #' @export
 knit_print.virgo <- function(spec, ..., options = NULL) {
   spec <- as_vegaspec(spec)
   knitr::knit_print(spec, ..., options = options)
 }
 
-# NOTE: leave all styling properties to `config()`
+#' Modify vega title, subtitle, and description
+#'
+#' @inheritParams vega
+#' @param title,subtitle,description Strings.
+#'
+#' @export
 entitle <- function(v, title = NULL, subtitle = NULL, description = NULL) {
+  # NOTE: leave all styling properties to `config()`
   abort_if_not_virgo(v)
   v$title <- list(text = title, subtitle = subtitle)
   v$description <- description
@@ -115,4 +123,48 @@ abort_if_not_virgo <- function(v) {
   if (!is_virgo(v)) {
     abort("Must be a `vega()` object.")
   }
+}
+
+#' Serialise data
+#'
+#' @inheritParams vega
+#' @param path Directory to save inlining data to external data files.
+#'
+#' @rdname vega-seralise
+#' @export
+vega_serialise_data <- function(v, path = NULL) {
+  # TODO: args for iso datetime?
+  abort_if_not_virgo(v)
+  seq_layer <- seq_along(v$layer)
+  if (is.null(path)) {
+    path <- tempdir()
+    top_file <- tempfile("data0", path, ".json")
+    layer_file <- tempfile(paste0("data", seq_layer), path, ".json")
+  } else {
+    path <- normalizePath(path)
+    top_file <- file.path(path, "data0.json")
+    layer_file <- file.path(path, paste0("data", seq_layer, ".json"))
+  }
+  v <- write_out_to(v, top_file) # top-level
+  for (i in seq_layer) {
+    v$layer[[i]] <- write_out_to(v$layer[[i]], layer_file[i])
+  }
+  v$data$dir <- path
+  v
+}
+
+#' @rdname vega-seralise
+#' @export
+vega_serialize_data <- vega_serialise_data
+
+write_out_to <- function(layer, path) {
+  if (is.null(layer$data$values)) return(layer)
+
+  if (file.exists(path)) {
+    abort("File exists!")
+  }
+  write_json(layer$data$values, path)
+  layer$data$values <- NULL
+  layer$data$url <- basename(path)
+  layer
 }
