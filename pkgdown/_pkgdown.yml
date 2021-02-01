@@ -5,6 +5,27 @@ template:
 development:
   mode: auto
 
+navbar:
+  title: "virgo"
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Getting Started"
+      href: articles/virgo.html
+    - text: "Example Gallery"
+      href: articles/gallery/index.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Articles"
+      menu:
+        - text: "A guide to virgo for ggplot2 users"
+          href: articles/transition.html
+        - text: "Using selections to make interactive graphics with virgo"
+          href: articles/virgo-selections.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/vegawidget/vegawidget
+
 reference:
   - title: "virgo basics"
     desc: >
