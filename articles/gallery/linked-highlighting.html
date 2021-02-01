@@ -45,7 +45,10 @@
   </a>
 </li>
 <li>
-  <a href="../../articles/virgo.html">Get started</a>
+  <a href="../../articles/virgo.html">Getting Started</a>
+</li>
+<li>
+  <a href="../../articles/gallery/index.html">Example Gallery</a>
 </li>
 <li>
   <a href="../../reference/index.html">Reference</a>
@@ -58,21 +61,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/gallery/index.html">Example Gallery</a>
+      <a href="../../articles/transition.html">A guide to virgo for ggplot2 users</a>
     </li>
     <li>
-      <a href="../../articles/gallery/linked-highlighting.html">Linked Highlighting</a>
-    </li>
-    <li>
-      <a href="../../articles/selections.html">Composing interactive graphics via selections</a>
-    </li>
-    <li>
-      <a href="../../articles/transition.html">virgo guide for ggplot2 users</a>
+      <a href="../../articles/virgo-selections.html">Using selections to make interactive graphics with virgo</a>
     </li>
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/vegawidget/vegawidget">
+    <span class="fas fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -113,8 +117,8 @@
   <span class="op">)</span>
 <span class="co">#&gt; Removed 2 rows containing missing values.</span>
 <span class="va">p</span></code></pre></div>
-<div id="htmlwidget-c6d315a6be91b2e59294" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c6d315a6be91b2e59294">{"x":{
+<div id="htmlwidget-520810440ee02ec05ade" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-520810440ee02ec05ade">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -3880,7 +3884,7 @@
     "layer": [
       {
         "selection": {
-          "id335763bb": {
+          "id6f373130": {
             "type": "interval",
             "encodings": ["x", "y"],
             "init": null,
@@ -3921,7 +3925,7 @@
           },
           "color": {
             "condition": {
-              "selection": "id335763bb",
+              "selection": "id6f373130",
               "field": "species",
               "type": "nominal",
               "sort": ["Adelie", "Chinstrap", "Gentoo"],
@@ -4018,8 +4022,8 @@
     selection <span class="op">=</span> <span class="va">selection</span><span class="op">)</span>
 <span class="co">#&gt; Removed 2 rows containing missing values.</span>
 <span class="va">p_right</span></code></pre></div>
-<div id="htmlwidget-90d7e9e3b22198f1422e" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-90d7e9e3b22198f1422e">{"x":{
+<div id="htmlwidget-1264ca6a5877bd3c5669" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1264ca6a5877bd3c5669">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -7470,7 +7474,7 @@
           }
         },
         "selection": {
-          "id335763bb": {
+          "id6f373130": {
             "type": "interval",
             "encodings": ["x", "y"],
             "init": null,
@@ -7494,7 +7498,7 @@
         "transform": [
           {
             "filter": {
-              "selection": "id335763bb"
+              "selection": "id6f373130"
             }
           }
         ],
@@ -7532,7 +7536,7 @@
         "transform": [
           {
             "filter": {
-              "selection": "id335763bb"
+              "selection": "id6f373130"
             }
           }
         ],
@@ -7624,8 +7628,8 @@
   }
 },"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/hconcat.html">hconcat</a></span><span class="op">(</span><span class="va">p</span>, <span class="va">p_right</span><span class="op">)</span></code></pre></div>
-<div id="htmlwidget-83f239205e7ac2647172" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-83f239205e7ac2647172">{"x":{
+<div id="htmlwidget-7abdb9fca808922ba16b" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7abdb9fca808922ba16b">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "hconcat": [
@@ -11394,7 +11398,7 @@
         "layer": [
           {
             "selection": {
-              "id335763bb": {
+              "id6f373130": {
                 "type": "interval",
                 "encodings": ["x", "y"],
                 "init": null,
@@ -11435,7 +11439,7 @@
               },
               "color": {
                 "condition": {
-                  "selection": "id335763bb",
+                  "selection": "id6f373130",
                   "field": "species",
                   "type": "nominal",
                   "sort": ["Adelie", "Chinstrap", "Gentoo"],
@@ -14967,7 +14971,7 @@
               }
             },
             "selection": {
-              "id335763bb": {
+              "id6f373130": {
                 "type": "interval",
                 "encodings": ["x", "y"],
                 "init": null,
@@ -14991,7 +14995,7 @@
             "transform": [
               {
                 "filter": {
-                  "selection": "id335763bb"
+                  "selection": "id6f373130"
                 }
               }
             ],
@@ -15029,7 +15033,7 @@
             "transform": [
               {
                 "filter": {
-                  "selection": "id335763bb"
+                  "selection": "id6f373130"
                 }
               }
             ],
