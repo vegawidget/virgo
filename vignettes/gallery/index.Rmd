@@ -1,0 +1,27 @@
+---
+title: "Example Gallery"
+output: 
+  rmarkdown::html_document:
+    css: extra.css
+---
+
+This page shows worked examples of using **virgo** to produce graphics
+for data analysis. 
+
+<span class="image" style="background-image: url(/vega-lite/examples/bar.svg);background-size: auto 105%; background-position: center center !important;"></span>
+```{r setup, echo = FALSE}
+library(htmltools)
+span_display <- function(img_path) {
+  span(class = "display",
+       style = paste0("background-image:url(", img_path, ");",
+                      "background-size: auto 105%;",
+                      "background-position: center center !important;")
+  )
+}
+span(class = "gallery",
+     a(class = "virgo-group", href = "linked-highlighting.html",
+       span_display("linked-highlighting.png"),
+       span(class = "display-title", "Linked Highlighting")
+       )
+)
+```

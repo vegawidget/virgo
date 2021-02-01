@@ -1,0 +1,46 @@
+---
+title: "Linked Highlighting"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(virgo)
+library(palmerpenguins)
+```
+
+```{r brushed-scatter}
+selection <- select_interval()
+
+p <- penguins %>% 
+  vega() %>% 
+  mark_circle(
+    enc(
+      x = bill_length_mm, 
+      y = bill_depth_mm, 
+      color = encode_if(selection, species, "black")
+    )
+  )
+p
+```
+
+```{r right-scatter}
+p_right <- penguins %>% 
+  vega(enc(x = body_mass_g)) %>% 
+  mark_histogram(bin = list(maxbins = 20)) %>% 
+  mark_histogram(color = "purple", bin = list(maxbins = 20),
+    selection = selection) %>% 
+  mark_rule(enc(x = vg_mean(body_mass_g)), color = "red", size = 4,
+    selection = selection)
+p_right
+```
+
+```{r linked-brushed-scatter}
+hconcat(p, p_right)
+```
+

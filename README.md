@@ -137,10 +137,10 @@ of masses.
 
 ## Learning more
 
-  - [Example gallery]()
+  - [Example gallery](articles/gallery/index.html)
   - [Using **virgo** to explore Melbourne’s
     microclimate](articles/virgo.html)
-  - [Guide to **virgo** for **ggplot2** users]()
+  - [Guide to **virgo** for **ggplot2** users](articles/transition.html)
   - [Composing plot interactions with selections]()
 
 ## Lifecycle
