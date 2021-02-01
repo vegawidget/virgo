@@ -135,14 +135,15 @@
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A tibble with 43,027 rows and 9 variables:</p><ul>
+    <p>A tibble with 32,253 rows and 12 variables:</p><ul>
 <li><p><code>site</code>: Site identifier, this is the location of the weather sensor,
-there are five sites</p></li>
+there are five sites located around the city.</p></li>
+<li><p><code>site_address</code>: The address of the site</p></li>
 <li><p><code>longitude, latitude</code>: The spatial coordinates of the measurement sites</p></li>
 <li><p><code>date_time</code>: The local date time that a sensor made a recording</p></li>
 <li><p><code>date</code>: Date associated with <code>date_time</code></p></li>
 <li><p><code>ambient_temperature</code>: The value of the ambient air temperature in degrees Celsius.</p></li>
-<li><p><code>relative_humidity</code>: The percent value of the relative humidity</p></li>
+<li><p><code>relative_humidity</code>: The percent value of the relative humidity (no units)</p></li>
 <li><p><code>barometric_pressure</code>: The barometric pressure in hectopascals (hPa)</p></li>
 <li><p><code>wind_speed</code>: The wind speed in kilometers per hour (km/h)</p></li>
 <li><p><code>pm2.5,pm10</code>: The mass density of particulate matter in the air less than 2.5 (10) micrometers in diameter. Measured in micrograms per cubic meter.</p></li>
@@ -155,9 +156,8 @@ there are five sites</p></li>
 
     <p>This data comes from the <a href='https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8'>Melbourne Open Data Portal</a>
 and contains measurements from microclimate sensors around the city. Here
-we have restricted the data to contain measurements from December 2019 until
-the end of Februrary 2020. There are five sites where measurements are taken
-every 15 minutes. The data is presented in wide form</p>
+we have restricted the data to contain measurements from January 2020 and June 2020. There are five sites where measurements are taken
+every 15 minutes.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
