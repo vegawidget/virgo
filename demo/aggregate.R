@@ -60,3 +60,15 @@ population %>%
   filter(year == 2000) %>%
   vega() %>%
   mark_bar(enc(x = ordered(age), y = vg_count(age)))
+
+
+# mosaic
+cars <-
+  jsonlite::fromJSON("https://vega.github.io/vega-editor/app/data/cars.json")
+
+cars %>%
+  transform_mosaic(enc(x = Origin, y = Cylinders)) %>%
+  vega(enc(x= nx, y = ny, x2 = nx2, y2 = ny2)) %>%
+  mark_rect(enc(color = Origin, opacity = Cylinders))
+
+
