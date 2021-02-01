@@ -1,0 +1,49 @@
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+    margin-top: 0;
+    margin-right: -12px;
+    margin-bottom: 0;
+    margin-left: -12px;
+}
+
+.gallery .virgo-group  {
+  display: inline-block;
+  position: relative;
+  margin: 12px 18px;
+    margin-top: 12px;
+    margin-right: 18px;
+    margin-bottom: 12px;
+    margin-left: 18px;
+}
+
+.gallery .virgo-group  {
+  display: inline-block;
+  position: relative;
+  width: calc(25% - 36px);
+  margin: 12px 18px;
+    margin-top: 12px;
+    margin-right: 18px;
+    margin-bottom: 12px;
+    margin-left: 18px;
+}
+
+.gallery .display {
+    display: block;
+    width: 100%;
+    padding-bottom: 75%;
+    background-repeat: no-repeat;
+    margin-bottom: 5px;
+    overflow: hidden;
+    transition: background-position 2s;
+}
+
+.gallery .display-title {
+  font-size: 0.95em;
+}
+
+
+
+
+
