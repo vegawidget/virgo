@@ -21,7 +21,7 @@ navbar:
         - text: "A guide to virgo for ggplot2 users"
           href: articles/transition.html
         - text: "Using selections to make interactive graphics with virgo"
-          href: articles/virgo-selections.html
+          href: articles/selections.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/vegawidget/vegawidget
