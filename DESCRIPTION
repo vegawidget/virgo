@@ -33,7 +33,9 @@ Suggests:
     knitr,
     lubridate,
     palmerpenguins,
-    rmarkdown
+    rmarkdown,
+    gapminder,
+    tidyr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
