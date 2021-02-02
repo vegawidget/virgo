@@ -51,7 +51,7 @@ gapminder_augmented <- gapminder %>%
       r2 = vapply(model, function(x) summary(x)$r.squared, numeric(1)),
     ) %>% 
   unnest(data) %>% 
-  select(-model) %>% 
+  select(-model)
   
 gapminder_augmented
 ```
