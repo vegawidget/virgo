@@ -28,7 +28,7 @@ add_example <- function(href, img_path, title) {
 
 span(class = "gallery",
      add_example("linked-highlighting.html", 
-                 "linked_highlighting.png",
+                 "linked-highlighting.png",
                  "Linked Highlighting"),
      add_example("gapminder-model-drilldown.html",
                  "gapminder-model-drilldown.png",
