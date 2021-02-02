@@ -2,7 +2,7 @@ standardise_encodings <- function(x) {
   if (vec_in("alpha", x)) {
     abort(c("`alpha` is an invalid property.", i = "Do you mean `opacity`?"))
   }
-  x[vec_match("group", x)] <- "details"
+  x[vec_match("group", x)] <- "detail"
   x[vec_match("colour", x)] <- "color"
   abort_if_camelCase(x)
   x <- standardise_names(valid_encodings(x))
@@ -25,7 +25,7 @@ abort_if_camelCase <- function(x) {
 }
 
 valid_encodings <- function(x) {
-  props <- c("x", "y", "x2", "y2", "details", "fill", "fill_opacity", "color", 
+  props <- c("x", "y", "x2", "y2", "detail", "fill", "fill_opacity", "color", 
     "size", "opacity", "shape", "angle", "tooltip", "url", "radius", "radius2",
     "stroke", "stroke_opacity", "stroke_cap", "stroke_dash", "stroke_join",
     "stroke_width", "text", "theta", "theta2", "href", "description", "cursor",
