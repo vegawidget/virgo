@@ -1,5 +1,5 @@
 ---
-title: "Model checking with selections"
+title: "Model checking with filtering selections"
 ---
 
 ```{r, include = FALSE}
@@ -49,13 +49,49 @@ gapminder_augmented <- gapminder %>%
     mutate(
       model = lapply(data, function(x) lm(lifeExp ~ year, data = x)),
       r2 = vapply(model, function(x) summary(x)$r.squared, numeric(1)),
-      fitted = lapply(model, predict)
     ) %>% 
-  unnest(c(data, fitted))
+  unnest(data) %>% 
+  select(-model) %>% 
+  
 gapminder_augmented
 ```
 
-Now we can create a secondary selection, that will filter our augmented data based on $R^2$.
+Now we can create a plot driven selection, that will display the
+$R^2$ values within each continent:
+
+```{r}
+select_r2 <- select_interval("y")
+
+tick_plot <- gapminder_augmented %>% 
+    vega(enc(x = continent, y = r2)) %>% 
+    mark_tick(
+      enc(opacity = encode_if(select_r2, 1, 0.1))
+    )
+tick_plot
+```
 
 
+New we can overlay the real data alongside the model $R^2$ values to 
+identify which countries have poor fits. First, we modify the color scale
+to match the provided `gapminder::country_colors` and then produce a line plot.
+
+```{r}
+palette <- country_colors[sort(names(country_colors))]
+
+country_fits <- gapminder_augmented %>% 
+  vega(enc(x = year, y = lifeExp, color = country)) %>% 
+  mark_line(selection = select_r2) %>% 
+  scale_color(range = palette ,guide = FALSE)
+
+country_fits
+```
+
+Next we combine them together to see which countries have poor fits.
+
+```{r}
+hconcat(tick_plot, country_fits)
+```
+The countries with $R^2$ below 0.2 have strong non-linear trends in life expectancies
+hovering over the lines identifies them to be countries affected by genocide
+(Rwanda) or the HIV/AIDS epidemic (Botswana, Lesotho, Swaziland, Zambia, Zimbabwe).
 

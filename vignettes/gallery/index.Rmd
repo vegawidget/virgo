@@ -18,10 +18,23 @@ span_display <- function(img_path) {
                       "background-position: center center !important;")
   )
 }
+
+add_example <- function(href, img_path, title) {
+  a(class = "virgo-group", href = href,
+    span_display(img_path),
+    span(class = "display-title", title)
+  )
+}
+
 span(class = "gallery",
-     a(class = "virgo-group", href = "linked-highlighting.html",
-       span_display("linked-highlighting.png"),
-       span(class = "display-title", "Linked Highlighting")
-       )
+     add_example("linked-highlighting.html", 
+                 "linked_highlighting.png",
+                 "Linked Highlighting"),
+     add_example("gapminder-model-drilldown.html",
+                 "gapminder-model-drilldown.png",
+                 "Model checking with filtering selections"),
+     add_example("gapminder-animate.html",
+                 "gapminder-animate.png",
+                 "Connected scatterplot with slider")
 )
 ```

@@ -1,0 +1,15 @@
+---
+title: "Animated connected scatterplot"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(virgo)
+library(gapminder)
+```
