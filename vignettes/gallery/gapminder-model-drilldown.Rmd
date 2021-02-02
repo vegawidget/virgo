@@ -1,0 +1,61 @@
+---
+title: "Model checking with selections"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(virgo)
+library(dplyr)
+library(tidyr)
+library(gapminder)
+```
+
+This example is inspired by the [Many Models](https://r4ds.had.co.nz/many-models.html#gapminder) example in R for Data Science by Grolemund and Wickham.
+
+To begin we create a drop down menu with each continent
+using `input_select()` and then we create a line plot for each country's life expectancy over time. Here the selection modifies
+the opacity of each line, so we can compare countries within a continent to each other:
+```{r}
+selection <- select_bind(
+  continent = input_select(
+    name = "Select Continent:",
+    choices = c(NA, levels(gapminder$continent)))
+)
+  
+lex <- gapminder %>% 
+  vega(enc(x = year, y = lifeExp, group = country)) %>% 
+  mark_line(
+    enc(opacity = encode_if(selection, 0.5, 0.1))
+  )
+lex 
+```
+
+We see that for most countries life expectancy is generally increasing, however several countries from Africa and Asia have dips in their life expectancies. 
+
+Next for each country we can estimate a simple linear model to summarise the relationship of how life expectancy has changed over time. We will use $R^2$ to assess the quality of the fit
+and link that back to our raw data
+
+```{r}
+# we could do this with broom but this seems
+# ok for now
+gapminder_augmented <- gapminder %>% 
+    group_nest(continent, country) %>% 
+    mutate(
+      model = lapply(data, function(x) lm(lifeExp ~ year, data = x)),
+      r2 = vapply(model, function(x) summary(x)$r.squared, numeric(1)),
+      fitted = lapply(model, predict)
+    ) %>% 
+  unnest(c(data, fitted))
+gapminder_augmented
+```
+
+Now we can create a secondary selection, that will filter our augmented data based on $R^2$.
+
+
+
