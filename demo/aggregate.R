@@ -67,8 +67,7 @@ cars <-
   jsonlite::fromJSON("https://vega.github.io/vega-editor/app/data/cars.json")
 
 cars %>%
-  transform_mosaic(enc(x = Origin, y = Cylinders)) %>%
-  vega(enc(x= nx, y = ny, x2 = nx2, y2 = ny2)) %>%
-  mark_rect(enc(color = Origin, opacity = Cylinders))
+  vega(enc(x= Origin, y = Cylinders)) %>%
+  mark_mosaic(enc(color = Origin, opacity = Cylinders))
 
 
