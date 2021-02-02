@@ -2,10 +2,12 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  gallery/gapminder-animate: gapminder-animate.html
+  gallery/gapminder-model-drilldown: gapminder-model-drilldown.html
   gallery/index: index.html
   gallery/linked-highlighting: linked-highlighting.html
   selections: selections.html
   transition: transition.html
   virgo: virgo.html
-last_built: 2021-02-02T01:08Z
+last_built: 2021-02-02T02:45Z
 
