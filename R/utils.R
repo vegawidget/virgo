@@ -25,11 +25,11 @@ abort_if_camelCase <- function(x) {
 }
 
 valid_encodings <- function(x) {
-  props <- c("x", "y", "x2", "y2", "detail", "fill", "fill_opacity", "color", 
+  props <- c("x", "y", "x2", "y2", "detail", "fill", "fill_opacity", "color",
     "size", "opacity", "shape", "angle", "tooltip", "url", "radius", "radius2",
     "stroke", "stroke_opacity", "stroke_cap", "stroke_dash", "stroke_join",
     "stroke_width", "text", "theta", "theta2", "href", "description", "cursor",
-    "interpolate")
+    "interpolate", "order", "dx", "dy", "offset_x", "offset_y")
   lgl <- vec_in(x, props)
   if (!all(lgl)) {
     abort(c("Invalid property:", x[!lgl]))

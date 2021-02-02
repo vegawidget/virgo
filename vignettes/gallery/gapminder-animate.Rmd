@@ -13,3 +13,46 @@ knitr::opts_chunk$set(
 library(virgo)
 library(gapminder)
 ```
+
+This example uses input selections to create a manual animation 
+of the gapminder data.
+
+```{r}
+slide_year <- select_bind(
+  year = input_slider("Year", 
+                      min = min(gapminder$year), 
+                      max = max(gapminder$year),
+                      step = 5,
+                      init = 1982)
+)
+
+nearest_country <- select_single(fields = "country", 
+                                 on = "mouseover",
+                                 empty = "none")
+
+gapminder %>% 
+  vega(enc(x = gdpPercap, y  = lifeExp), width = 800) %>% 
+  mark_point(
+    enc(color = continent), 
+    selection  = slide_year
+  ) %>% 
+  mark_line(
+    enc(
+      group = country, 
+      order = year,
+      opacity = encode_if(nearest_country, 0.8, 0)
+    ),
+    color = "black",
+    size = 4,
+    stroke_cap = "round"
+  ) %>% 
+  mark_circle(selection = nearest_country) %>% 
+  mark_text(
+    enc(text = year), 
+    selection = nearest_country,
+    color = "black",
+    dx = 12,
+    dy = 8
+  ) %>% 
+  scale_x(type = "log")
+```
