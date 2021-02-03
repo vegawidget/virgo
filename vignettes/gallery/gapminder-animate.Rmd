@@ -1,5 +1,5 @@
 ---
-title: "Animated connected scatterplot"
+title: "Interactive scatter plot of gapminder data"
 ---
 
 ```{r, include = FALSE}
@@ -9,15 +9,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(virgo)
-library(gapminder)
-```
+This example is an adaptation of the 
+[interactive global development scatter plot](https://vega.github.io/vega-lite/examples/interactive_global_development.html)
+from  the Vega-Lite documentation. We create two selection objects: the first is
+a slider that is bound to the years in the gapminder data, 
+and another that corresponds to hovering over nearest points. 
 
-This example uses input selections to create a manual animation 
-of the gapminder data.
 
 ```{r}
+library(virgo)
+library(gapminder)
+
 slide_year <- select_bind(
   year = input_slider("Year", 
                       min = min(gapminder$year), 
@@ -26,14 +28,24 @@ slide_year <- select_bind(
                       init = 1982)
 )
 
-nearest_country <- select_single(fields = "country", 
-                                 on = "mouseover",
-                                 empty = "none")
+nearest_country <- select_single(
+  fields = "country", 
+  on = "mouseover", 
+  empty = "none"
+)
+```
 
+Next we initialise our graphic by creating a scatter plot for GDP against
+life expectancy, where the view is filtered by the current year selected
+in the slider. We then add lines, circles, and text marks that reveal the
+trajectory of a countries GDP per capita and life expectancy over 
+time when you hover a point. Finally, we place the x-axis on a log scale.
+
+```{r}
 gapminder %>% 
   vega(enc(x = gdpPercap, y  = lifeExp), width = 800) %>% 
   mark_point(
-    enc(color = continent), 
+    enc(color = continent, group = country), 
     selection  = slide_year
   ) %>% 
   mark_line(
