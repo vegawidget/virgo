@@ -43,7 +43,7 @@ time when you hover a point. Finally, we place the x-axis on a log scale.
 
 ```{r}
 gapminder %>% 
-  vega(enc(x = gdpPercap, y  = lifeExp), width = 800) %>% 
+  vega(enc(x = gdpPercap, y  = lifeExp), width = 400, height = 400) %>% 
   mark_point(
     enc(color = continent, group = country), 
     selection  = slide_year
@@ -54,7 +54,7 @@ gapminder %>%
       order = year,
       opacity = encode_if(nearest_country, 0.8, 0)
     ),
-    color = "black",
+    color = "#9e9ac8",
     size = 4,
     stroke_cap = "round"
   ) %>% 

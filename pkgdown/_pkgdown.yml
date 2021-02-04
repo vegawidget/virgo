@@ -35,8 +35,6 @@ reference:
     contents:
       - vega
       - enc
-      - starts_with("%")
-      - starts_with("vw_write")
   - title: "Layers"
     desc: >
       To add visual layers to a graphic, you need to specify a mark which
@@ -89,8 +87,7 @@ reference:
       - melbweather
   - title: "Utilities"
     desc: >
-      To assist with using **virgo** in Rmarkdown or packages.
+      To assist with using **virgo** in R Markdown or packages.
     contents:
-      - vw_set_base_url
-      - knit_print.vegapsec
-
+      - vega_serialise_data
+      - starts_with("vw")
