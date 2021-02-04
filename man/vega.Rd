@@ -4,7 +4,7 @@
 \alias{vega}
 \title{Create a new vega visualisation}
 \usage{
-vega(data = NULL, encoding = enc(), width = 300, height = 300)
+vega(data = NULL, encoding = enc())
 }
 \arguments{
 \item{data}{A data frame.}

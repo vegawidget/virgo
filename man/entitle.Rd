@@ -7,6 +7,8 @@
 entitle(v, title = NULL, subtitle = NULL, description = NULL)
 }
 \arguments{
+\item{v}{A \code{vega()} object.}
+
 \item{title, subtitle, description}{Strings.}
 }
 \description{

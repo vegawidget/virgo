@@ -1,7 +1,8 @@
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
-  facet_views(row = cyl)
+  facet_views(row = cyl) %>%
+  vega_set_height(height = 900)
 
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%

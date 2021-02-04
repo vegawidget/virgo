@@ -14,10 +14,10 @@ new_virgo <- function(spec) {
 #' @param width,height Data plotting width and height.
 #'
 #' @export
-vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
+vega <- function(data = NULL, encoding = enc()) {
   spec <- list(
     data = list(values = data), encoding = encoding,
-    width = width, height = height)
+    width = 300, height = 300)
   new_virgo(spec)
 }
 
@@ -108,7 +108,6 @@ print.virgo <- function(x, renderer = "canvas", ...) {
   invisible(x)
 }
 
-
 #' @export
 format.virgo <- function(x, ...) {
   x <- as_vegaspec(x)
@@ -126,7 +125,7 @@ knit_print.virgo <- function(spec, ..., renderer = "canvas", options = NULL) {
 
 #' Modify vega title, subtitle, and description
 #'
-#' @inheritParams vega
+#' @inheritParams mark_point
 #' @param title,subtitle,description Strings.
 #'
 #' @export
@@ -150,7 +149,7 @@ abort_if_not_virgo <- function(v) {
 
 #' Serialise data
 #'
-#' @inheritParams vega
+#' @inheritParams mark_point
 #' @param path Directory to save inlining data to external data files.
 #'
 #' @rdname vega-seralise
@@ -190,4 +189,31 @@ write_out_to <- function(layer, path) {
   layer$data$values <- NULL
   layer$data$url <- basename(path)
   layer
+}
+
+#' Set vega canvas size
+#'
+#' @inheritParams mark_point
+#' @param width,height Data plotting width and height.
+#'
+#' @rdname vega-size
+#' @export
+vega_set_size <- function(v, width = NULL, height = NULL) {
+  # TODO: S3 method for virgo_concat, and takes a vector of width
+  abort_if_not_virgo(v)
+  v$width <- width %||% v$width
+  v$height <- height %||% v$height
+  v
+}
+
+#' @rdname vega-size
+#' @export
+vega_set_width <- function(v, width = NULL) {
+  vega_set_size(v, width = width)
+}
+
+#' @rdname vega-size
+#' @export
+vega_set_height <- function(v, height = NULL) {
+  vega_set_size(v, height = height)
 }
