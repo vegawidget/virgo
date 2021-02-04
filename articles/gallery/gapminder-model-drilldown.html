@@ -128,8 +128,8 @@
     <span class="fu"><a href="../../reference/enc.html">enc</a></span><span class="op">(</span>opacity <span class="op">=</span> <span class="fu"><a href="../../reference/encode_if.html">encode_if</a></span><span class="op">(</span><span class="va">selection</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="va">lex</span> </code></pre></div>
-<div id="htmlwidget-4f29572b0c512eeab455" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4f29572b0c512eeab455">{"x":{
+<div id="htmlwidget-69a9eeabb68c05a92423" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-69a9eeabb68c05a92423">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -17182,7 +17182,7 @@
     "layer": [
       {
         "selection": {
-          "id74425cc4": {
+          "idd7ee464b": {
             "type": "single",
             "fields": [
               "continent"
@@ -17234,7 +17234,7 @@
           },
           "opacity": {
             "condition": {
-              "selection": "id74425cc4",
+              "selection": "idd7ee464b",
               "value": 0.5
             },
             "value": 0.1
@@ -17354,8 +17354,8 @@
       <span class="fu"><a href="../../reference/enc.html">enc</a></span><span class="op">(</span>opacity <span class="op">=</span> <span class="fu"><a href="../../reference/encode_if.html">encode_if</a></span><span class="op">(</span><span class="va">select_r2</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>
     <span class="op">)</span>
 <span class="va">tick_plot</span></code></pre></div>
-<div id="htmlwidget-41c7ea140f118d244680" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-41c7ea140f118d244680">{"x":{
+<div id="htmlwidget-6ee37badee8177aa2414" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6ee37badee8177aa2414">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -36112,7 +36112,7 @@
     "layer": [
       {
         "selection": {
-          "id4f29572b": {
+          "id69a9eeab": {
             "type": "interval",
             "encodings": "y",
             "init": null,
@@ -36151,7 +36151,7 @@
           },
           "opacity": {
             "condition": {
-              "selection": "id4f29572b",
+              "selection": "id69a9eeab",
               "value": 1
             },
             "value": 0.1
@@ -36242,8 +36242,8 @@
   <span class="fu"><a href="../../reference/scale_x.html">scale_color</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">palette</span> ,guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">country_fits</span></code></pre></div>
-<div id="htmlwidget-ec36fad5c5d91e3268c0" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec36fad5c5d91e3268c0">{"x":{
+<div id="htmlwidget-3ed86a4998ff7d6a988e" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3ed86a4998ff7d6a988e">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -51597,7 +51597,7 @@
           "clip": true
         },
         "selection": {
-          "id4f29572b": {
+          "id69a9eeab": {
             "type": "interval",
             "encodings": "y",
             "init": null,
@@ -51613,7 +51613,7 @@
         "transform": [
           {
             "filter": {
-              "selection": "id4f29572b"
+              "selection": "id69a9eeab"
             }
           }
         ],
@@ -51727,13 +51727,12 @@
 },"evals":[],"jsHooks":[]}</script><p>Next we combine them together to see which countries have poor fits.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/hconcat.html">hconcat</a></span><span class="op">(</span><span class="va">tick_plot</span>, <span class="va">country_fits</span><span class="op">)</span></code></pre></div>
-<div id="htmlwidget-8fafbc0eda411c4470a3" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8fafbc0eda411c4470a3">{"x":{
+<div id="htmlwidget-e7b88d50ee9cbd7f41ee" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e7b88d50ee9cbd7f41ee">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "hconcat": [
       {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": {
           "values": [
             {
@@ -70488,7 +70487,7 @@
         "layer": [
           {
             "selection": {
-              "id4f29572b": {
+              "id69a9eeab": {
                 "type": "interval",
                 "encodings": "y",
                 "init": null,
@@ -70527,84 +70526,16 @@
               },
               "opacity": {
                 "condition": {
-                  "selection": "id4f29572b",
+                  "selection": "id69a9eeab",
                   "value": 1
                 },
                 "value": 0.1
               }
             }
           }
-        ],
-        "config": {
-          "view": {
-            "fill": "#e5e5e5"
-          },
-          "facet": {
-            "spacing": 5
-          },
-          "headerRow": {
-            "labelOrient": "right",
-            "titleOrient": "right"
-          },
-          "circle": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "point": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "line": {
-            "color": "#000"
-          },
-          "trail": {
-            "color": "#000"
-          },
-          "tick": {
-            "color": "#000"
-          },
-          "geoshape": {
-            "color": "#000"
-          },
-          "square": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "rect": {
-            "fill": "#595959"
-          },
-          "area": {
-            "fill": "#595959"
-          },
-          "bar": {
-            "fill": "#595959"
-          },
-          "axis": {
-            "domain": false,
-            "domainColor": "#FFFFFFF",
-            "grid": true,
-            "gridColor": "#FFFFFF",
-            "gridOpacity": 1,
-            "labelColor": "#7F7F7F",
-            "labelPadding": 4,
-            "tickColor": "#7F7F7F",
-            "tickSize": 5.67
-          },
-          "axisX": [],
-          "axisY": [],
-          "header": [],
-          "legend": {
-            "orient": "right",
-            "padding": 1
-          },
-          "title": []
-        }
+        ]
       },
       {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": {
           "values": [
             {
@@ -85956,7 +85887,7 @@
               "clip": true
             },
             "selection": {
-              "id4f29572b": {
+              "id69a9eeab": {
                 "type": "interval",
                 "encodings": "y",
                 "init": null,
@@ -85972,7 +85903,7 @@
             "transform": [
               {
                 "filter": {
-                  "selection": "id4f29572b"
+                  "selection": "id69a9eeab"
                 }
               }
             ],
@@ -86009,74 +85940,7 @@
               }
             }
           }
-        ],
-        "config": {
-          "view": {
-            "fill": "#e5e5e5"
-          },
-          "facet": {
-            "spacing": 5
-          },
-          "headerRow": {
-            "labelOrient": "right",
-            "titleOrient": "right"
-          },
-          "circle": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "point": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "line": {
-            "color": "#000"
-          },
-          "trail": {
-            "color": "#000"
-          },
-          "tick": {
-            "color": "#000"
-          },
-          "geoshape": {
-            "color": "#000"
-          },
-          "square": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "rect": {
-            "fill": "#595959"
-          },
-          "area": {
-            "fill": "#595959"
-          },
-          "bar": {
-            "fill": "#595959"
-          },
-          "axis": {
-            "domain": false,
-            "domainColor": "#FFFFFFF",
-            "grid": true,
-            "gridColor": "#FFFFFF",
-            "gridOpacity": 1,
-            "labelColor": "#7F7F7F",
-            "labelPadding": 4,
-            "tickColor": "#7F7F7F",
-            "tickSize": 5.67
-          },
-          "axisX": [],
-          "axisY": [],
-          "header": [],
-          "legend": {
-            "orient": "right",
-            "padding": 1
-          },
-          "title": []
-        }
+        ]
       }
     ],
     "config": {

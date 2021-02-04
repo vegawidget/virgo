@@ -117,8 +117,8 @@
   <span class="op">)</span>
 <span class="co">#&gt; Removed 2 rows containing missing values.</span>
 <span class="va">p</span></code></pre></div>
-<div id="htmlwidget-d68aaee252674c3ba019" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d68aaee252674c3ba019">{"x":{
+<div id="htmlwidget-e52f7c086bba418bb0c6" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e52f7c086bba418bb0c6">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -3884,7 +3884,7 @@
     "layer": [
       {
         "selection": {
-          "idfc191882": {
+          "ide749130d": {
             "type": "interval",
             "encodings": ["x", "y"],
             "init": null,
@@ -3925,7 +3925,7 @@
           },
           "color": {
             "condition": {
-              "selection": "idfc191882",
+              "selection": "ide749130d",
               "field": "species",
               "type": "nominal",
               "sort": ["Adelie", "Chinstrap", "Gentoo"],
@@ -4022,8 +4022,8 @@
     selection <span class="op">=</span> <span class="va">selection</span><span class="op">)</span>
 <span class="co">#&gt; Removed 2 rows containing missing values.</span>
 <span class="va">p_right</span></code></pre></div>
-<div id="htmlwidget-d02e672b5131646235df" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d02e672b5131646235df">{"x":{
+<div id="htmlwidget-a1b84928b04b98ca46bd" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a1b84928b04b98ca46bd">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
@@ -7474,7 +7474,7 @@
           }
         },
         "selection": {
-          "idfc191882": {
+          "ide749130d": {
             "type": "interval",
             "encodings": ["x", "y"],
             "init": null,
@@ -7498,7 +7498,7 @@
         "transform": [
           {
             "filter": {
-              "selection": "idfc191882"
+              "selection": "ide749130d"
             }
           }
         ],
@@ -7536,7 +7536,7 @@
         "transform": [
           {
             "filter": {
-              "selection": "idfc191882"
+              "selection": "ide749130d"
             }
           }
         ],
@@ -7628,13 +7628,12 @@
   }
 },"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/hconcat.html">hconcat</a></span><span class="op">(</span><span class="va">p</span>, <span class="va">p_right</span><span class="op">)</span></code></pre></div>
-<div id="htmlwidget-6ef9a777477e51700451" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6ef9a777477e51700451">{"x":{
+<div id="htmlwidget-d599bcd6ef6e7573ea77" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d599bcd6ef6e7573ea77">{"x":{
   "chart_spec": {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "hconcat": [
       {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": {
           "values": [
             {
@@ -11398,7 +11397,7 @@
         "layer": [
           {
             "selection": {
-              "idfc191882": {
+              "ide749130d": {
                 "type": "interval",
                 "encodings": ["x", "y"],
                 "init": null,
@@ -11439,7 +11438,7 @@
               },
               "color": {
                 "condition": {
-                  "selection": "idfc191882",
+                  "selection": "ide749130d",
                   "field": "species",
                   "type": "nominal",
                   "sort": ["Adelie", "Chinstrap", "Gentoo"],
@@ -11452,77 +11451,9 @@
               }
             }
           }
-        ],
-        "config": {
-          "view": {
-            "fill": "#e5e5e5"
-          },
-          "facet": {
-            "spacing": 5
-          },
-          "headerRow": {
-            "labelOrient": "right",
-            "titleOrient": "right"
-          },
-          "circle": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "point": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "line": {
-            "color": "#000"
-          },
-          "trail": {
-            "color": "#000"
-          },
-          "tick": {
-            "color": "#000"
-          },
-          "geoshape": {
-            "color": "#000"
-          },
-          "square": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "rect": {
-            "fill": "#595959"
-          },
-          "area": {
-            "fill": "#595959"
-          },
-          "bar": {
-            "fill": "#595959"
-          },
-          "axis": {
-            "domain": false,
-            "domainColor": "#FFFFFFF",
-            "grid": true,
-            "gridColor": "#FFFFFF",
-            "gridOpacity": 1,
-            "labelColor": "#7F7F7F",
-            "labelPadding": 4,
-            "tickColor": "#7F7F7F",
-            "tickSize": 5.67
-          },
-          "axisX": [],
-          "axisY": [],
-          "header": [],
-          "legend": {
-            "orient": "right",
-            "padding": 1
-          },
-          "title": []
-        }
+        ]
       },
       {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": {
           "values": [
             {
@@ -14971,7 +14902,7 @@
               }
             },
             "selection": {
-              "idfc191882": {
+              "ide749130d": {
                 "type": "interval",
                 "encodings": ["x", "y"],
                 "init": null,
@@ -14995,7 +14926,7 @@
             "transform": [
               {
                 "filter": {
-                  "selection": "idfc191882"
+                  "selection": "ide749130d"
                 }
               }
             ],
@@ -15033,7 +14964,7 @@
             "transform": [
               {
                 "filter": {
-                  "selection": "idfc191882"
+                  "selection": "ide749130d"
                 }
               }
             ],
@@ -15049,74 +14980,7 @@
               }
             }
           }
-        ],
-        "config": {
-          "view": {
-            "fill": "#e5e5e5"
-          },
-          "facet": {
-            "spacing": 5
-          },
-          "headerRow": {
-            "labelOrient": "right",
-            "titleOrient": "right"
-          },
-          "circle": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "point": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "line": {
-            "color": "#000"
-          },
-          "trail": {
-            "color": "#000"
-          },
-          "tick": {
-            "color": "#000"
-          },
-          "geoshape": {
-            "color": "#000"
-          },
-          "square": {
-            "color": "#000",
-            "opacity": 1,
-            "size": 60
-          },
-          "rect": {
-            "fill": "#595959"
-          },
-          "area": {
-            "fill": "#595959"
-          },
-          "bar": {
-            "fill": "#595959"
-          },
-          "axis": {
-            "domain": false,
-            "domainColor": "#FFFFFFF",
-            "grid": true,
-            "gridColor": "#FFFFFF",
-            "gridOpacity": 1,
-            "labelColor": "#7F7F7F",
-            "labelPadding": 4,
-            "tickColor": "#7F7F7F",
-            "tickSize": 5.67
-          },
-          "axisX": [],
-          "axisY": [],
-          "header": [],
-          "legend": {
-            "orient": "right",
-            "padding": 1
-          },
-          "title": []
-        }
+        ]
       }
     ],
     "config": {
