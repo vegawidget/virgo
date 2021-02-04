@@ -414,6 +414,8 @@ mark_mosaic <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 #' @export
 mark_blank <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   na.rm = TRUE) {
-  mark_point(v, encoding = encoding, data = data, selection = selection,
-    color = "transparent", ..., na.rm = na.rm)
+  marks <- mark_properties(color = "transparent", ...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "point", !!!marks$props))
+  vega_layer(v, layer, encoding, data, selection, na.rm)
 }
