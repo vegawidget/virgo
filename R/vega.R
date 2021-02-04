@@ -28,6 +28,9 @@ as.list.virgo <- function(x, ...) {
 
 #' @export
 as_vegaspec.virgo <- function(spec, ...) {
+  if (!has_name(spec, "layer")) {
+    spec <- mark_blank(spec)
+  }
   spec_header <- list(`$schema` = vega_schema())
   spec$data$dir <- NULL
   if (!has_name(spec, "config")) {

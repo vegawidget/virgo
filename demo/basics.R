@@ -1,6 +1,12 @@
 library(dplyr)
 
 mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg))
+
+mtcars %>%
+  vega(encoding = enc(x = wt))
+
+mtcars %>%
   mutate(cyl = factor(cyl)) %>%
   vega(encoding = enc(x = wt, y = mpg, fill = cyl, fill_opacity = gear)) %>%
   mark_point()
@@ -34,6 +40,10 @@ mtcars %>%
 
 mtcars %>%
   vega(encoding = enc(x = wt, y = mpg, tooltip = c(wt, cyl))) %>%
+  mark_point()
+
+mtcars %>%
+  vega(encoding = enc(x = wt, y = mpg, tooltip = ac({wt*cyl}))) %>%
   mark_point()
 
 mtcars %>%

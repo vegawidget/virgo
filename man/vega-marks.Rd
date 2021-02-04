@@ -24,6 +24,8 @@
 \alias{mark_bin2d}
 \alias{mark_streamgraph}
 \alias{mark_smooth}
+\alias{mark_mosaic}
+\alias{mark_blank}
 \title{Add new marks to \code{vega()} visualisation}
 \usage{
 mark_arc(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE)
@@ -191,6 +193,24 @@ mark_smooth(
   method = "lm",
   formula = y ~ x,
   bandwidth = 0.3,
+  na.rm = TRUE
+)
+
+mark_mosaic(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
+  na.rm = TRUE
+)
+
+mark_blank(
+  v,
+  encoding = NULL,
+  data = NULL,
+  selection = NULL,
+  ...,
   na.rm = TRUE
 )
 }

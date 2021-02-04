@@ -399,7 +399,8 @@ interpret_formula <- function(formula) {
 
 #' @rdname vega-marks
 #' @export
-mark_mosaic <- function(v, encoding = NULL, data = NULL, selection = NULL, ..., na.rm = TRUE) {
+mark_mosaic <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  na.rm = TRUE) {
   abort_if_not_virgo(v)
   # override data and encoding via transformation
   data <- data %||% v$data$values
@@ -407,4 +408,12 @@ mark_mosaic <- function(v, encoding = NULL, data = NULL, selection = NULL, ..., 
   encoding <- merge_encoding(c(enc(x = nx, y = ny, x2 = nx2,  y2 = ny2),
                                encoding[!names(encoding) %in% c("x", "y")]))
   mark_rect(v, encoding, data, selection, ..., na.rm = na.rm)
+}
+
+#' @rdname vega-marks
+#' @export
+mark_blank <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
+  na.rm = TRUE) {
+  mark_point(v, encoding = encoding, data = data, selection = selection,
+    color = "transparent", ..., na.rm = na.rm)
 }
