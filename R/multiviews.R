@@ -34,7 +34,7 @@ hconcat <- function(...) {
   map(lst, abort_if_not_virgo)
   lst <- map(lst, function(x) { x$encoding <- NULL; as_vegaspec(x) })
   spec <- list(hconcat = list2(!!!lst))
-  new_virgo(spec)
+  new_virgo_concat(spec)
 }
 
 #' @rdname concat
@@ -44,7 +44,11 @@ vconcat <- function(...) {
   map(lst, abort_if_not_virgo)
   lst <- map(lst, function(x) { x$encoding <- NULL; as_vegaspec(x) })
   spec <- list(vconcat = list2(!!!lst))
-  new_virgo(spec)
+  new_virgo_concat(spec)
+}
+
+new_virgo_concat <- function(spec) {
+  structure(spec, class = c("virgo_concat", "virgo"))
 }
 
 #' Resolve scale and guide for layered and multi-view displays

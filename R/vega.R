@@ -27,6 +27,24 @@ as.list.virgo <- function(x, ...) {
 }
 
 #' @export
+as.list.virgo_concat <- function(x, ...) {
+  unclass(as_vegaspec(x, ...))
+}
+
+#' @export
+as_vegaspec.virgo_concat <- function(spec, ...) {
+  spec_header <- list(`$schema` = vega_schema())
+  # vega concat can only use one config
+  config <- spec[[1]][[1]]$config
+  # clean duplicates
+  spec[[1]] <- map(spec[[1]], function(x) {x$config <- NULL; x})
+  spec[[1]] <- map(spec[[1]], function(x) {x$`$schema` <- NULL; x})
+  # vega concat can only use one config
+  spec$config <- config
+  as_vegaspec(c(spec_header, spec))
+}
+
+#' @export
 as_vegaspec.virgo <- function(spec, ...) {
   if (!has_name(spec, "layer")) {
     spec <- mark_blank(spec)

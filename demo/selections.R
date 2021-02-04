@@ -62,6 +62,7 @@ p3 <- mtcars %>%
     encoding = enc(x = disp, y = hp),
     selection = selection)
 hconcat(p1, p3)
+vconcat(hconcat(p1, p3), p2)
 
 p1 %>%
   mark_rule(
