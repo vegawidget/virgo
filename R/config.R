@@ -2,8 +2,9 @@
 #'
 #' @param v A `vega()` object.
 #' @param background A plot background.
-#' @param axix,axis_x,axis_y A named list to define axis.
+#' @param axis,axis_x,axis_y A named list to define axis.
 #' @param header,legend,title,view,facet A named list.
+#' @param ... Other parameters.
 #'
 #' @rdname vega-config
 #' @export

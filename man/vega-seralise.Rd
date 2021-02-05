@@ -10,6 +10,8 @@ vega_serialise_data(v, path = NULL)
 vega_serialize_data(v, path = NULL)
 }
 \arguments{
+\item{v}{A \code{vega()} object.}
+
 \item{path}{Directory to save inlining data to external data files.}
 }
 \description{

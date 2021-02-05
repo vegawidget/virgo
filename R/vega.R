@@ -1,7 +1,7 @@
 #' @import rlang tidyselect vctrs
-#' @importFrom vegawidget as_vegaspec vega_embed vega_schema vegawidget `%>%`
+#' @importFrom vegawidget as_vegaspec vega_embed vega_schema vegawidget
 #' @importFrom jsonlite write_json
-#' @export `%>%`
+#' @importFrom stats complete.cases lag
 
 new_virgo <- function(spec) {
   structure(spec, class = "virgo")
@@ -115,7 +115,11 @@ format.virgo <- function(x, ...) {
   format(x, ...)
 }
 
-#' @inheritParams vegawidget::knit_print.vegaspec
+#' @param spec vega spec.
+#' @param ... Options passed to knitr.
+#' @param renderer One of "svg" or "canvas".
+#' @param options Options.
+#' @rdname knit_print.vegaspec
 #' @export
 knit_print.virgo <- function(spec, ..., renderer = "canvas", options = NULL) {
   spec <- vegawidget(as_vegaspec(spec),
@@ -126,7 +130,7 @@ knit_print.virgo <- function(spec, ..., renderer = "canvas", options = NULL) {
 
 #' Modify vega title, subtitle, and description
 #'
-#' @inheritParams vega
+#' @param v A `vega()` object.
 #' @param title,subtitle,description Strings.
 #'
 #' @export
@@ -150,7 +154,7 @@ abort_if_not_virgo <- function(v) {
 
 #' Serialise data
 #'
-#' @inheritParams vega
+#' @inheritParams entitle
 #' @param path Directory to save inlining data to external data files.
 #'
 #' @rdname vega-seralise
