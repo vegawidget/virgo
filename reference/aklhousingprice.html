@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Map data variables to visual encodings — enc • virgo</title>
+<title>Auckland housing price — aklhousingprice • virgo</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Map data variables to visual encodings — enc" />
-<meta property="og:description" content="Map data variables to visual encodings" />
+<meta property="og:title" content="Auckland housing price — aklhousingprice" />
+<meta property="og:description" content="Auckland housing price" />
 
 
 
@@ -131,67 +131,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Map data variables to visual encodings</h1>
+    <h1>Auckland housing price</h1>
     
-    <div class="hidden name"><code>enc.Rd</code></div>
+    <div class="hidden name"><code>aklhousingprice.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Map data variables to visual encodings</p>
+    <p>Auckland housing price</p>
     </div>
 
-    <pre class="usage"><span class='fu'>enc</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>aklhousingprice</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x, y, ...</th>
-      <td><p>A set of name-value pairs to describe the mappings of data
-variables to visual encodings in <code><a href='vega.html'>vega()</a></code> and individual mark layers <code>mark_*()</code>.
-Use <code>NULL</code> to disable a layer encoding to inherit from its parent encodings.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A list of quosures or constants.</p>
+    <p>A tibble with 8,011 rows and 10 variables:</p><ul>
+<li><p><code>region</code>: "Auckland"</p></li>
+<li><p><code>district</code>: Auckland districts</p></li>
+<li><p><code>property_address</code>: Property address</p></li>
+<li><p><code>auction_price</code>: Auction price</p></li>
+<li><p><code>auction_dates</code>: Auction date</p></li>
+<li><p><code>bedrooms</code>: The number of bedrooms</p></li>
+<li><p><code>bathrooms</code>: The number of bathrooms</p></li>
+<li><p><code>car_parking</code>: The number of parkings</p></li>
+<li><p><code>rating_value</code>: Rating price</p></li>
+<li><p><code>rating_dates</code>: Rating dates</p></li>
+</ul>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>enc</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>mpg</span>, y <span class='op'>=</span> <span class='va'>wt</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
-#&gt; 
-#&gt; $x
-#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: </span><span style='color: #0000BB;'>^mpg</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fd1d9c87c68</span><span>
-#&gt; 
-#&gt; $y
-#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: </span><span style='color: #0000BB;'>^wt</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fd1d9c87c68</span><span>
-#&gt; </div><div class='input'><span class='fu'>enc</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='va'>cyl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
-#&gt; 
-#&gt; $color
-#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: </span><span style='color: #0000BB;'>^cyl</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fd1d9c87c68</span><span>
-#&gt; </div><div class='input'><span class='fu'>enc</span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>cyl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
-#&gt; 
-#&gt; $color
-#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: </span><span style='color: #0000BB;'>^cyl</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fd1d9c87c68</span><span>
-#&gt; </div><div class='input'><span class='fu'>enc</span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
-#&gt; 
-#&gt; $x
-#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: ^NULL
-#&gt; env:  empty
-#&gt; </div></span></pre>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p><a href='https://www.interest.co.nz'>interest.co.nz</a></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This data is scraped from the <a href='https://www.interest.co.nz'>interest.co.nz</a>
+and contains Auckland auction prices between 2018 and 2021.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
