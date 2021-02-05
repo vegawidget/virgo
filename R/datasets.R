@@ -20,3 +20,23 @@
 #'
 #' @source [Melbourne Open Data Portal](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8)
 "melbweather"
+
+#' Auckland housing price
+#'
+#' @details This data is scraped from the [interest.co.nz](https://www.interest.co.nz)
+#' and contains Auckland auction prices between 2018 and 2021.
+#'
+#' @format A tibble with 8,011 rows and 10 variables:
+#' * `region`: "Auckland"
+#' * `district`: Auckland districts
+#' * `property_address`: Property address
+#' * `auction_price`: Auction price
+#' * `auction_dates`: Auction date
+#' * `bedrooms`: The number of bedrooms
+#' * `bathrooms`: The number of bathrooms
+#' * `car_parking`: The number of parkings
+#' * `rating_value`: Rating price
+#' * `rating_dates`: Rating dates
+#'
+#' @source [interest.co.nz](https://www.interest.co.nz)
+"aklhousingprice"
