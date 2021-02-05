@@ -50,6 +50,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   data <- eval_encoding_mask(data, fields, names(encoding))
   # missing data
   pos_fields <- names(fields[vec_in(names(encoding), c("x", "y", "x2", "y2"))])
+  pos_fields <- vec_slice(pos_fields, !vec_in(pos_fields, ""))
   nna_lgl <- complete.cases(data[pos_fields])
   n_na <- vec_size(data) - sum(nna_lgl)
   if (na.rm) {
