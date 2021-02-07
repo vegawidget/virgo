@@ -14,10 +14,10 @@ new_virgo <- function(spec) {
 #' @param width,height Data plotting width and height.
 #'
 #' @export
-vega <- function(data = NULL, encoding = enc()) {
+vega <- function(data = NULL, encoding = enc(), width = 300, height = 300) {
   spec <- list(
     data = list(values = data), encoding = encoding,
-    width = 300, height = 300)
+    width = width, height = height)
   new_virgo(spec)
 }
 
@@ -193,31 +193,4 @@ write_out_to <- function(layer, path) {
   layer$data$values <- NULL
   layer$data$url <- basename(path)
   layer
-}
-
-#' Set vega canvas size
-#'
-#' @inheritParams mark_point
-#' @param width,height Data plotting width and height.
-#'
-#' @rdname vega-size
-#' @export
-vega_set_size <- function(v, width = NULL, height = NULL) {
-  # TODO: S3 method for virgo_concat, and takes a vector of width
-  abort_if_not_virgo(v)
-  v$width <- width %||% v$width
-  v$height <- height %||% v$height
-  v
-}
-
-#' @rdname vega-size
-#' @export
-vega_set_width <- function(v, width = NULL) {
-  vega_set_size(v, width = width)
-}
-
-#' @rdname vega-size
-#' @export
-vega_set_height <- function(v, height = NULL) {
-  vega_set_size(v, height = height)
 }
