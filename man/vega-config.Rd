@@ -26,9 +26,11 @@ config_ggplot(v)
 
 \item{background}{A plot background.}
 
+\item{axis, axis_x, axis_y}{A named list to define axis.}
+
 \item{header, legend, title, view, facet}{A named list.}
 
-\item{axix, axis_x, axis_y}{A named list to define axis.}
+\item{...}{Other parameters.}
 }
 \description{
 Vega theme configurations

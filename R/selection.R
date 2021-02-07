@@ -162,7 +162,7 @@ select_interval <- function(encodings = c("x", "y"), init = NULL,
 #' @export
 select_legend <- function(fields, on = "click", clear = "dblclick") {
   # vega only supports legend bindings for one field or channel
-  field <- as.list(simple_select(!!enexpr(field)))
+  fields <- as.list(simple_select(!!enexpr(fields)))
   stopifnot(has_length(fields, 1))
   new_virgo_selection(list2(!!rand_id() := list(
     type = "multi", fields = fields, bind = "legend")))

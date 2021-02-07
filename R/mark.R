@@ -50,6 +50,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   data <- eval_encoding_mask(data, fields, names(encoding))
   # missing data
   pos_fields <- names(fields[vec_in(names(encoding), c("x", "y", "x2", "y2"))])
+  pos_fields <- vec_slice(pos_fields, !vec_in(pos_fields, ""))
   nna_lgl <- complete.cases(data[pos_fields])
   n_na <- vec_size(data) - sum(nna_lgl)
   if (na.rm) {
@@ -414,6 +415,8 @@ mark_mosaic <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
 #' @export
 mark_blank <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   na.rm = TRUE) {
-  mark_point(v, encoding = encoding, data = data, selection = selection,
-    color = "transparent", ..., na.rm = na.rm)
+  marks <- mark_properties(color = "transparent", ...)
+  v$params <- marks$params
+  layer <- list(mark = list2(type = "point", !!!marks$props))
+  vega_layer(v, layer, encoding, data, selection, na.rm)
 }

@@ -7,7 +7,6 @@
 \alias{vg_window_count}
 \alias{vg_cumsum}
 \alias{vg_cummean}
-\alias{vg_ranking}
 \alias{vg_row_number}
 \alias{vg_rank}
 \alias{vg_dense_rank}
@@ -29,8 +28,6 @@ vg_window_count(x, frame = list(NULL, 0), sort = NULL)
 vg_cumsum(x, sort = NULL)
 
 vg_cummean(x, sort = NULL)
-
-vg_ranking(x, n = 1, sort = NULL, op)
 
 vg_row_number(x, sort = NULL)
 
@@ -57,6 +54,8 @@ proceding or following the current position.}
 
 \item{sort}{A variable for sorting data within a window in ascending order.
 \code{-} before the variable gives descending order. \code{NULL} disables sorting.}
+
+\item{n}{The number of elements.}
 }
 \description{
 Interactive window operations

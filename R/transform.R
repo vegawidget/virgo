@@ -195,8 +195,6 @@ vg_cummean <- function(x, sort = NULL) {
   vg_window_mean(x, sort = !!enexpr(sort))
 }
 
-#' @rdname vg-window
-#' @export
 vg_ranking <- function(x, n = 1, sort = NULL, op) {
   sort <- simple_sort(!!enexpr(sort))
   if (is.null(sort)) {
@@ -237,6 +235,8 @@ vg_cume_dist <- function(x, sort = NULL) {
   vg_ranking(x, n = 0, sort = !!enexpr(sort), "cume_dist")
 }
 
+#' @param n The number of elements.
+#'
 #' @rdname vg-window
 #' @export
 vg_ntile <- function(x, n = 1, sort = NULL) {

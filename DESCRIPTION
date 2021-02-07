@@ -26,7 +26,8 @@ Imports:
     scales,
     tidyselect,
     vctrs,
-    vegawidget (>= 0.3.2)
+    vegawidget (>= 0.3.2),
+    stats
 Suggests: 
     covr,
     dplyr,
