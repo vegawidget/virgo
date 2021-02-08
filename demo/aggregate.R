@@ -62,12 +62,19 @@ population %>%
   mark_bar(enc(x = ordered(age), y = vg_count(age)))
 
 
-# mosaic
+# mosaic currently broken
 cars <-
   jsonlite::fromJSON("https://vega.github.io/vega-editor/app/data/cars.json")
 
-cars %>%
+
+
+selection <- select_interval()
+
+hist <- vega(cars, enc(x = Miles_per_Gallon, color = Origin)) %>%
+  mark_histogram(selection = I(selection))
+
+mosaic <- cars %>%
   vega(enc(x= Origin, y = Cylinders)) %>%
-  mark_mosaic(enc(color = Origin, opacity = Cylinders))
+  mark_mosaic(enc(color = Origin), selection = selection)
 
-
+hconcat(hist, mosaic)
