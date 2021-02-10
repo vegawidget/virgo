@@ -68,7 +68,7 @@ cars <-
 
 
 
-selection <- select_interval()
+selection <- select_interval(encodings = "x")
 
 hist <- vega(cars, enc(x = Miles_per_Gallon, color = Origin)) %>%
   mark_histogram(selection = I(selection))
@@ -78,3 +78,21 @@ mosaic <- cars %>%
   mark_mosaic(enc(color = Origin), selection = selection)
 
 hconcat(hist, mosaic)
+
+# this doesn't work
+tips <- readr::read_csv("http://ggobi.org/book/data/tips.csv")
+
+paintbrush <- select_multi()
+
+amounts <- vega(tips, enc(x = tip)) %>%
+  mark_histogram(
+    enc(color = encode_if(paintbrush, "orange", "black")),
+    bin = list(step = 0.1)
+  )
+
+mosaic <- vega(tips, enc(x = smoker, y = sex)) %>%
+  mark_mosaic(
+    selection = paintbrush
+  )
+
+hconcat(amounts, mosaic)

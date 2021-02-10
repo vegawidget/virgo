@@ -402,13 +402,37 @@ interpret_formula <- function(formula) {
 #' @export
 mark_mosaic <- function(v, encoding = NULL, data = NULL, selection = NULL, ...,
   na.rm = TRUE) {
-  abort_if_not_virgo(v)
-  # override data and encoding via transformation
-  data <- data %||% v$data$values
-  data <- transform_mosaic(data, merge_encoding(c(v$encoding, encoding)))
-  encoding <- merge_encoding(c(enc(x = nx, y = ny, x2 = nx2,  y2 = ny2),
-                               encoding[!names(encoding) %in% c("x", "y")]))
-  mark_rect(v, encoding, data, selection, ..., na.rm = na.rm)
+  v <- mark_rect(v, encoding, data, selection, ..., na.rm = na.rm)
+  last <- nlayer(v)
+  enc <- v$layer[[last]]$encoding
+
+  stack <- vg_mosaic(enc)
+
+  trans <- vec_c(!!!v$layer[[last]]$transform)
+  if (is.null(trans)) {
+    v$layer[[last]]$transform <- stack
+  } else {
+    v$layer[[last]]$transform <- c(list(trans), stack)
+  }
+
+  # override encodings
+  v$layer[[last]]$encoding$x <- list(
+    field = "nx",
+    type = "quantitative",
+    axis = NA,
+    scale = list(padding = 0.2)
+  )
+
+  v$layer[[last]]$encoding$y <- list(
+    field = "ny",
+    type = "quantitative",
+    axis = NA,
+    scale = list(padding = 0.2)
+  )
+
+  v$layer[[last]]$encoding$x2 <- list(field = "nx2")
+  v$layer[[last]]$encoding$y2 <- list(field = "ny2")
+  v
 }
 
 #' @rdname vega-marks

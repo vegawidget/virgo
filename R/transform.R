@@ -274,3 +274,70 @@ vg_bin <- function(x, base = 10, divide = c(5, 2), extent = NULL, maxbins = 10,
     nice = nice, step = step)
   new_virgo_op(bin, class = "virgo_bin")
 }
+
+# mosaic transform, could probably be simplified
+vg_mosaic <- function(enc) {
+  # the somewhat complex mosaic transform
+  list(
+    list(
+      aggregate = list(list(op = "count", as = "stack_count_x")),
+      groupby = list(enc$x$field, enc$y$field)
+    ),
+    list(
+      stack = "stack_count_x",
+      groupby = list(),
+      as = list("stack_count_x_left", "stack_count_x_right"),
+      offset = "normalize",
+      sort = list(list(field = enc$x$field, order = "ascending"))
+    ),
+    list(
+      window = list(
+        list(op = "min", field = "stack_count_x_left", as = "x"),
+        list(op = "max", field = "stack_count_x_right", as = "x2"),
+        list(op = "dense_rank", as = "rank_y"),
+        list(op = "distinct", field = enc$y$field, as = "distinct_y")
+      ),
+      groupby = list(enc$x$field),
+      frame = c(NA, NA),
+      sort = list(list(field = enc$y$field, order = "ascending"))
+    ),
+    list(
+      window = list(
+        list(op = "dense_rank", as = "rank_x")
+      ),
+      frame = c(NA, NA),
+      sort = list(list(field = enc$x$field, order = "ascending"))
+    ),
+    list(
+      stack = "stack_count_x",
+      groupby = list(enc$x$field),
+      as = list("y", "y2"),
+      offset = "normalize",
+      sort = list(list(field = enc$y$field, order = "ascending"))
+    ),
+    list(
+      calculate = "datum.x + (datum.rank_x - 1) * 0.01",
+      as = "nx"
+    ),
+    list(
+      calculate = "datum.x2 + (datum.rank_x - 1) *  0.01",
+      as = "nx2"
+    ),
+    list(
+      calculate = "datum.y + (datum.rank_y - 1) * datum.distinct_y * 0.01 / max(datum.distinct_y)",
+      as = "ny"
+    ),
+    list(
+      calculate = "datum.y2 + (datum.rank_y - 1) * datum.distinct_y * 0.01 / max(datum.distinct_y)",
+      as = "ny2"
+    ),
+    list(
+      calculate = "(datum.nx + datum.nx2) / 2",
+      as = "xc"
+    ),
+    list(
+      calculate = "(datum.ny + datum.ny2) / 2",
+      as = "yc"
+    )
+  )
+}
