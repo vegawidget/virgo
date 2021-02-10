@@ -87,7 +87,7 @@ paintbrush <- select_multi()
 amounts <- vega(tips, enc(x = tip)) %>%
   mark_histogram(
     enc(color = encode_if(paintbrush, "orange", "black")),
-    bin = list(step = 0.1)
+    bin = list(step = 0.1, extent = c(0,10))
   )
 
 mosaic <- vega(tips, enc(x = smoker, y = sex)) %>%
