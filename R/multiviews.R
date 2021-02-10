@@ -54,7 +54,7 @@ new_virgo_concat <- function(spec) {
 #' Resolve scale and guide for layered and multi-view displays
 #'
 #' @inheritParams facet_views
-#' @param scale A named list of every channel to define either "shared" or 
+#' @param scale A named list of every channel to define either "shared" or
 #' "independent".
 #' @param axis A named list of positional channels like `x` and `y`.
 #' @param legend A named list of non-positional channels, such as `color`/`colour`,

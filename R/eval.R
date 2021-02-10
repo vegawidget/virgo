@@ -94,7 +94,7 @@ as_field_rhs <- function(quo) {
   } else {
     as_label(quo)
   }
-  
+
 }
 
 as_field <- function(quo) {
@@ -170,6 +170,18 @@ encoding_spec.virgo_timeunit <- function(x, field, encoding_name, ...) {
   res
 }
 
+encoding_spec.virgo_combinator <- function(x, field, encoding_name, ...) {
+  data <- dots_list(...)$data
+  cols <- x(data)
+  encoders <- map(names(cols),
+               function(x) encoding_spec(data[[x]], sym(x), encoding_name))
+
+  types <- reduce(map_chr(encoders, function(x) x$type), union)
+  stopifnot(length(types) == 1)
+  res <- list2(field = "repeat", type = types)
+  res
+}
+
 encoding_spec.virgo_bin <- function(x, field, encoding_name, ...) {
   res <- list2(field = as_field(field), bin = unclass(x))
   if (any(vec_in(c("x", "x2", "y", "y2"), encoding_name))) {
@@ -182,12 +194,19 @@ encoding_spec.virgo_window <- function(x, field, ...) {
   abort("`encoding` specs don't know how to handle `vg_window()`.")
 }
 
+ac <- function(...) {
+  selector <- function(.data) {
+    tidyselect::eval_select(expr(c(...)), .data)
+  }
+  structure(.Data = selector, class = c("virgo_combinator", "function"))
+}
+
 virgo_encoding_env <- function() {
   ops <- c(virgo_op(), "encode_if")
   fns <- map(ops, function(op) function(x, ...) {
     if (is_missing(x) || is_virgo_selection(x)) { # vg_count() with missing arg
       NULL
-    } else { 
+    } else {
       x
     }
   })
