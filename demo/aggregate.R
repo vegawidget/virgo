@@ -82,7 +82,7 @@ hconcat(hist, mosaic)
 # this doesn't work
 tips <- readr::read_csv("http://ggobi.org/book/data/tips.csv")
 
-paintbrush <- select_multi()
+paintbrush <- select_interval()
 
 amounts <- vega(tips, enc(x = tip)) %>%
   mark_histogram(
