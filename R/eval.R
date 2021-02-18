@@ -83,6 +83,8 @@ as_field_rhs <- function(quo) {
       fn <- call_name(quo)
       if (vec_in(fn, "vg_count")) {
         ""
+      } else if  (vec_in(fn, "ac")){
+        ""
       } else if (vec_in(fn, virgo_op())) {
         as_label(call_args(quo)[[1]])
       } else {
@@ -177,8 +179,11 @@ encoding_spec.virgo_combinator <- function(x, field, encoding_name, ...) {
                function(x) encoding_spec(data[[x]], sym(x), encoding_name))
 
   types <- reduce(map_chr(encoders, function(x) x$type), union)
-  stopifnot(length(types) == 1)
-  res <- list2(field = "repeat", type = types)
+  stopifnot(length(types) == 1,
+            encoding_name %in% c("x", "y"))
+
+  where <- c(x = "column", y = "row")
+  res <- list2(field = list("repeat" = where[encoding_name]), type = types)
   res
 }
 
@@ -198,6 +203,7 @@ ac <- function(...) {
   selector <- function(.data) {
     tidyselect::eval_select(expr(c(...)), .data)
   }
+
   structure(.Data = selector, class = c("virgo_combinator", "function"))
 }
 
@@ -206,7 +212,8 @@ virgo_encoding_env <- function() {
   fns <- map(ops, function(op) function(x, ...) {
     if (is_missing(x) || is_virgo_selection(x)) { # vg_count() with missing arg
       NULL
-    } else {
+    }
+    else {
       x
     }
   })
@@ -222,10 +229,10 @@ eval_encoding_mask <- function(data, quo, encoding_name) {
   names <- names(quo)
   data_mask <- new_virgo_mask(data)
   for (i in seq_along(names)) {
-    is_tooltip <- vec_in(encoding_name[i], "tooltip")
-    if (!is_tooltip) {
-      data[[names[i]]] <- eval_tidy(quo[[i]], data = data_mask)
+    if (quo_is_call(quo[[i]], "ac")) {
+      next
     }
+    data[[names[i]]] <- eval_tidy(quo[[i]], data = data_mask)
   }
   data
 }
