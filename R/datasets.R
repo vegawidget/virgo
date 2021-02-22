@@ -30,6 +30,8 @@
 #' * `region`: "Auckland"
 #' * `district`: Auckland districts
 #' * `property_address`: Property address
+#' * `lon`: Latitude of the property
+#' * `lat`: Longitude of the property
 #' * `auction_price`: Auction price
 #' * `auction_dates`: Auction date
 #' * `bedrooms`: The number of bedrooms

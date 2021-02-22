@@ -10,6 +10,8 @@ A tibble with 8,011 rows and 10 variables:
 \item \code{region}: "Auckland"
 \item \code{district}: Auckland districts
 \item \code{property_address}: Property address
+\item \code{lon}: Latitude of the property
+\item \code{lat}: Longitude of the property
 \item \code{auction_price}: Auction price
 \item \code{auction_dates}: Auction date
 \item \code{bedrooms}: The number of bedrooms
