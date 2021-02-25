@@ -97,8 +97,8 @@ as_vegaspec.virgo <- function(spec, ...) {
     spec$layer <- NULL
   }
 
+  # ac has been used
   if (has_name(spec, "repeat")) {
-    # repeater causes there to be a spec object
     spec_header$`repeat` <- spec$`repeat`
     spec_header$config <- spec$config
     pos <- which(names(spec) %in% c("repeat", "config"))

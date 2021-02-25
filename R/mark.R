@@ -68,7 +68,7 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
   # check for presence of repeat
   repeat_spec <- eval_repeater(data, fields, names(encoding))
 
-  if (!is.null(repeat_spec)) {
+  if (length(repeat_spec) > 0) {
     v$`repeat` <- repeat_spec
   }
 
