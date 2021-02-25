@@ -96,6 +96,15 @@ as_vegaspec.virgo <- function(spec, ...) {
     spec$spec$height <- spec$height / nrows
     spec$layer <- NULL
   }
+
+  if (has_name(spec, "repeat")) {
+    # repeater causes there to be a spec object
+    spec_header$`repeat` <- spec$`repeat`
+    spec_header$config <- spec$config
+    pos <- which(names(spec) %in% c("repeat", "config"))
+    spec <- list(spec = spec[-pos])
+  }
+
   as_vegaspec(c(spec_header, spec))
 }
 

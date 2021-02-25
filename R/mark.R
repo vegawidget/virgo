@@ -65,6 +65,13 @@ vega_layer <- function(v, layer = list(), encoding = NULL, data = NULL,
     layer <- c(list(data = list(values = data)), layer)
   }
 
+  # check for presence of repeat
+  repeat_spec <- eval_repeater(data, fields, names(encoding))
+
+  if (!is.null(repeat_spec)) {
+    v$`repeat` <- repeat_spec
+  }
+
   spec <- build_layer(v, add_layer(v$layer, layer))
   new_virgo(spec)
 }

@@ -179,12 +179,18 @@ encoding_spec.virgo_combinator <- function(x, field, encoding_name, ...) {
                function(x) encoding_spec(data[[x]], sym(x), encoding_name))
 
   types <- reduce(map_chr(encoders, function(x) x$type), union)
-  stopifnot(length(types) == 1,
-            encoding_name %in% c("x", "y"))
 
+  if (length(types) != 1L) {
+    abort("Repeated fields must evaluate to same type")
+  }
+
+  if (!encoding_name %in% c("x", "y")) {
+    abort("Repeated fields must be encoded to x or y")
+  }
   where <- c(x = "column", y = "row")
-  res <- list2(field = list("repeat" = where[encoding_name]), type = types)
-  res
+  list2(
+    field = list("repeat" = unname(where[encoding_name]), type = types)
+  )
 }
 
 encoding_spec.virgo_bin <- function(x, field, encoding_name, ...) {
@@ -235,4 +241,21 @@ eval_encoding_mask <- function(data, quo, encoding_name) {
     data[[names[i]]] <- eval_tidy(quo[[i]], data = data_mask)
   }
   data
+}
+
+
+eval_repeater <- function(data, quo, encoding_name) {
+  res <- list()
+  names <- names(quo)
+  data_mask <- new_virgo_mask(data)
+  where <- c("x" = "column", "y" = "row")
+  for (i in seq_along(names)) {
+    if (quo_is_call(quo[[i]], "ac")) {
+
+      .selector <- eval_tidy(quo[[i]], data = data_mask)
+      cols <- .selector(data)
+      res[[unname(where[encoding_name[[i]]])]] <- names(cols)
+    }
+  }
+  res
 }
