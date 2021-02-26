@@ -32,3 +32,17 @@ mtcars %>%
 mtcars %>%
   vega(enc(x = ac(c(mpg, wt)), y = ac(c(wt, disp, mpg)))) %>%
   mark_point()
+
+selection <- select_interval()
+
+mtcars %>%
+  vega(enc(x = ac(c(mpg, wt)), y = ac(c(wt, disp, mpg)))) %>%
+  mark_point(selection = I(selection))
+
+mtcars %>%
+  vega(enc(x = ac(c(mpg, wt)), y = ac(c(wt, disp, mpg)))) %>%
+  mark_point(enc(color = encode_if(selection, factor(cyl), "black")))
+
+
+
+
