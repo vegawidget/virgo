@@ -191,7 +191,7 @@ encoding_spec.virgo_combinator <- function(x, field, encoding_name, ...) {
   list2(
     field = list("repeat" = unname(where[encoding_name])),
     type = types,
-    scale = list(zero = FALSE),
+    scale = list(zero = FALSE, padding = 10),
     axis = list(tickCount = 5)
   )
 }

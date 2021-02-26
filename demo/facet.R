@@ -24,3 +24,11 @@ mtcars %>%
   vega(encoding = enc(x = wt, y = mpg)) %>%
   mark_point() %>%
   facet_views(row = cyl, column = gear)
+
+mtcars %>%
+  vega(enc(x = ac(c(1,3)))) %>%
+  mark_histogram(enc(color = factor(cyl)))
+
+mtcars %>%
+  vega(enc(x = ac(c(mpg, wt)), y = ac(c(wt, disp, mpg)))) %>%
+  mark_point()
