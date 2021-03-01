@@ -154,6 +154,7 @@ into exploratory data analysis. If you have feedback we would love to hear it!
 
 * [{ggvis}](http://ggvis.rstudio.com) 
 * [{vegalite}](https://github.com/hrbrmstr/vegalite)
+* [{g2r}](https://g2r.opifex.org)
 
 ## Acknowledgements
 
