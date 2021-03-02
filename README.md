@@ -73,7 +73,6 @@ p <- penguins %>%
       y = bill_depth_mm
     )
   )
-#> Removed 2 rows containing missing values.
 p
 ```
 
@@ -159,6 +158,7 @@ it!
 -   [{ggvis}](http://ggvis.rstudio.com)
 -   [{vegalite}](https://github.com/hrbrmstr/vegalite)
 -   [{g2r}](https://g2r.opifex.org)
+-   [{ggiraph}](https://davidgohel.github.io/ggiraph/)
 
 ## Acknowledgements
 
