@@ -6,8 +6,9 @@ articles:
   gallery/gapminder-model-drilldown: gapminder-model-drilldown.html
   gallery/index: index.html
   gallery/linked-highlighting: linked-highlighting.html
+  gallery/minimap: minimap.html
   selections: selections.html
   transition: transition.html
   virgo: virgo.html
-last_built: 2021-03-02T05:49Z
+last_built: 2021-03-03T04:39Z
 
