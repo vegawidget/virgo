@@ -1,0 +1,50 @@
+---
+title: "Bar Chart with a Minimap"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This example has been adapted from [Vega-Lite](https://vega.github.io/vega-lite/examples/bar_count_minimap.html).
+
+
+```{r brushed-bar, eval = FALSE}
+library(dplyr)
+library(jsonlite)
+library(virgo)
+
+selection <- select_interval(encodings = "y")
+
+cars <- fromJSON("https://vega.github.io/vega-editor/app/data/cars.json") %>% 
+  count(Name) %>% 
+  mutate(Name = reorder(Name, -n))
+
+minimap <- cars %>% 
+  vega(width = 50, height = 200) %>% 
+  mark_bar(
+    enc(
+      x = n, 
+      y = Name, 
+    ),
+    selection = I(selection),
+  ) %>% 
+  scale_x(title = "") %>% 
+  scale_y(title = "")
+
+bar <- cars %>% 
+  vega() %>% 
+    mark_bar(
+    enc(
+      x = n, 
+      y = Name, 
+    ),
+    selection = selection,
+  ) %>% 
+  scale_y(title = "")
+
+hconcat(bar, minimap)
+```
