@@ -32,11 +32,10 @@ minimap <- cars %>%
     ),
     selection = I(selection),
   ) %>% 
-  scale_x(title = "") %>% 
-  scale_y(title = "")
+  config(axis = list(NULL))
 
 bar <- cars %>% 
-  vega() %>% 
+  vega(height = 800) %>% 
     mark_bar(
     enc(
       x = n, 
@@ -44,7 +43,8 @@ bar <- cars %>%
     ),
     selection = selection,
   ) %>% 
-  scale_y(title = "")
+  scale_x(domain = c(0,6)) %>% 
+  scale_y(title = "Count", orient = "top")
 
 hconcat(bar, minimap)
 ```
