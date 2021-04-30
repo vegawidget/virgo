@@ -86,7 +86,8 @@
 
       
 
-      </header><script src="minimap_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="minimap_files/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="minimap_files/htmlwidgets-1.5.3/htmlwidgets.js"></script><script src="minimap_files/vega-5.17.0/vega.min.js"></script><script src="minimap_files/vega-lite-4.17.0/vega-lite.min.js"></script><link href="minimap_files/vega-embed-6.12.2/vega-embed.css" rel="stylesheet">
+<script src="minimap_files/vega-embed-6.12.2/vega-embed.js"></script><script src="minimap_files/vegawidget-binding-0.3.2/vegawidget.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Bar Chart with a Minimap</h1>
@@ -100,8 +101,17 @@
     
     
 <p>This example has been adapted from <a href="https://vega.github.io/vega-lite/examples/bar_count_minimap.html">Vega-Lite</a>.</p>
+<p>Brush on the right-hand side to zoom in on the bar chart on the left.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805">jsonlite</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">virgo</span><span class="op">)</span>
 
@@ -120,10 +130,11 @@
     <span class="op">)</span>,
     selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">selection</span><span class="op">)</span>,
   <span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/config.html">config</a></span><span class="op">(</span>axis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../../reference/scale_x.html">scale_y</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../../reference/scale_x.html">scale_x</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="va">bar</span> <span class="op">&lt;-</span> <span class="va">cars</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/vega.html">vega</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">800</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../../reference/vega.html">vega</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">800</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../reference/mark_arc.html">mark_bar</a></span><span class="op">(</span>
     <span class="fu"><a href="../../reference/enc.html">enc</a></span><span class="op">(</span>
       x <span class="op">=</span> <span class="va">n</span>, 
@@ -131,11 +142,2712 @@
     <span class="op">)</span>,
     selection <span class="op">=</span> <span class="va">selection</span>,
   <span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/scale_x.html">scale_x</a></span><span class="op">(</span>domain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../../reference/scale_x.html">scale_y</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Count"</span>, orient <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>
+  <span class="fu"><a href="../../reference/scale_x.html">scale_x</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Count"</span>, domain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">6</span><span class="op">)</span>, orient <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../../reference/scale_x.html">scale_y</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="fu"><a href="../../reference/hconcat.html">hconcat</a></span><span class="op">(</span><span class="va">bar</span>, <span class="va">minimap</span><span class="op">)</span></code></pre></div>
-  </div>
+<div id="htmlwidget-5a616c60a10ec26e2bb4" style="width:auto;height:auto;" class="vegawidget html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5a616c60a10ec26e2bb4">{"x":{
+  "chart_spec": {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "hconcat": [
+      {
+        "data": {
+          "values": [
+            {
+              "Name": "amc ambassador brougham",
+              "n": 1
+            },
+            {
+              "Name": "amc ambassador dpl",
+              "n": 1
+            },
+            {
+              "Name": "amc ambassador sst",
+              "n": 1
+            },
+            {
+              "Name": "amc concord",
+              "n": 2
+            },
+            {
+              "Name": "amc concord d/l",
+              "n": 1
+            },
+            {
+              "Name": "amc concord dl",
+              "n": 1
+            },
+            {
+              "Name": "amc concord dl 6",
+              "n": 1
+            },
+            {
+              "Name": "amc gremlin",
+              "n": 4
+            },
+            {
+              "Name": "amc hornet",
+              "n": 4
+            },
+            {
+              "Name": "amc hornet sportabout (sw)",
+              "n": 1
+            },
+            {
+              "Name": "amc matador",
+              "n": 5
+            },
+            {
+              "Name": "amc matador (sw)",
+              "n": 2
+            },
+            {
+              "Name": "amc pacer",
+              "n": 1
+            },
+            {
+              "Name": "amc pacer d/l",
+              "n": 1
+            },
+            {
+              "Name": "amc rebel sst",
+              "n": 1
+            },
+            {
+              "Name": "amc rebel sst (sw)",
+              "n": 1
+            },
+            {
+              "Name": "amc spirit dl",
+              "n": 1
+            },
+            {
+              "Name": "audi 100 ls",
+              "n": 1
+            },
+            {
+              "Name": "audi 100ls",
+              "n": 2
+            },
+            {
+              "Name": "audi 4000",
+              "n": 1
+            },
+            {
+              "Name": "audi 5000",
+              "n": 1
+            },
+            {
+              "Name": "audi 5000s (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "audi fox",
+              "n": 1
+            },
+            {
+              "Name": "bmw 2002",
+              "n": 1
+            },
+            {
+              "Name": "bmw 320i",
+              "n": 1
+            },
+            {
+              "Name": "buick century",
+              "n": 2
+            },
+            {
+              "Name": "buick century 350",
+              "n": 1
+            },
+            {
+              "Name": "buick century limited",
+              "n": 1
+            },
+            {
+              "Name": "buick century luxus (sw)",
+              "n": 1
+            },
+            {
+              "Name": "buick century special",
+              "n": 1
+            },
+            {
+              "Name": "buick electra 225 custom",
+              "n": 1
+            },
+            {
+              "Name": "buick estate wagon (sw)",
+              "n": 2
+            },
+            {
+              "Name": "buick lesabre custom",
+              "n": 1
+            },
+            {
+              "Name": "buick opel isuzu deluxe",
+              "n": 1
+            },
+            {
+              "Name": "buick regal sport coupe (turbo)",
+              "n": 1
+            },
+            {
+              "Name": "buick skyhawk",
+              "n": 1
+            },
+            {
+              "Name": "buick skylark",
+              "n": 2
+            },
+            {
+              "Name": "buick skylark 320",
+              "n": 1
+            },
+            {
+              "Name": "buick skylark limited",
+              "n": 1
+            },
+            {
+              "Name": "cadillac eldorado",
+              "n": 1
+            },
+            {
+              "Name": "cadillac seville",
+              "n": 1
+            },
+            {
+              "Name": "capri ii",
+              "n": 1
+            },
+            {
+              "Name": "chevroelt chevelle malibu",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet bel air",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet camaro",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet caprice classic",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet cavalier",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet cavalier 2-door",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet cavalier wagon",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet chevelle concours (sw)",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet chevelle malibu",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet chevelle malibu classic",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet chevette",
+              "n": 4
+            },
+            {
+              "Name": "chevrolet citation",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet concours",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet impala",
+              "n": 4
+            },
+            {
+              "Name": "chevrolet malibu",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet malibu classic (sw)",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet monte carlo",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet monte carlo landau",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet monte carlo s",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet monza 2+2",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet nova",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet nova custom",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet vega",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet vega (sw)",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet vega 2300",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet woody",
+              "n": 1
+            },
+            {
+              "Name": "chevy c10",
+              "n": 1
+            },
+            {
+              "Name": "chevy c20",
+              "n": 1
+            },
+            {
+              "Name": "chevy s-10",
+              "n": 1
+            },
+            {
+              "Name": "chrysler cordoba",
+              "n": 1
+            },
+            {
+              "Name": "chrysler lebaron medallion",
+              "n": 1
+            },
+            {
+              "Name": "chrysler lebaron salon",
+              "n": 1
+            },
+            {
+              "Name": "chrysler lebaron town @ country (sw)",
+              "n": 1
+            },
+            {
+              "Name": "chrysler new yorker brougham",
+              "n": 1
+            },
+            {
+              "Name": "chrysler newport royal",
+              "n": 1
+            },
+            {
+              "Name": "citroen ds-21 pallas",
+              "n": 1
+            },
+            {
+              "Name": "datsun 1200",
+              "n": 1
+            },
+            {
+              "Name": "datsun 200-sx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 200sx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 210",
+              "n": 3
+            },
+            {
+              "Name": "datsun 280-zx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 310",
+              "n": 1
+            },
+            {
+              "Name": "datsun 310 gx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 510",
+              "n": 1
+            },
+            {
+              "Name": "datsun 510 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "datsun 510 hatchback",
+              "n": 1
+            },
+            {
+              "Name": "datsun 610",
+              "n": 1
+            },
+            {
+              "Name": "datsun 710",
+              "n": 2
+            },
+            {
+              "Name": "datsun 810",
+              "n": 1
+            },
+            {
+              "Name": "datsun 810 maxima",
+              "n": 1
+            },
+            {
+              "Name": "datsun b-210",
+              "n": 1
+            },
+            {
+              "Name": "datsun b210",
+              "n": 1
+            },
+            {
+              "Name": "datsun b210 gx",
+              "n": 1
+            },
+            {
+              "Name": "datsun f-10 hatchback",
+              "n": 1
+            },
+            {
+              "Name": "datsun pl510",
+              "n": 2
+            },
+            {
+              "Name": "dodge aries se",
+              "n": 1
+            },
+            {
+              "Name": "dodge aries wagon (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge aspen",
+              "n": 2
+            },
+            {
+              "Name": "dodge aspen 6",
+              "n": 1
+            },
+            {
+              "Name": "dodge aspen se",
+              "n": 1
+            },
+            {
+              "Name": "dodge challenger se",
+              "n": 1
+            },
+            {
+              "Name": "dodge charger 2.2",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt",
+              "n": 3
+            },
+            {
+              "Name": "dodge colt (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt hardtop",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt hatchback custom",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt m/m",
+              "n": 1
+            },
+            {
+              "Name": "dodge coronet brougham",
+              "n": 1
+            },
+            {
+              "Name": "dodge coronet custom",
+              "n": 1
+            },
+            {
+              "Name": "dodge coronet custom (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge d100",
+              "n": 1
+            },
+            {
+              "Name": "dodge d200",
+              "n": 1
+            },
+            {
+              "Name": "dodge dart custom",
+              "n": 1
+            },
+            {
+              "Name": "dodge diplomat",
+              "n": 1
+            },
+            {
+              "Name": "dodge magnum xe",
+              "n": 1
+            },
+            {
+              "Name": "dodge monaco (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge monaco brougham",
+              "n": 1
+            },
+            {
+              "Name": "dodge omni",
+              "n": 1
+            },
+            {
+              "Name": "dodge rampage",
+              "n": 1
+            },
+            {
+              "Name": "dodge st. regis",
+              "n": 1
+            },
+            {
+              "Name": "fiat 124 sport coupe",
+              "n": 1
+            },
+            {
+              "Name": "fiat 124 tc",
+              "n": 1
+            },
+            {
+              "Name": "fiat 124b",
+              "n": 1
+            },
+            {
+              "Name": "fiat 128",
+              "n": 2
+            },
+            {
+              "Name": "fiat 131",
+              "n": 1
+            },
+            {
+              "Name": "fiat strada custom",
+              "n": 1
+            },
+            {
+              "Name": "fiat x1.9",
+              "n": 1
+            },
+            {
+              "Name": "ford country",
+              "n": 1
+            },
+            {
+              "Name": "ford country squire (sw)",
+              "n": 2
+            },
+            {
+              "Name": "ford escort 2h",
+              "n": 1
+            },
+            {
+              "Name": "ford escort 4w",
+              "n": 1
+            },
+            {
+              "Name": "ford f108",
+              "n": 1
+            },
+            {
+              "Name": "ford f250",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont (auto)",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont (man)",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont 4",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont futura",
+              "n": 1
+            },
+            {
+              "Name": "ford fiesta",
+              "n": 1
+            },
+            {
+              "Name": "ford futura",
+              "n": 1
+            },
+            {
+              "Name": "ford galaxie 500",
+              "n": 3
+            },
+            {
+              "Name": "ford gran torino",
+              "n": 3
+            },
+            {
+              "Name": "ford gran torino (sw)",
+              "n": 2
+            },
+            {
+              "Name": "ford granada",
+              "n": 1
+            },
+            {
+              "Name": "ford granada ghia",
+              "n": 1
+            },
+            {
+              "Name": "ford granada gl",
+              "n": 1
+            },
+            {
+              "Name": "ford granada l",
+              "n": 1
+            },
+            {
+              "Name": "ford ltd",
+              "n": 2
+            },
+            {
+              "Name": "ford ltd landau",
+              "n": 1
+            },
+            {
+              "Name": "ford maverick",
+              "n": 5
+            },
+            {
+              "Name": "ford mustang",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang boss 302",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang cobra",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang gl",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang ii",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang ii 2+2",
+              "n": 1
+            },
+            {
+              "Name": "ford pinto",
+              "n": 6
+            },
+            {
+              "Name": "ford pinto (sw)",
+              "n": 1
+            },
+            {
+              "Name": "ford pinto runabout",
+              "n": 1
+            },
+            {
+              "Name": "ford ranger",
+              "n": 1
+            },
+            {
+              "Name": "ford thunderbird",
+              "n": 1
+            },
+            {
+              "Name": "ford torino",
+              "n": 1
+            },
+            {
+              "Name": "ford torino (sw)",
+              "n": 1
+            },
+            {
+              "Name": "ford torino 500",
+              "n": 1
+            },
+            {
+              "Name": "hi 1200d",
+              "n": 1
+            },
+            {
+              "Name": "honda Accelerationord",
+              "n": 2
+            },
+            {
+              "Name": "honda Accelerationord cvcc",
+              "n": 1
+            },
+            {
+              "Name": "honda Accelerationord lx",
+              "n": 1
+            },
+            {
+              "Name": "honda civic",
+              "n": 3
+            },
+            {
+              "Name": "honda civic (auto)",
+              "n": 1
+            },
+            {
+              "Name": "honda civic 1300",
+              "n": 1
+            },
+            {
+              "Name": "honda civic 1500 gl",
+              "n": 1
+            },
+            {
+              "Name": "honda civic cvcc",
+              "n": 2
+            },
+            {
+              "Name": "honda prelude",
+              "n": 1
+            },
+            {
+              "Name": "maxda glc deluxe",
+              "n": 1
+            },
+            {
+              "Name": "maxda rx3",
+              "n": 1
+            },
+            {
+              "Name": "mazda 626",
+              "n": 2
+            },
+            {
+              "Name": "mazda glc",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc 4",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc custom",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc custom l",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc deluxe",
+              "n": 1
+            },
+            {
+              "Name": "mazda rx-4",
+              "n": 1
+            },
+            {
+              "Name": "mazda rx-7 gs",
+              "n": 1
+            },
+            {
+              "Name": "mazda rx2 coupe",
+              "n": 1
+            },
+            {
+              "Name": "mercedes benz 300d",
+              "n": 1
+            },
+            {
+              "Name": "mercedes-benz 240d",
+              "n": 1
+            },
+            {
+              "Name": "mercedes-benz 280s",
+              "n": 1
+            },
+            {
+              "Name": "mercury capri 2000",
+              "n": 1
+            },
+            {
+              "Name": "mercury capri v6",
+              "n": 1
+            },
+            {
+              "Name": "mercury cougar brougham",
+              "n": 1
+            },
+            {
+              "Name": "mercury grand marquis",
+              "n": 1
+            },
+            {
+              "Name": "mercury lynx l",
+              "n": 1
+            },
+            {
+              "Name": "mercury marquis",
+              "n": 1
+            },
+            {
+              "Name": "mercury marquis brougham",
+              "n": 1
+            },
+            {
+              "Name": "mercury monarch",
+              "n": 1
+            },
+            {
+              "Name": "mercury monarch ghia",
+              "n": 1
+            },
+            {
+              "Name": "mercury zephyr",
+              "n": 1
+            },
+            {
+              "Name": "mercury zephyr 6",
+              "n": 1
+            },
+            {
+              "Name": "nissan stanza xe",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile cutlass ciera (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile cutlass ls",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile cutlass salon brougham",
+              "n": 2
+            },
+            {
+              "Name": "oldsmobile cutlass supreme",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile delta 88 royale",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile omega",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile omega brougham",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile starfire sx",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile vista cruiser",
+              "n": 1
+            },
+            {
+              "Name": "opel 1900",
+              "n": 2
+            },
+            {
+              "Name": "opel manta",
+              "n": 2
+            },
+            {
+              "Name": "peugeot 304",
+              "n": 1
+            },
+            {
+              "Name": "peugeot 504",
+              "n": 4
+            },
+            {
+              "Name": "peugeot 504 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "peugeot 505s turbo diesel",
+              "n": 1
+            },
+            {
+              "Name": "peugeot 604sl",
+              "n": 1
+            },
+            {
+              "Name": "plymouth 'cuda 340",
+              "n": 1
+            },
+            {
+              "Name": "plymouth arrow gs",
+              "n": 1
+            },
+            {
+              "Name": "plymouth champ",
+              "n": 1
+            },
+            {
+              "Name": "plymouth cricket",
+              "n": 1
+            },
+            {
+              "Name": "plymouth custom suburb",
+              "n": 1
+            },
+            {
+              "Name": "plymouth duster",
+              "n": 3
+            },
+            {
+              "Name": "plymouth fury",
+              "n": 1
+            },
+            {
+              "Name": "plymouth fury gran sedan",
+              "n": 1
+            },
+            {
+              "Name": "plymouth fury iii",
+              "n": 3
+            },
+            {
+              "Name": "plymouth grand fury",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon 4",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon miser",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon tc3",
+              "n": 1
+            },
+            {
+              "Name": "plymouth reliant",
+              "n": 2
+            },
+            {
+              "Name": "plymouth sapporo",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite (sw)",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite custom",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite custom (sw)",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite sebring",
+              "n": 1
+            },
+            {
+              "Name": "plymouth valiant",
+              "n": 2
+            },
+            {
+              "Name": "plymouth valiant custom",
+              "n": 1
+            },
+            {
+              "Name": "plymouth volare",
+              "n": 1
+            },
+            {
+              "Name": "plymouth volare custom",
+              "n": 1
+            },
+            {
+              "Name": "plymouth volare premier v8",
+              "n": 1
+            },
+            {
+              "Name": "pontiac astro",
+              "n": 1
+            },
+            {
+              "Name": "pontiac catalina",
+              "n": 3
+            },
+            {
+              "Name": "pontiac catalina brougham",
+              "n": 1
+            },
+            {
+              "Name": "pontiac firebird",
+              "n": 1
+            },
+            {
+              "Name": "pontiac grand prix",
+              "n": 1
+            },
+            {
+              "Name": "pontiac grand prix lj",
+              "n": 1
+            },
+            {
+              "Name": "pontiac j2000 se hatchback",
+              "n": 1
+            },
+            {
+              "Name": "pontiac lemans v6",
+              "n": 1
+            },
+            {
+              "Name": "pontiac phoenix",
+              "n": 2
+            },
+            {
+              "Name": "pontiac phoenix lj",
+              "n": 1
+            },
+            {
+              "Name": "pontiac safari (sw)",
+              "n": 1
+            },
+            {
+              "Name": "pontiac sunbird coupe",
+              "n": 1
+            },
+            {
+              "Name": "pontiac ventura sj",
+              "n": 1
+            },
+            {
+              "Name": "renault 12 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "renault 12tl",
+              "n": 1
+            },
+            {
+              "Name": "renault 18i",
+              "n": 1
+            },
+            {
+              "Name": "renault 5 gtl",
+              "n": 1
+            },
+            {
+              "Name": "renault lecar deluxe",
+              "n": 1
+            },
+            {
+              "Name": "saab 900s",
+              "n": 1
+            },
+            {
+              "Name": "saab 99e",
+              "n": 1
+            },
+            {
+              "Name": "saab 99gle",
+              "n": 1
+            },
+            {
+              "Name": "saab 99le",
+              "n": 2
+            },
+            {
+              "Name": "subaru",
+              "n": 2
+            },
+            {
+              "Name": "subaru dl",
+              "n": 2
+            },
+            {
+              "Name": "toyota carina",
+              "n": 1
+            },
+            {
+              "Name": "toyota celica gt",
+              "n": 1
+            },
+            {
+              "Name": "toyota celica gt liftback",
+              "n": 1
+            },
+            {
+              "Name": "toyota corolla",
+              "n": 5
+            },
+            {
+              "Name": "toyota corolla 1200",
+              "n": 2
+            },
+            {
+              "Name": "toyota corolla 1600 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "toyota corolla liftback",
+              "n": 1
+            },
+            {
+              "Name": "toyota corolla tercel",
+              "n": 1
+            },
+            {
+              "Name": "toyota corona",
+              "n": 4
+            },
+            {
+              "Name": "toyota corona hardtop",
+              "n": 1
+            },
+            {
+              "Name": "toyota corona liftback",
+              "n": 1
+            },
+            {
+              "Name": "toyota corona mark ii",
+              "n": 1
+            },
+            {
+              "Name": "toyota cressida",
+              "n": 1
+            },
+            {
+              "Name": "toyota mark ii",
+              "n": 2
+            },
+            {
+              "Name": "toyota starlet",
+              "n": 1
+            },
+            {
+              "Name": "toyota tercel",
+              "n": 1
+            },
+            {
+              "Name": "toyouta corona mark ii (sw)",
+              "n": 1
+            },
+            {
+              "Name": "triumph tr7 coupe",
+              "n": 1
+            },
+            {
+              "Name": "vokswagen rabbit",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen 1131 deluxe sedan",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen 411 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen dasher",
+              "n": 3
+            },
+            {
+              "Name": "volkswagen jetta",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen model 111",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen rabbit",
+              "n": 2
+            },
+            {
+              "Name": "volkswagen rabbit custom",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen rabbit custom diesel",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen rabbit l",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen scirocco",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen super beetle",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen super beetle 117",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen type 3",
+              "n": 1
+            },
+            {
+              "Name": "volvo 144ea",
+              "n": 1
+            },
+            {
+              "Name": "volvo 145e (sw)",
+              "n": 1
+            },
+            {
+              "Name": "volvo 244dl",
+              "n": 1
+            },
+            {
+              "Name": "volvo 245",
+              "n": 1
+            },
+            {
+              "Name": "volvo 264gl",
+              "n": 1
+            },
+            {
+              "Name": "volvo diesel",
+              "n": 1
+            },
+            {
+              "Name": "vw dasher (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "vw pickup",
+              "n": 1
+            },
+            {
+              "Name": "vw rabbit",
+              "n": 2
+            },
+            {
+              "Name": "vw rabbit c (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "vw rabbit custom",
+              "n": 1
+            }
+          ]
+        },
+        "width": 300,
+        "height": 800,
+        "params": [],
+        "layer": [
+          {
+            "mark": {
+              "type": "bar",
+              "tooltip": true,
+              "clip": true
+            },
+            "selection": {
+              "iddb1f97d1": {
+                "type": "interval",
+                "encodings": "y",
+                "init": null,
+                "mark": [],
+                "on": "[mousedown, window:mouseup] > window:mousemove!",
+                "clear": "dblclick",
+                "translate": "[mousedown, window:mouseup] > window:mousemove!",
+                "empty": "all",
+                "zoom": true,
+                "resolve": "global"
+              }
+            },
+            "transform": [
+              {
+                "filter": {
+                  "selection": "iddb1f97d1"
+                }
+              }
+            ],
+            "encoding": {
+              "x": {
+                "field": "n",
+                "type": "quantitative",
+                "scale": {
+                  "type": "linear",
+                  "domain": [0, 6]
+                },
+                "axis": {
+                  "tickCount": 5,
+                  "orient": "top"
+                },
+                "title": "Count"
+              },
+              "y": {
+                "field": "Name",
+                "type": "nominal",
+                "sort": ["ford pinto", "amc matador", "ford maverick", "toyota corolla", "amc gremlin", "amc hornet", "chevrolet chevette", "chevrolet impala", "peugeot 504", "toyota corona", "chevrolet caprice classic", "chevrolet citation", "chevrolet nova", "chevrolet vega", "datsun 210", "dodge colt", "ford galaxie 500", "ford gran torino", "honda civic", "plymouth duster", "plymouth fury iii", "pontiac catalina", "volkswagen dasher", "amc concord", "amc matador (sw)", "audi 100ls", "buick century", "buick estate wagon (sw)", "buick skylark", "chevrolet chevelle concours (sw)", "chevrolet chevelle malibu", "chevrolet chevelle malibu classic", "chevrolet malibu", "chevrolet monte carlo landau", "datsun 710", "datsun pl510", "dodge aspen", "fiat 128", "ford country squire (sw)", "ford gran torino (sw)", "ford ltd", "honda Accelerationord", "honda civic cvcc", "mazda 626", "oldsmobile cutlass salon brougham", "opel 1900", "opel manta", "plymouth reliant", "plymouth valiant", "pontiac phoenix", "saab 99le", "subaru", "subaru dl", "toyota corolla 1200", "toyota mark ii", "volkswagen rabbit", "vw rabbit", "amc ambassador brougham", "amc ambassador dpl", "amc ambassador sst", "amc concord d/l", "amc concord dl", "amc concord dl 6", "amc hornet sportabout (sw)", "amc pacer", "amc pacer d/l", "amc rebel sst", "amc rebel sst (sw)", "amc spirit dl", "audi 100 ls", "audi 4000", "audi 5000", "audi 5000s (diesel)", "audi fox", "bmw 2002", "bmw 320i", "buick century 350", "buick century limited", "buick century luxus (sw)", "buick century special", "buick electra 225 custom", "buick lesabre custom", "buick opel isuzu deluxe", "buick regal sport coupe (turbo)", "buick skyhawk", "buick skylark 320", "buick skylark limited", "cadillac eldorado", "cadillac seville", "capri ii", "chevroelt chevelle malibu", "chevrolet bel air", "chevrolet camaro", "chevrolet cavalier", "chevrolet cavalier 2-door", "chevrolet cavalier wagon", "chevrolet concours", "chevrolet malibu classic (sw)", "chevrolet monte carlo", "chevrolet monte carlo s", "chevrolet monza 2+2", "chevrolet nova custom", "chevrolet vega (sw)", "chevrolet vega 2300", "chevrolet woody", "chevy c10", "chevy c20", "chevy s-10", "chrysler cordoba", "chrysler lebaron medallion", "chrysler lebaron salon", "chrysler lebaron town @ country (sw)", "chrysler new yorker brougham", "chrysler newport royal", "citroen ds-21 pallas", "datsun 1200", "datsun 200-sx", "datsun 200sx", "datsun 280-zx", "datsun 310", "datsun 310 gx", "datsun 510", "datsun 510 (sw)", "datsun 510 hatchback", "datsun 610", "datsun 810", "datsun 810 maxima", "datsun b-210", "datsun b210", "datsun b210 gx", "datsun f-10 hatchback", "dodge aries se", "dodge aries wagon (sw)", "dodge aspen 6", "dodge aspen se", "dodge challenger se", "dodge charger 2.2", "dodge colt (sw)", "dodge colt hardtop", "dodge colt hatchback custom", "dodge colt m/m", "dodge coronet brougham", "dodge coronet custom", "dodge coronet custom (sw)", "dodge d100", "dodge d200", "dodge dart custom", "dodge diplomat", "dodge magnum xe", "dodge monaco (sw)", "dodge monaco brougham", "dodge omni", "dodge rampage", "dodge st. regis", "fiat 124 sport coupe", "fiat 124 tc", "fiat 124b", "fiat 131", "fiat strada custom", "fiat x1.9", "ford country", "ford escort 2h", "ford escort 4w", "ford f108", "ford f250", "ford fairmont", "ford fairmont (auto)", "ford fairmont (man)", "ford fairmont 4", "ford fairmont futura", "ford fiesta", "ford futura", "ford granada", "ford granada ghia", "ford granada gl", "ford granada l", "ford ltd landau", "ford mustang", "ford mustang boss 302", "ford mustang cobra", "ford mustang gl", "ford mustang ii", "ford mustang ii 2+2", "ford pinto (sw)", "ford pinto runabout", "ford ranger", "ford thunderbird", "ford torino", "ford torino (sw)", "ford torino 500", "hi 1200d", "honda Accelerationord cvcc", "honda Accelerationord lx", "honda civic (auto)", "honda civic 1300", "honda civic 1500 gl", "honda prelude", "maxda glc deluxe", "maxda rx3", "mazda glc", "mazda glc 4", "mazda glc custom", "mazda glc custom l", "mazda glc deluxe", "mazda rx-4", "mazda rx-7 gs", "mazda rx2 coupe", "mercedes benz 300d", "mercedes-benz 240d", "mercedes-benz 280s", "mercury capri 2000", "mercury capri v6", "mercury cougar brougham", "mercury grand marquis", "mercury lynx l", "mercury marquis", "mercury marquis brougham", "mercury monarch", "mercury monarch ghia", "mercury zephyr", "mercury zephyr 6", "nissan stanza xe", "oldsmobile cutlass ciera (diesel)", "oldsmobile cutlass ls", "oldsmobile cutlass supreme", "oldsmobile delta 88 royale", "oldsmobile omega", "oldsmobile omega brougham", "oldsmobile starfire sx", "oldsmobile vista cruiser", "peugeot 304", "peugeot 504 (sw)", "peugeot 505s turbo diesel", "peugeot 604sl", "plymouth 'cuda 340", "plymouth arrow gs", "plymouth champ", "plymouth cricket", "plymouth custom suburb", "plymouth fury", "plymouth fury gran sedan", "plymouth grand fury", "plymouth horizon", "plymouth horizon 4", "plymouth horizon miser", "plymouth horizon tc3", "plymouth sapporo", "plymouth satellite", "plymouth satellite (sw)", "plymouth satellite custom", "plymouth satellite custom (sw)", "plymouth satellite sebring", "plymouth valiant custom", "plymouth volare", "plymouth volare custom", "plymouth volare premier v8", "pontiac astro", "pontiac catalina brougham", "pontiac firebird", "pontiac grand prix", "pontiac grand prix lj", "pontiac j2000 se hatchback", "pontiac lemans v6", "pontiac phoenix lj", "pontiac safari (sw)", "pontiac sunbird coupe", "pontiac ventura sj", "renault 12 (sw)", "renault 12tl", "renault 18i", "renault 5 gtl", "renault lecar deluxe", "saab 900s", "saab 99e", "saab 99gle", "toyota carina", "toyota celica gt", "toyota celica gt liftback", "toyota corolla 1600 (sw)", "toyota corolla liftback", "toyota corolla tercel", "toyota corona hardtop", "toyota corona liftback", "toyota corona mark ii", "toyota cressida", "toyota starlet", "toyota tercel", "toyouta corona mark ii (sw)", "triumph tr7 coupe", "vokswagen rabbit", "volkswagen 1131 deluxe sedan", "volkswagen 411 (sw)", "volkswagen jetta", "volkswagen model 111", "volkswagen rabbit custom", "volkswagen rabbit custom diesel", "volkswagen rabbit l", "volkswagen scirocco", "volkswagen super beetle", "volkswagen super beetle 117", "volkswagen type 3", "volvo 144ea", "volvo 145e (sw)", "volvo 244dl", "volvo 245", "volvo 264gl", "volvo diesel", "vw dasher (diesel)", "vw pickup", "vw rabbit c (diesel)", "vw rabbit custom"],
+                "scale": {
+                  "paddingOuter": 0.2,
+                  "zero": true,
+                  "type": "linear"
+                },
+                "stack": true,
+                "title": null,
+                "axis": {
+                  "orient": "left"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "data": {
+          "values": [
+            {
+              "Name": "amc ambassador brougham",
+              "n": 1
+            },
+            {
+              "Name": "amc ambassador dpl",
+              "n": 1
+            },
+            {
+              "Name": "amc ambassador sst",
+              "n": 1
+            },
+            {
+              "Name": "amc concord",
+              "n": 2
+            },
+            {
+              "Name": "amc concord d/l",
+              "n": 1
+            },
+            {
+              "Name": "amc concord dl",
+              "n": 1
+            },
+            {
+              "Name": "amc concord dl 6",
+              "n": 1
+            },
+            {
+              "Name": "amc gremlin",
+              "n": 4
+            },
+            {
+              "Name": "amc hornet",
+              "n": 4
+            },
+            {
+              "Name": "amc hornet sportabout (sw)",
+              "n": 1
+            },
+            {
+              "Name": "amc matador",
+              "n": 5
+            },
+            {
+              "Name": "amc matador (sw)",
+              "n": 2
+            },
+            {
+              "Name": "amc pacer",
+              "n": 1
+            },
+            {
+              "Name": "amc pacer d/l",
+              "n": 1
+            },
+            {
+              "Name": "amc rebel sst",
+              "n": 1
+            },
+            {
+              "Name": "amc rebel sst (sw)",
+              "n": 1
+            },
+            {
+              "Name": "amc spirit dl",
+              "n": 1
+            },
+            {
+              "Name": "audi 100 ls",
+              "n": 1
+            },
+            {
+              "Name": "audi 100ls",
+              "n": 2
+            },
+            {
+              "Name": "audi 4000",
+              "n": 1
+            },
+            {
+              "Name": "audi 5000",
+              "n": 1
+            },
+            {
+              "Name": "audi 5000s (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "audi fox",
+              "n": 1
+            },
+            {
+              "Name": "bmw 2002",
+              "n": 1
+            },
+            {
+              "Name": "bmw 320i",
+              "n": 1
+            },
+            {
+              "Name": "buick century",
+              "n": 2
+            },
+            {
+              "Name": "buick century 350",
+              "n": 1
+            },
+            {
+              "Name": "buick century limited",
+              "n": 1
+            },
+            {
+              "Name": "buick century luxus (sw)",
+              "n": 1
+            },
+            {
+              "Name": "buick century special",
+              "n": 1
+            },
+            {
+              "Name": "buick electra 225 custom",
+              "n": 1
+            },
+            {
+              "Name": "buick estate wagon (sw)",
+              "n": 2
+            },
+            {
+              "Name": "buick lesabre custom",
+              "n": 1
+            },
+            {
+              "Name": "buick opel isuzu deluxe",
+              "n": 1
+            },
+            {
+              "Name": "buick regal sport coupe (turbo)",
+              "n": 1
+            },
+            {
+              "Name": "buick skyhawk",
+              "n": 1
+            },
+            {
+              "Name": "buick skylark",
+              "n": 2
+            },
+            {
+              "Name": "buick skylark 320",
+              "n": 1
+            },
+            {
+              "Name": "buick skylark limited",
+              "n": 1
+            },
+            {
+              "Name": "cadillac eldorado",
+              "n": 1
+            },
+            {
+              "Name": "cadillac seville",
+              "n": 1
+            },
+            {
+              "Name": "capri ii",
+              "n": 1
+            },
+            {
+              "Name": "chevroelt chevelle malibu",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet bel air",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet camaro",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet caprice classic",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet cavalier",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet cavalier 2-door",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet cavalier wagon",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet chevelle concours (sw)",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet chevelle malibu",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet chevelle malibu classic",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet chevette",
+              "n": 4
+            },
+            {
+              "Name": "chevrolet citation",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet concours",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet impala",
+              "n": 4
+            },
+            {
+              "Name": "chevrolet malibu",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet malibu classic (sw)",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet monte carlo",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet monte carlo landau",
+              "n": 2
+            },
+            {
+              "Name": "chevrolet monte carlo s",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet monza 2+2",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet nova",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet nova custom",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet vega",
+              "n": 3
+            },
+            {
+              "Name": "chevrolet vega (sw)",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet vega 2300",
+              "n": 1
+            },
+            {
+              "Name": "chevrolet woody",
+              "n": 1
+            },
+            {
+              "Name": "chevy c10",
+              "n": 1
+            },
+            {
+              "Name": "chevy c20",
+              "n": 1
+            },
+            {
+              "Name": "chevy s-10",
+              "n": 1
+            },
+            {
+              "Name": "chrysler cordoba",
+              "n": 1
+            },
+            {
+              "Name": "chrysler lebaron medallion",
+              "n": 1
+            },
+            {
+              "Name": "chrysler lebaron salon",
+              "n": 1
+            },
+            {
+              "Name": "chrysler lebaron town @ country (sw)",
+              "n": 1
+            },
+            {
+              "Name": "chrysler new yorker brougham",
+              "n": 1
+            },
+            {
+              "Name": "chrysler newport royal",
+              "n": 1
+            },
+            {
+              "Name": "citroen ds-21 pallas",
+              "n": 1
+            },
+            {
+              "Name": "datsun 1200",
+              "n": 1
+            },
+            {
+              "Name": "datsun 200-sx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 200sx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 210",
+              "n": 3
+            },
+            {
+              "Name": "datsun 280-zx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 310",
+              "n": 1
+            },
+            {
+              "Name": "datsun 310 gx",
+              "n": 1
+            },
+            {
+              "Name": "datsun 510",
+              "n": 1
+            },
+            {
+              "Name": "datsun 510 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "datsun 510 hatchback",
+              "n": 1
+            },
+            {
+              "Name": "datsun 610",
+              "n": 1
+            },
+            {
+              "Name": "datsun 710",
+              "n": 2
+            },
+            {
+              "Name": "datsun 810",
+              "n": 1
+            },
+            {
+              "Name": "datsun 810 maxima",
+              "n": 1
+            },
+            {
+              "Name": "datsun b-210",
+              "n": 1
+            },
+            {
+              "Name": "datsun b210",
+              "n": 1
+            },
+            {
+              "Name": "datsun b210 gx",
+              "n": 1
+            },
+            {
+              "Name": "datsun f-10 hatchback",
+              "n": 1
+            },
+            {
+              "Name": "datsun pl510",
+              "n": 2
+            },
+            {
+              "Name": "dodge aries se",
+              "n": 1
+            },
+            {
+              "Name": "dodge aries wagon (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge aspen",
+              "n": 2
+            },
+            {
+              "Name": "dodge aspen 6",
+              "n": 1
+            },
+            {
+              "Name": "dodge aspen se",
+              "n": 1
+            },
+            {
+              "Name": "dodge challenger se",
+              "n": 1
+            },
+            {
+              "Name": "dodge charger 2.2",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt",
+              "n": 3
+            },
+            {
+              "Name": "dodge colt (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt hardtop",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt hatchback custom",
+              "n": 1
+            },
+            {
+              "Name": "dodge colt m/m",
+              "n": 1
+            },
+            {
+              "Name": "dodge coronet brougham",
+              "n": 1
+            },
+            {
+              "Name": "dodge coronet custom",
+              "n": 1
+            },
+            {
+              "Name": "dodge coronet custom (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge d100",
+              "n": 1
+            },
+            {
+              "Name": "dodge d200",
+              "n": 1
+            },
+            {
+              "Name": "dodge dart custom",
+              "n": 1
+            },
+            {
+              "Name": "dodge diplomat",
+              "n": 1
+            },
+            {
+              "Name": "dodge magnum xe",
+              "n": 1
+            },
+            {
+              "Name": "dodge monaco (sw)",
+              "n": 1
+            },
+            {
+              "Name": "dodge monaco brougham",
+              "n": 1
+            },
+            {
+              "Name": "dodge omni",
+              "n": 1
+            },
+            {
+              "Name": "dodge rampage",
+              "n": 1
+            },
+            {
+              "Name": "dodge st. regis",
+              "n": 1
+            },
+            {
+              "Name": "fiat 124 sport coupe",
+              "n": 1
+            },
+            {
+              "Name": "fiat 124 tc",
+              "n": 1
+            },
+            {
+              "Name": "fiat 124b",
+              "n": 1
+            },
+            {
+              "Name": "fiat 128",
+              "n": 2
+            },
+            {
+              "Name": "fiat 131",
+              "n": 1
+            },
+            {
+              "Name": "fiat strada custom",
+              "n": 1
+            },
+            {
+              "Name": "fiat x1.9",
+              "n": 1
+            },
+            {
+              "Name": "ford country",
+              "n": 1
+            },
+            {
+              "Name": "ford country squire (sw)",
+              "n": 2
+            },
+            {
+              "Name": "ford escort 2h",
+              "n": 1
+            },
+            {
+              "Name": "ford escort 4w",
+              "n": 1
+            },
+            {
+              "Name": "ford f108",
+              "n": 1
+            },
+            {
+              "Name": "ford f250",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont (auto)",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont (man)",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont 4",
+              "n": 1
+            },
+            {
+              "Name": "ford fairmont futura",
+              "n": 1
+            },
+            {
+              "Name": "ford fiesta",
+              "n": 1
+            },
+            {
+              "Name": "ford futura",
+              "n": 1
+            },
+            {
+              "Name": "ford galaxie 500",
+              "n": 3
+            },
+            {
+              "Name": "ford gran torino",
+              "n": 3
+            },
+            {
+              "Name": "ford gran torino (sw)",
+              "n": 2
+            },
+            {
+              "Name": "ford granada",
+              "n": 1
+            },
+            {
+              "Name": "ford granada ghia",
+              "n": 1
+            },
+            {
+              "Name": "ford granada gl",
+              "n": 1
+            },
+            {
+              "Name": "ford granada l",
+              "n": 1
+            },
+            {
+              "Name": "ford ltd",
+              "n": 2
+            },
+            {
+              "Name": "ford ltd landau",
+              "n": 1
+            },
+            {
+              "Name": "ford maverick",
+              "n": 5
+            },
+            {
+              "Name": "ford mustang",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang boss 302",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang cobra",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang gl",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang ii",
+              "n": 1
+            },
+            {
+              "Name": "ford mustang ii 2+2",
+              "n": 1
+            },
+            {
+              "Name": "ford pinto",
+              "n": 6
+            },
+            {
+              "Name": "ford pinto (sw)",
+              "n": 1
+            },
+            {
+              "Name": "ford pinto runabout",
+              "n": 1
+            },
+            {
+              "Name": "ford ranger",
+              "n": 1
+            },
+            {
+              "Name": "ford thunderbird",
+              "n": 1
+            },
+            {
+              "Name": "ford torino",
+              "n": 1
+            },
+            {
+              "Name": "ford torino (sw)",
+              "n": 1
+            },
+            {
+              "Name": "ford torino 500",
+              "n": 1
+            },
+            {
+              "Name": "hi 1200d",
+              "n": 1
+            },
+            {
+              "Name": "honda Accelerationord",
+              "n": 2
+            },
+            {
+              "Name": "honda Accelerationord cvcc",
+              "n": 1
+            },
+            {
+              "Name": "honda Accelerationord lx",
+              "n": 1
+            },
+            {
+              "Name": "honda civic",
+              "n": 3
+            },
+            {
+              "Name": "honda civic (auto)",
+              "n": 1
+            },
+            {
+              "Name": "honda civic 1300",
+              "n": 1
+            },
+            {
+              "Name": "honda civic 1500 gl",
+              "n": 1
+            },
+            {
+              "Name": "honda civic cvcc",
+              "n": 2
+            },
+            {
+              "Name": "honda prelude",
+              "n": 1
+            },
+            {
+              "Name": "maxda glc deluxe",
+              "n": 1
+            },
+            {
+              "Name": "maxda rx3",
+              "n": 1
+            },
+            {
+              "Name": "mazda 626",
+              "n": 2
+            },
+            {
+              "Name": "mazda glc",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc 4",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc custom",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc custom l",
+              "n": 1
+            },
+            {
+              "Name": "mazda glc deluxe",
+              "n": 1
+            },
+            {
+              "Name": "mazda rx-4",
+              "n": 1
+            },
+            {
+              "Name": "mazda rx-7 gs",
+              "n": 1
+            },
+            {
+              "Name": "mazda rx2 coupe",
+              "n": 1
+            },
+            {
+              "Name": "mercedes benz 300d",
+              "n": 1
+            },
+            {
+              "Name": "mercedes-benz 240d",
+              "n": 1
+            },
+            {
+              "Name": "mercedes-benz 280s",
+              "n": 1
+            },
+            {
+              "Name": "mercury capri 2000",
+              "n": 1
+            },
+            {
+              "Name": "mercury capri v6",
+              "n": 1
+            },
+            {
+              "Name": "mercury cougar brougham",
+              "n": 1
+            },
+            {
+              "Name": "mercury grand marquis",
+              "n": 1
+            },
+            {
+              "Name": "mercury lynx l",
+              "n": 1
+            },
+            {
+              "Name": "mercury marquis",
+              "n": 1
+            },
+            {
+              "Name": "mercury marquis brougham",
+              "n": 1
+            },
+            {
+              "Name": "mercury monarch",
+              "n": 1
+            },
+            {
+              "Name": "mercury monarch ghia",
+              "n": 1
+            },
+            {
+              "Name": "mercury zephyr",
+              "n": 1
+            },
+            {
+              "Name": "mercury zephyr 6",
+              "n": 1
+            },
+            {
+              "Name": "nissan stanza xe",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile cutlass ciera (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile cutlass ls",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile cutlass salon brougham",
+              "n": 2
+            },
+            {
+              "Name": "oldsmobile cutlass supreme",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile delta 88 royale",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile omega",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile omega brougham",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile starfire sx",
+              "n": 1
+            },
+            {
+              "Name": "oldsmobile vista cruiser",
+              "n": 1
+            },
+            {
+              "Name": "opel 1900",
+              "n": 2
+            },
+            {
+              "Name": "opel manta",
+              "n": 2
+            },
+            {
+              "Name": "peugeot 304",
+              "n": 1
+            },
+            {
+              "Name": "peugeot 504",
+              "n": 4
+            },
+            {
+              "Name": "peugeot 504 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "peugeot 505s turbo diesel",
+              "n": 1
+            },
+            {
+              "Name": "peugeot 604sl",
+              "n": 1
+            },
+            {
+              "Name": "plymouth 'cuda 340",
+              "n": 1
+            },
+            {
+              "Name": "plymouth arrow gs",
+              "n": 1
+            },
+            {
+              "Name": "plymouth champ",
+              "n": 1
+            },
+            {
+              "Name": "plymouth cricket",
+              "n": 1
+            },
+            {
+              "Name": "plymouth custom suburb",
+              "n": 1
+            },
+            {
+              "Name": "plymouth duster",
+              "n": 3
+            },
+            {
+              "Name": "plymouth fury",
+              "n": 1
+            },
+            {
+              "Name": "plymouth fury gran sedan",
+              "n": 1
+            },
+            {
+              "Name": "plymouth fury iii",
+              "n": 3
+            },
+            {
+              "Name": "plymouth grand fury",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon 4",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon miser",
+              "n": 1
+            },
+            {
+              "Name": "plymouth horizon tc3",
+              "n": 1
+            },
+            {
+              "Name": "plymouth reliant",
+              "n": 2
+            },
+            {
+              "Name": "plymouth sapporo",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite (sw)",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite custom",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite custom (sw)",
+              "n": 1
+            },
+            {
+              "Name": "plymouth satellite sebring",
+              "n": 1
+            },
+            {
+              "Name": "plymouth valiant",
+              "n": 2
+            },
+            {
+              "Name": "plymouth valiant custom",
+              "n": 1
+            },
+            {
+              "Name": "plymouth volare",
+              "n": 1
+            },
+            {
+              "Name": "plymouth volare custom",
+              "n": 1
+            },
+            {
+              "Name": "plymouth volare premier v8",
+              "n": 1
+            },
+            {
+              "Name": "pontiac astro",
+              "n": 1
+            },
+            {
+              "Name": "pontiac catalina",
+              "n": 3
+            },
+            {
+              "Name": "pontiac catalina brougham",
+              "n": 1
+            },
+            {
+              "Name": "pontiac firebird",
+              "n": 1
+            },
+            {
+              "Name": "pontiac grand prix",
+              "n": 1
+            },
+            {
+              "Name": "pontiac grand prix lj",
+              "n": 1
+            },
+            {
+              "Name": "pontiac j2000 se hatchback",
+              "n": 1
+            },
+            {
+              "Name": "pontiac lemans v6",
+              "n": 1
+            },
+            {
+              "Name": "pontiac phoenix",
+              "n": 2
+            },
+            {
+              "Name": "pontiac phoenix lj",
+              "n": 1
+            },
+            {
+              "Name": "pontiac safari (sw)",
+              "n": 1
+            },
+            {
+              "Name": "pontiac sunbird coupe",
+              "n": 1
+            },
+            {
+              "Name": "pontiac ventura sj",
+              "n": 1
+            },
+            {
+              "Name": "renault 12 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "renault 12tl",
+              "n": 1
+            },
+            {
+              "Name": "renault 18i",
+              "n": 1
+            },
+            {
+              "Name": "renault 5 gtl",
+              "n": 1
+            },
+            {
+              "Name": "renault lecar deluxe",
+              "n": 1
+            },
+            {
+              "Name": "saab 900s",
+              "n": 1
+            },
+            {
+              "Name": "saab 99e",
+              "n": 1
+            },
+            {
+              "Name": "saab 99gle",
+              "n": 1
+            },
+            {
+              "Name": "saab 99le",
+              "n": 2
+            },
+            {
+              "Name": "subaru",
+              "n": 2
+            },
+            {
+              "Name": "subaru dl",
+              "n": 2
+            },
+            {
+              "Name": "toyota carina",
+              "n": 1
+            },
+            {
+              "Name": "toyota celica gt",
+              "n": 1
+            },
+            {
+              "Name": "toyota celica gt liftback",
+              "n": 1
+            },
+            {
+              "Name": "toyota corolla",
+              "n": 5
+            },
+            {
+              "Name": "toyota corolla 1200",
+              "n": 2
+            },
+            {
+              "Name": "toyota corolla 1600 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "toyota corolla liftback",
+              "n": 1
+            },
+            {
+              "Name": "toyota corolla tercel",
+              "n": 1
+            },
+            {
+              "Name": "toyota corona",
+              "n": 4
+            },
+            {
+              "Name": "toyota corona hardtop",
+              "n": 1
+            },
+            {
+              "Name": "toyota corona liftback",
+              "n": 1
+            },
+            {
+              "Name": "toyota corona mark ii",
+              "n": 1
+            },
+            {
+              "Name": "toyota cressida",
+              "n": 1
+            },
+            {
+              "Name": "toyota mark ii",
+              "n": 2
+            },
+            {
+              "Name": "toyota starlet",
+              "n": 1
+            },
+            {
+              "Name": "toyota tercel",
+              "n": 1
+            },
+            {
+              "Name": "toyouta corona mark ii (sw)",
+              "n": 1
+            },
+            {
+              "Name": "triumph tr7 coupe",
+              "n": 1
+            },
+            {
+              "Name": "vokswagen rabbit",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen 1131 deluxe sedan",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen 411 (sw)",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen dasher",
+              "n": 3
+            },
+            {
+              "Name": "volkswagen jetta",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen model 111",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen rabbit",
+              "n": 2
+            },
+            {
+              "Name": "volkswagen rabbit custom",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen rabbit custom diesel",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen rabbit l",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen scirocco",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen super beetle",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen super beetle 117",
+              "n": 1
+            },
+            {
+              "Name": "volkswagen type 3",
+              "n": 1
+            },
+            {
+              "Name": "volvo 144ea",
+              "n": 1
+            },
+            {
+              "Name": "volvo 145e (sw)",
+              "n": 1
+            },
+            {
+              "Name": "volvo 244dl",
+              "n": 1
+            },
+            {
+              "Name": "volvo 245",
+              "n": 1
+            },
+            {
+              "Name": "volvo 264gl",
+              "n": 1
+            },
+            {
+              "Name": "volvo diesel",
+              "n": 1
+            },
+            {
+              "Name": "vw dasher (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "vw pickup",
+              "n": 1
+            },
+            {
+              "Name": "vw rabbit",
+              "n": 2
+            },
+            {
+              "Name": "vw rabbit c (diesel)",
+              "n": 1
+            },
+            {
+              "Name": "vw rabbit custom",
+              "n": 1
+            }
+          ]
+        },
+        "width": 50,
+        "height": 200,
+        "params": [],
+        "layer": [
+          {
+            "mark": {
+              "type": "bar",
+              "tooltip": true,
+              "clip": true
+            },
+            "selection": {
+              "iddb1f97d1": {
+                "type": "interval",
+                "encodings": "y",
+                "init": null,
+                "mark": [],
+                "on": "[mousedown, window:mouseup] > window:mousemove!",
+                "clear": "dblclick",
+                "translate": "[mousedown, window:mouseup] > window:mousemove!",
+                "empty": "all",
+                "zoom": true,
+                "resolve": "global"
+              }
+            },
+            "encoding": {
+              "x": {
+                "field": "n",
+                "type": "quantitative",
+                "scale": {
+                  "type": "linear",
+                  "domain": [0.75, 6.25]
+                },
+                "axis": {
+                  "tickCount": 5,
+                  "values": [],
+                  "orient": "bottom"
+                },
+                "title": null
+              },
+              "y": {
+                "field": "Name",
+                "type": "nominal",
+                "sort": ["ford pinto", "amc matador", "ford maverick", "toyota corolla", "amc gremlin", "amc hornet", "chevrolet chevette", "chevrolet impala", "peugeot 504", "toyota corona", "chevrolet caprice classic", "chevrolet citation", "chevrolet nova", "chevrolet vega", "datsun 210", "dodge colt", "ford galaxie 500", "ford gran torino", "honda civic", "plymouth duster", "plymouth fury iii", "pontiac catalina", "volkswagen dasher", "amc concord", "amc matador (sw)", "audi 100ls", "buick century", "buick estate wagon (sw)", "buick skylark", "chevrolet chevelle concours (sw)", "chevrolet chevelle malibu", "chevrolet chevelle malibu classic", "chevrolet malibu", "chevrolet monte carlo landau", "datsun 710", "datsun pl510", "dodge aspen", "fiat 128", "ford country squire (sw)", "ford gran torino (sw)", "ford ltd", "honda Accelerationord", "honda civic cvcc", "mazda 626", "oldsmobile cutlass salon brougham", "opel 1900", "opel manta", "plymouth reliant", "plymouth valiant", "pontiac phoenix", "saab 99le", "subaru", "subaru dl", "toyota corolla 1200", "toyota mark ii", "volkswagen rabbit", "vw rabbit", "amc ambassador brougham", "amc ambassador dpl", "amc ambassador sst", "amc concord d/l", "amc concord dl", "amc concord dl 6", "amc hornet sportabout (sw)", "amc pacer", "amc pacer d/l", "amc rebel sst", "amc rebel sst (sw)", "amc spirit dl", "audi 100 ls", "audi 4000", "audi 5000", "audi 5000s (diesel)", "audi fox", "bmw 2002", "bmw 320i", "buick century 350", "buick century limited", "buick century luxus (sw)", "buick century special", "buick electra 225 custom", "buick lesabre custom", "buick opel isuzu deluxe", "buick regal sport coupe (turbo)", "buick skyhawk", "buick skylark 320", "buick skylark limited", "cadillac eldorado", "cadillac seville", "capri ii", "chevroelt chevelle malibu", "chevrolet bel air", "chevrolet camaro", "chevrolet cavalier", "chevrolet cavalier 2-door", "chevrolet cavalier wagon", "chevrolet concours", "chevrolet malibu classic (sw)", "chevrolet monte carlo", "chevrolet monte carlo s", "chevrolet monza 2+2", "chevrolet nova custom", "chevrolet vega (sw)", "chevrolet vega 2300", "chevrolet woody", "chevy c10", "chevy c20", "chevy s-10", "chrysler cordoba", "chrysler lebaron medallion", "chrysler lebaron salon", "chrysler lebaron town @ country (sw)", "chrysler new yorker brougham", "chrysler newport royal", "citroen ds-21 pallas", "datsun 1200", "datsun 200-sx", "datsun 200sx", "datsun 280-zx", "datsun 310", "datsun 310 gx", "datsun 510", "datsun 510 (sw)", "datsun 510 hatchback", "datsun 610", "datsun 810", "datsun 810 maxima", "datsun b-210", "datsun b210", "datsun b210 gx", "datsun f-10 hatchback", "dodge aries se", "dodge aries wagon (sw)", "dodge aspen 6", "dodge aspen se", "dodge challenger se", "dodge charger 2.2", "dodge colt (sw)", "dodge colt hardtop", "dodge colt hatchback custom", "dodge colt m/m", "dodge coronet brougham", "dodge coronet custom", "dodge coronet custom (sw)", "dodge d100", "dodge d200", "dodge dart custom", "dodge diplomat", "dodge magnum xe", "dodge monaco (sw)", "dodge monaco brougham", "dodge omni", "dodge rampage", "dodge st. regis", "fiat 124 sport coupe", "fiat 124 tc", "fiat 124b", "fiat 131", "fiat strada custom", "fiat x1.9", "ford country", "ford escort 2h", "ford escort 4w", "ford f108", "ford f250", "ford fairmont", "ford fairmont (auto)", "ford fairmont (man)", "ford fairmont 4", "ford fairmont futura", "ford fiesta", "ford futura", "ford granada", "ford granada ghia", "ford granada gl", "ford granada l", "ford ltd landau", "ford mustang", "ford mustang boss 302", "ford mustang cobra", "ford mustang gl", "ford mustang ii", "ford mustang ii 2+2", "ford pinto (sw)", "ford pinto runabout", "ford ranger", "ford thunderbird", "ford torino", "ford torino (sw)", "ford torino 500", "hi 1200d", "honda Accelerationord cvcc", "honda Accelerationord lx", "honda civic (auto)", "honda civic 1300", "honda civic 1500 gl", "honda prelude", "maxda glc deluxe", "maxda rx3", "mazda glc", "mazda glc 4", "mazda glc custom", "mazda glc custom l", "mazda glc deluxe", "mazda rx-4", "mazda rx-7 gs", "mazda rx2 coupe", "mercedes benz 300d", "mercedes-benz 240d", "mercedes-benz 280s", "mercury capri 2000", "mercury capri v6", "mercury cougar brougham", "mercury grand marquis", "mercury lynx l", "mercury marquis", "mercury marquis brougham", "mercury monarch", "mercury monarch ghia", "mercury zephyr", "mercury zephyr 6", "nissan stanza xe", "oldsmobile cutlass ciera (diesel)", "oldsmobile cutlass ls", "oldsmobile cutlass supreme", "oldsmobile delta 88 royale", "oldsmobile omega", "oldsmobile omega brougham", "oldsmobile starfire sx", "oldsmobile vista cruiser", "peugeot 304", "peugeot 504 (sw)", "peugeot 505s turbo diesel", "peugeot 604sl", "plymouth 'cuda 340", "plymouth arrow gs", "plymouth champ", "plymouth cricket", "plymouth custom suburb", "plymouth fury", "plymouth fury gran sedan", "plymouth grand fury", "plymouth horizon", "plymouth horizon 4", "plymouth horizon miser", "plymouth horizon tc3", "plymouth sapporo", "plymouth satellite", "plymouth satellite (sw)", "plymouth satellite custom", "plymouth satellite custom (sw)", "plymouth satellite sebring", "plymouth valiant custom", "plymouth volare", "plymouth volare custom", "plymouth volare premier v8", "pontiac astro", "pontiac catalina brougham", "pontiac firebird", "pontiac grand prix", "pontiac grand prix lj", "pontiac j2000 se hatchback", "pontiac lemans v6", "pontiac phoenix lj", "pontiac safari (sw)", "pontiac sunbird coupe", "pontiac ventura sj", "renault 12 (sw)", "renault 12tl", "renault 18i", "renault 5 gtl", "renault lecar deluxe", "saab 900s", "saab 99e", "saab 99gle", "toyota carina", "toyota celica gt", "toyota celica gt liftback", "toyota corolla 1600 (sw)", "toyota corolla liftback", "toyota corolla tercel", "toyota corona hardtop", "toyota corona liftback", "toyota corona mark ii", "toyota cressida", "toyota starlet", "toyota tercel", "toyouta corona mark ii (sw)", "triumph tr7 coupe", "vokswagen rabbit", "volkswagen 1131 deluxe sedan", "volkswagen 411 (sw)", "volkswagen jetta", "volkswagen model 111", "volkswagen rabbit custom", "volkswagen rabbit custom diesel", "volkswagen rabbit l", "volkswagen scirocco", "volkswagen super beetle", "volkswagen super beetle 117", "volkswagen type 3", "volvo 144ea", "volvo 145e (sw)", "volvo 244dl", "volvo 245", "volvo 264gl", "volvo diesel", "vw dasher (diesel)", "vw pickup", "vw rabbit c (diesel)", "vw rabbit custom"],
+                "scale": {
+                  "paddingOuter": 0.2,
+                  "zero": true,
+                  "type": "linear"
+                },
+                "stack": true,
+                "axis": {
+                  "values": [],
+                  "orient": "left"
+                },
+                "title": null
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "config": {
+      "view": {
+        "fill": "#e5e5e5"
+      },
+      "facet": {
+        "spacing": 5
+      },
+      "headerRow": {
+        "labelOrient": "right",
+        "titleOrient": "right"
+      },
+      "circle": {
+        "color": "#000",
+        "opacity": 1,
+        "size": 60
+      },
+      "point": {
+        "color": "#000",
+        "opacity": 1,
+        "size": 60
+      },
+      "line": {
+        "color": "#000"
+      },
+      "trail": {
+        "color": "#000"
+      },
+      "tick": {
+        "color": "#000"
+      },
+      "geoshape": {
+        "color": "#000"
+      },
+      "square": {
+        "color": "#000",
+        "opacity": 1,
+        "size": 60
+      },
+      "rect": {
+        "fill": "#595959"
+      },
+      "area": {
+        "fill": "#595959"
+      },
+      "bar": {
+        "fill": "#595959"
+      },
+      "axis": {
+        "domain": false,
+        "domainColor": "#FFFFFFF",
+        "grid": true,
+        "gridColor": "#FFFFFF",
+        "gridOpacity": 1,
+        "labelColor": "#7F7F7F",
+        "labelPadding": 4,
+        "tickColor": "#7F7F7F",
+        "tickSize": 5.67
+      },
+      "axisX": [],
+      "axisY": [],
+      "header": [],
+      "legend": {
+        "orient": "right",
+        "padding": 1
+      },
+      "title": []
+    }
+  },
+  "embed_options": {
+    "renderer": "canvas",
+    "actions": false,
+    "defaultStyle": true
+  }
+},"evals":[],"jsHooks":[]}</script>
+</div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
