@@ -11,8 +11,9 @@ knitr::opts_chunk$set(
 
 This example has been adapted from [Vega-Lite](https://vega.github.io/vega-lite/examples/bar_count_minimap.html).
 
+Brush on the right-hand side to zoom in on the bar chart on the left.
 
-```{r brushed-bar, eval = FALSE}
+```{r brushed-bar}
 library(dplyr)
 library(jsonlite)
 library(virgo)
@@ -32,10 +33,11 @@ minimap <- cars %>%
     ),
     selection = I(selection),
   ) %>% 
-  config(axis = list(NULL))
+  scale_y(name = NULL, breaks = NULL) %>% 
+  scale_x(name = NULL, breaks = NULL)
 
 bar <- cars %>% 
-  vega(height = 800) %>% 
+    vega(height = 800) %>% 
     mark_bar(
     enc(
       x = n, 
@@ -43,8 +45,8 @@ bar <- cars %>%
     ),
     selection = selection,
   ) %>% 
-  scale_x(domain = c(0,6)) %>% 
-  scale_y(title = "Count", orient = "top")
+  scale_x(name = "Count", domain = c(0,6), orient = "top") %>% 
+  scale_y(name = NULL)
 
 hconcat(bar, minimap)
 ```

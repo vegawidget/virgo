@@ -35,6 +35,9 @@ span(class = "gallery",
                  "Model checking with filtering selections"),
      add_example("gapminder-animate.html",
                  "gapminder-animate.png",
-                 "Connected scatterplot with slider")
+                 "Connected scatterplot with slider"),
+     add_example("minimap.html",
+                 "minimap.png",
+                 "Minimap bar charts")
 )
 ```
