@@ -26,6 +26,9 @@ scale_x <- function(v, name = zap(), domain = zap(), type = "linear",
     field <- v$layer[[i]]$encoding$x$field
     v$layer[[i]]$encoding$x$scale$domain <- rescale_domain(data[[field]], type)
     if (!is_zap(breaks)) {
+      if (is.null(breaks)) {
+        breaks <- list()
+      }
       v$layer[[i]]$encoding$x$axis$values <- breaks
     }
     if (!is_zap(name)) {
@@ -52,6 +55,9 @@ scale_y <- function(v, name = zap(), domain = zap(), type = "linear",
     field <- v$layer[[i]]$encoding$y$field
     v$layer[[i]]$encoding$y$scale$domain <- rescale_domain(data[[field]], type)
     if (!is_zap(breaks)) {
+      if (is.null(breaks)) {
+        breaks <- list()
+      }
       v$layer[[i]]$encoding$y$axis$values <- breaks
     }
     if (!is_zap(name)) {
@@ -187,6 +193,12 @@ rescale_domain.Date <- function(x, type = "time") {
   interpret_domain(domain)
 }
 
+rescale_domain.character <- function(x, type = "ordinal") {
+  NULL
+}
+
+rescale_domain.factor <- rescale_domain.character
+
 expand_domain <- function(x) {
   rng <- range(x, na.rm = TRUE)
   expand_range(rng, mul = 0.05)
@@ -201,18 +213,18 @@ interpret_domain.default <- function(x) {
 }
 
 interpret_domain.virgo_selection <- function(x) {
-  list(selection = selection_composition(x)) 
+  list(selection = selection_composition(x))
 }
 
 interpret_domain.Date <- function(x) {
   lst <- as.POSIXlt(x)
-  map(lst, function(x) 
+  map(lst, function(x)
     list(year = 1900 + x$year, month = x$mon + 1, date = x$mday))
 }
 
 interpret_domain.POSIXt <- function(x) {
   lst <- as.POSIXlt(x)
-  map(lst, function(x) 
+  map(lst, function(x)
     list(year = 1900 + x$year, month = x$mon + 1, date = x$mday,
       hours = x$hour, minutes = x$min, seconds = x$sec %/% 1,
       milliseconds = (x$sec %% 1 * 1000) %/% 1))
